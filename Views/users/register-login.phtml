@@ -1,0 +1,67 @@
+<?php require(__DIR__ . "/../partials/header.phtml"); ?>
+
+<div id="signup-page" class="signup-container d-flex">
+    <div id="signup" class="signup-box m-auto flex-column" style="<?php echo "display: " . ($page->signup == true ? "flex" : "none"); ?>">
+        <div class="d-flex flex-row justify-content-center align-items-center">
+            <h1 class="display-5">Sign up</h1>
+            <i class="fas fa-gamepad ml-3" style="font-size: 2.5rem;"></i>
+        </div>
+        <p class="subtext p-0 m-0">Create your free account now.</p>
+        <hr/>
+        <form action="#" method="POST" class="text-left">
+            <div class="form-group row">
+                <div class="col-6">
+                    <label for="inputFirstname">First name</label>
+                    <input type="text" name="firstname" class="form-control" id="inputFirstname" placeholder="John" required>
+                </div>
+                <div class="col-6">
+                    <label for="inputSurname">Surname</label>
+                    <input type="text" name="surname" class="form-control" id="inputSurname" placeholder="Smith" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputEmail">Email address</label>
+                <input type="email" name="name" class="form-control" id="inputEmail" placeholder="jsmith0600@gmail.com" required>
+                <small class="form-text text-muted text-left">We'll never share your email with anyone else.</small>
+            </div>
+            <div class="form-group">
+                <label for="inputPassword">Password</label>
+                <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password" required>
+            </div>
+            <div class="submit-area">
+                <div class="d-flex flex-row align-items-center justify-content-center mt-3">
+                    <button type="submit" name="submit" class="btn btn-success d-inline mr-3">Create Account<i class="fas fa-lock ml-2"></i></button>
+                    <p class="d-inline text-muted" style="max-width: 200px; font-size: 0.7rem;">By clicking this button you agree to our
+                        <a href="#">Terms of Use</a> and have read our <a href="#">License Agreement</a> and <a
+                            href="#">Privacy Policy</a>.</p>
+                </div>
+                <p class="subtext align-self-center d-block">Already registered? Login <span id="sign-to-login">here.</span></p>
+            </div>
+        </form>
+    </div>
+
+    <div id="login" class="signup-box m-auto flex-column" style="<?php echo "display: " . ($page->signup == true ? "none" : "flex"); ?>">
+        <div class="d-flex flex-row justify-content-center align-items-center">
+            <h1 class="display-5">Login</h1>
+            <i class="fas fa-gamepad ml-3" style="font-size: 2.5rem;"></i>
+        </div>
+        <p class="subtext align-self-center d-block">Dont have an account? Register one <span id="login-to-sign">here.</span></p>
+        <hr/>
+        <form action="#" method="POST" class="text-left">
+            <div class="form-group">
+                <label for="loginEmail">Email address</label>
+                <input type="email" name="name" class="form-control" id="loginEmail" placeholder="jsmith0600@gmail.com" required>
+            </div>
+            <div class="form-group">
+                <label for="loginPassword">Password</label>
+                <input type="password" name="password" class="form-control" id="loginPassword" placeholder="Password" required>
+            </div>
+            <div class="d-flex flex-row justify-content-around align-items-center">
+                <button type="submit" name="submit" class="btn btn-success d-inline">Login</button>
+                <a href="#" class="text-muted subtext p-0"><small>Forgot your password?</small></a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<?php require(__DIR__ . "/../partials/footer.phtml"); ?>

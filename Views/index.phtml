@@ -1,0 +1,66 @@
+<?php require("partials/header.phtml") ?>
+
+<!-- Display landing page if the user is not logged in -->
+<!-- If the user is logged in then display posts??? redirect?? do something -->
+<div id="land" class="landing-contain m-0 px-0">
+    <div class="landing row">
+        <div class="col-lg-8 px-0 h-image">
+            <div class="hero">
+                <div class="hero-body d-flex flex-column align-items-left">
+                    <h1 class="hero-title">Welcome To U-Game</h1>
+                    <p class="hero-subtitle">A new era of game-based project sharing.</p>
+                    <a href="users/create.php#signup-page" class="mt-auto hero-action dark-button"><i class="fas fa-caret-right mr-2"></i>Share My Games</a>
+                    <div class="subtext-contain">
+                        <p class="hero-subtext">Get started up in one single click.</p>
+                        <img class="arrow" src="img/arrow.svg" alt="arrow pointing to signup button">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 px-0">
+            <div id="roadmap" class="row mh">
+                <div id="roadmap-container">
+                    <h2 class="heading">Roadmap</h2>
+                    <div class="road-row">
+                        <span class="date">October 2019</span>
+                        <p>- uGame plans to release a live
+                            version of the website</p>
+                    </div>
+                    <div class="road-row">
+                        <span class="date">December 2019</span>
+                        <p>-  A desktop based app design will
+                            reach its alpha stage for users</p>
+                    </div>
+                    <div class="road-row">
+                        <span class="date">February 2020</span>
+                        <p>- The beta start of a advertising system
+                            will be tested for users and their games</p>
+                    </div>
+                </div>
+            </div>
+            <div id="how-it-works" class="row mh">
+                <div id="hiw-container">
+                    <h2 class="heading">How it Works</h2>
+                    <p>U-GAME is a website about sharing games all over the world. From real working projects and prototypes to simple designs and ideas can be shared at any time.</p>
+                    <p>Users can post, comment and discuss upcoming games made by anyone as well as follow users and games they particularly like.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Container End-->
+
+<?php require("partials/footer.phtml") ?>
+
+<div class="hidden">
+    <script>
+        $(document).ready(function () {
+            // Handler for .ready() called.
+            $('html, body').animate({
+                scrollTop: $('#land').offset().top
+            }, 1000);
+        });
+    </script>
+</div>
+
+

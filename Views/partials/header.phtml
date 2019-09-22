@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Meta -->
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="author" content="Nathan Bamford">
+
+    <!-- Favicon & Title -->
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <title><?php echo $view->title; ?></title>
+
+    <!-- Font & Styles -->
+    <script src="https://kit.fontawesome.com/8aa396f8e9.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/styles.css" type="text/css">
+</head>
+<body>
+
+<nav class="navbar <?php if(strcmp($view->page, "index")) echo "navbar-expand-lg" ?> navbar-light shadow mb-4">
+    <div class="container my-auto">
+        <a class="navbar-brand mr-5" href="../index.php"><img src="../img/UGAMELOGO1.svg" alt="u-game logo"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle-Navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-between" id="navbarToggler" aria-expanded="false">
+            <div class="navbar-nav my-sm-3">
+                <a href="../page1.php" class="nav-item nav-link<?php if(!strcmp($view->page, "page1")) echo " active"; ?>">Page1</a>
+                <a href="#" class="nav-item nav-link<?php if(!strcmp($view->page, "page2")) echo " active"; ?>">Page2</a>
+                <a href="#" class="nav-item nav-link<?php if(!strcmp($view->page, "page3")) echo " active"; ?>">Page3</a>
+            </div>
+            <div class="search">
+                <form action="" class="d-flex justify-content-center align-items-center">
+                    <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-secondary search-button" type="submit"><i class="fas fa-search"></i></button>
+                </form>
+            </div>
+            <?php if($view->user == true) : ?>
+                <!-- USER LOGGED IN -->
+                <div class="user d-inline">
+                    <div class="text-center">
+                        <a href="#" class="m-0 username text-body" data-toggle="tooltip" data-placement="bottom" title="Profile">Banoulka</a>
+                    </div>
+                    <a class="btn toolover <?php if($view->page == "create-post") echo "active"; ?>" href="posts/create.php" data-toggle="tooltip" data-placement="bottom" title="Create New Post"><i class="fas fa-edit"></i></a>
+                    <div class="notify-drop d-inline-block" data-placement="bottom" title="Notifications">
+                        <?php require("notifications.phtml") ?>
+                    </div>
+                </div>
+            <?php else : ?>
+                <!-- USER NOT LOGGED IN -->
+                <div class="login d-inline">
+                    <a href="../users/create.php" class="btn prim-btn my-3 mx-1" style="border-radius: 12px">Sign Up<i class="fas fa-user-plus ml-2"></i></a>
+                    <a href="../users/login.php" class="btn btn-outline-secondary my-3 mx-1" style="border-radius: 12px">Login<i class="fas fa-sign-in-alt ml-2"></i></a>
+                </div>
+            <?php endif ?>
+        </div>
+    </div>
+</nav>

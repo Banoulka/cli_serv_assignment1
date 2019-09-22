@@ -1,0 +1,849 @@
+/*breakpoint-xs: 0;*/
+/*breakpoint-sm: 576px;*/
+/*breakpoint-md: 768px;*/
+/*breakpoint-lg: 992px;*/
+/*breakpoint-xl: 1200px;*/
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800&display=swap');
+
+:root {
+    --primary: #278fe3;
+    --light: #74b9ff;
+    --dark: #086dbb;
+
+    --dgray: #2f4b5e;
+
+    --dark-text: #343434;
+    --dark-blue-text: #1A407A;
+
+    --lgray-border: #cbcbcb;
+
+    --dark-button: #242729;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Montserrat", sans-serif !important;
+    font-size: 20px;
+    background-color: #F3F3F3;
+    max-width: 2100px;
+    margin: auto !important;
+}
+
+.container {
+    margin-bottom: 50px;
+    margin-top: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Navbar */
+
+.navbar {
+    font-size: 1.35rem;
+    z-index: 500;
+    font-weight: 300;
+    margin-bottom: 0 !important;
+    background-color: white;
+}
+
+.navbar-expand-lg .nav-item:link, .nav-item:visited {
+    margin: 0 5px;
+    border-bottom: 1px solid transparent;
+    transition: color 0.1s, border-bottom 0.1s;
+}
+
+.navbar-expand-lg .nav-item:hover, .nav-item.active {
+    color: var(--primary) !important;
+    border-bottom: 1px solid var(--primary);
+}
+
+.navbar-collapse.show .nav-item:link, .nav-item:visited {
+    border-bottom: none;
+}
+
+.navbar-collapse.show .nav-item:hover, .nav-item.active {
+    border-bottom: none;
+}
+
+.navbar-brand > img {
+    width: 85px;
+    height: auto;
+    transition: 0.1s padding, 0.1s border, 0.1s margin;
+    border-radius: 1200px;
+    box-shadow: 5px 3px 20px rgba(0, 0, 0, 0.1);
+    background-color: transparent;
+    margin: 2px;
+}
+
+.navbar-brand > img:hover {
+    padding: 1px;
+}
+
+.navbar .navbar-collapse {
+    text-align: center;
+}
+
+.prim-btn {
+    background-color: var(--primary);
+    color: white !important;
+}
+
+.prim-btn:hover {
+    background-color: var(--dark);
+}
+
+.search .search-button {
+    border-radius: 0 5px 5px 0;
+    border-left: none;
+}
+
+.search form input {
+    border-radius: 5px 0 0 5px;
+    border-right: none;
+}
+
+.navbar-collapse .search form {
+    width: 40% !important;
+    min-width: 300px;
+    margin: auto;
+}
+
+.search form input:focus {
+    box-shadow: 0 0 2px 1px var(--primary);
+}
+
+/* User area */
+
+.user .btn {
+    font-size: 1.5rem;
+}
+
+.user .btn:hover {
+    color: var(--primary);
+}
+
+.username {
+    border-bottom: 1px solid gray;
+    padding-bottom: 4px;
+    font-size: 1.5rem;
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-decoration: none;
+    transition: color 0.1s;
+}
+
+.username:hover {
+    color: var(--primary) !important;
+    text-decoration: none;
+}
+
+.btn {
+    box-shadow: none !important;
+}
+
+.user a {
+    cursor: pointer;
+}
+
+/* Notification overlay */
+
+.notif-col {
+    z-index: 10;
+    overflow: visible;
+    right: 14em;
+    width: 0;
+    height: 0;
+    position: relative;
+    display: none;
+}
+
+.notify-drop > .active {
+    color: var(--dark) !important;
+}
+
+.notify-drop > a {
+    position: relative;
+}
+
+.notify-drop .badge {
+    position: absolute;
+    top: 6px;
+    left: 28px;
+    border-radius: 150px;
+    font-size: 0.85rem;
+}
+
+.notif-overlay {
+    width: 350px !important;
+    max-width: 350px !important;
+    max-height: 500px;
+}
+
+.popover {
+    box-shadow: 10px 5px 15px #dcdcdc;
+    font-family: "Montserrat", sans-serif !important;
+}
+
+.popover-header * {
+    margin: 0;
+    padding: 1% 0;
+    display: inline;
+}
+
+.popover-header a {
+    color: var(--primary) !important;
+    transition: 0.1s color;
+    text-decoration: none;
+}
+
+.popover-header a:hover {
+    color: var(--dark) !important;
+}
+
+.popover-body {
+    overflow-y: scroll;
+    margin-right: 3px;
+    padding: 0;
+}
+
+.popover-body p {
+    margin: 15px 0;
+}
+
+.popover .arrow {
+    left: 312px;
+}
+
+@media (max-width: 992px) {
+    .popover .arrow {
+        left: 138px;
+    }
+}
+
+.popover .arrow:after {
+    border-bottom-color: #f7f7f7;
+}
+
+/* Custom popover body scrollbar */
+
+.popover-body::-webkit-scrollbar {
+    width: 5px;
+}
+
+.popover-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.popover-body::-webkit-scrollbar-thumb {
+    background: rgba(136, 136, 136, 0.6);
+    border-radius: 100px;
+}
+
+.popover-body::-webkit-scrollbar-thumb:hover {
+    background: rgba(85, 85, 85, 0.6);
+}
+
+/* ======== */
+
+/* Actual notifications */
+
+.notification {
+    position: relative;
+    border-bottom: 1px solid #e1e1e1;
+    /*margin-bottom: 10px;*/
+    padding: 12px 0 12px 10px;
+    cursor: pointer;
+    transition: 0.1s background-color;
+}
+
+.notification:hover {
+    background-color: #ebebeb !important;
+}
+
+.notification p {
+    width: 200px;
+}
+
+.notif-profile-pic {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    margin-right: 20px;
+}
+
+.notif-profile-name {
+    font-weight: bold;
+}
+
+.notification-unread {
+    background-color: rgba(21, 19, 96, 0.1);
+    border-bottom: 1px dotted rgba(255, 157, 58, 0.7);
+}
+
+/*.notification:last-child {*/
+/*    border: none;*/
+/*}*/
+
+.notification .fas {
+    z-index: 20;
+    margin-left: 15px;
+    font-size: 1.2rem;
+}
+
+.notification .fa-thumbs-up {
+    color: #6c5ce7 !important;
+}
+
+.notification .fa-comment-dots {
+    color: #00b894 !important;
+}
+
+.notification .fa-eye {
+    color:  #d63031 !important;
+}
+
+.notification .fa-rss {
+    color: #e17055 !important;
+}
+
+.notification .fa-user-friends {
+    color: #0984e3 !important;
+}
+
+@media (max-width: 992px) {
+    .search {
+        padding: 0 15%;
+    }
+
+    .notif-col {
+        right: 8rem;
+    }
+
+    .popover .arrow {
+        padding-right: 210px;
+    }
+}
+
+/* Footer */
+
+footer {
+    width:100%;
+    color: white !important;
+    text-align: center;
+    min-height: 200px;
+    margin: auto;
+    display: block;
+    /*position: absolute;*/
+    /*max-width: 2100px;*/
+    /*right: 0;*/
+    /*bottom: 0;*/
+    /*left: 0;*/
+}
+
+@media (max-width: 992px) {
+    /*footer {*/
+    /*    position: relative;*/
+    /*}*/
+}
+
+footer .banner {
+    overflow: visible;
+    width: 100%;
+    height: 200px;
+    background-color: rgba(128, 180, 226, 0.5);
+}
+
+footer .image {
+    position: relative;
+    top: -40px;
+    overflow: hidden;
+    z-index: 200;
+    width: 100%;
+    height: 120%;
+    background-image: url("../img/ubanner2.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+@media (max-width: 770px) {
+    footer .image {
+        width: 170%;
+        right: 70%;
+    }
+}
+
+footer * {
+    margin: 0;
+}
+
+footer .footer-addon {
+    justify-self: end;
+    height: 50px;
+    width: 100%;
+    background-color: var(--primary);
+    font-weight: 300;
+    font-size: small;
+    position: relative;
+    z-index: 300;
+}
+
+footer .footer-addon * {
+    margin: 0;
+}
+
+footer .footer-addon a {
+    color: white !important;
+    text-decoration: none;
+    transition: 0.05s color;
+}
+
+footer .footer-addon a:hover {
+    color: var(--dgray) !important;
+}
+
+.info > a {
+    padding: 0 10px;
+    border-right: 1px solid white;
+}
+
+.info > a:last-child {
+    border-right: none;
+}
+
+.chat-button-contain {
+    z-index: 400;
+    position: relative;
+    display: inline;
+}
+
+.chat-button {
+    position: absolute;
+    margin: 0;
+    left: 78%;
+    top: -29px;
+    background-color: white;
+    width: 120px;
+    height: 30px;
+    border: 1px solid var(--lgray-border);
+    border-radius: 6px 6px 0 0;
+    padding: 10px;
+    text-decoration: none !important;
+}
+
+.chat-button:hover span{
+    color: var(--dark) !important;
+}
+
+.chat-button span {
+    transition: 0.1s color;
+    position: relative;
+    bottom: 12px;
+    right: 24px;
+    font-size: 1rem;
+    color: var(--dark-text);
+}
+
+@media (max-width: 875px) {
+    .chat-button {
+        display: none;
+    }
+}
+
+/* Signup Page */
+
+.signup-container {
+    padding: 25px 0;
+    min-height: 100vh;
+    max-height: 800px;
+    background-image: url("../img/keyboard-background.jpg");
+    background-size: cover;
+    font-size: 16px;
+    position: relative;
+    z-index: 10;
+}
+
+#signup, #login {
+    display: none;
+}
+
+#sign-to-login, #login-to-sign {
+    cursor: pointer;
+    transition: 0.1s color;
+    color: var(--primary) !important;
+}
+
+#sign-to-login:hover, #login-to-sign:hover {
+    color: var(--dark) !important;
+}
+
+.signup-box {
+    text-align: center;
+    padding: 20px;
+    max-height: 100%;
+    border: 1px solid rgba(155, 155, 155, 0.50);
+    border-radius: 10px;
+    min-width: 300px;
+    box-shadow: 15px 8px 30px rgba(0, 0, 0, 0.8);
+    /*background-color: rgba(83, 119, 189, 0.3);*/
+    background-color: rgba(255, 255, 255, 0.75);
+    color: #2a2a2a !important;
+}
+
+.signup-box label {
+    text-align: left;
+}
+
+.signup-box input:focus::placeholder{
+    color: #acacac !important;
+}
+
+.signup-box .form-group {
+    margin-bottom: 0.8rem;
+}
+
+.subtext {
+    color: #414556 !important;
+    padding-top: 10px;
+    font-size: 1rem;
+}
+
+.subtext a {
+    text-decoration: none;
+    transition: 0.1s color;
+}
+
+/* Signup Form */
+
+.submit-area {
+    /*height: 30%;*/
+    margin-top: 30px;
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid #ced4da;
+    padding: 15px 0;
+    border-radius: 0 0 10px 10px;
+    text-align: center;
+}
+
+.submit-area * {
+    margin: 0;
+}
+
+/* Landing Page */
+
+.landing-contain {
+    /*padding-bottom: 44px;*/
+    min-height: 100%;
+}
+
+.landing {
+    min-height: 700px;
+}
+
+.landing.row {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+#how-it-works,
+#roadmap {
+    margin: 0;
+    min-height: 50%;
+    width: 100%;
+    background-color: white;
+}
+
+.landing .hero {
+    width: 100%;
+    height: 100%;
+    background: url("../img/hero-image.svg") no-repeat top center;
+    background-size: cover;
+}
+
+@media (min-width: 1300px) {
+    .landing .hero {
+        background-position-y: -4vw;
+    }
+}
+
+@media (min-width: 1490px) {
+    .landing .hero {
+        background-position-y: -8vw;
+    }
+
+    #hiw-container {
+        padding-top: 5em !important;
+    }
+}
+
+@media (min-width: 1900px) {
+    .landing .hero {
+        background-position-y: -11vw;
+    }
+
+    .road-row {
+        margin-bottom: 40px !important;
+    }
+
+    #hiw-container {
+        padding-top: 6em !important;
+    }
+
+    .hero-subtext {
+        /*display: none;*/
+    }
+}
+
+@media (max-width: 992px) {
+
+    #how-it-works {
+        background-image: none !important;
+        background-color: #086dbb;
+    }
+
+    #hiw-container, #roadmap-container {
+        margin: auto 2em;
+        padding: 1.2em !important;
+    }
+
+    #roadmap {
+        padding-bottom: 5em;
+        background-position-x: 125px !important;
+    }
+
+    #roadmap-container .heading {
+        margin-bottom: 0.4em;
+    }
+
+    .h-image {
+        height: 100vh;
+        min-height: 850px;
+    }
+}
+
+@media (max-width: 662px) {
+    .mh {
+        min-height: 300px !important;
+    }
+}
+
+/* Hero Background */
+
+.hero-body {
+    height: 100%;
+    padding: 2.5em 2.5em 6em;
+}
+
+.hero-title {
+    text-transform: uppercase;
+    font-size: 3rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.hero-subtitle {
+    font-size: 1.5rem;
+}
+
+.hero-action {
+    width: 240px;
+    min-height: 50px;
+    text-transform: uppercase;
+}
+
+.hero-subtext {
+    position: absolute;
+    left: 350px;
+    top: -25px;
+    font-weight: 300;
+    font-size: 1.2rem;
+    color: rgba(45, 45, 45, 0.71) !important;
+}
+
+.arrow {
+    position: absolute;
+    left: 180px;
+    top: 20px;
+}
+
+.subtext-contain {
+    position: relative;
+}
+
+.dark-button {
+    background-color: var(--dark-button);
+    color: white !important;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none !important;
+    transition: 0.1s color, 0.1s background-color;
+    font-weight: bold;
+}
+
+.dark-button:hover {
+    color: #e2e2e2 !important;
+    background-color: #151719;
+}
+
+@media (max-width: 626px) {
+    .hero-subtext {
+        left: 300px;
+        top: -40px;
+    }
+}
+
+@media (max-width: 626px) {
+    .hero-body {
+        padding-bottom: 4em;
+    }
+
+    .hero-subtext {
+        left: 0;
+        top: -100px;
+    }
+
+    .arrow {
+        display: none;
+    }
+}
+
+/* Roadmap */
+
+#roadmap {
+    display: flex;
+    text-align: right;
+    height: 50%;
+    background-image: url("../img/roadmap-background.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position-x: 85px;
+    background-position-y: 20px;
+}
+
+#roadmap-container {
+    height: 100%;
+    width: 100%;
+    padding: 1.2em 2rem 0;
+}
+
+.road-row {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    font-weight: 300;
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.road-row p {
+    display: inline;
+    margin: 0;
+}
+
+.road-row .date {
+    display: inline;
+    color: #0376a8 !important;
+    text-align: left;
+    background-color: white;
+}
+
+.heading {
+    font-size: 2rem;
+    font-weight: 500;
+    margin-bottom: 0.8em;
+    text-transform: capitalize;
+}
+
+/* Roadmap */
+
+#how-it-works {
+    height: 50%;
+    text-align: left;
+    background-image: url("../img/how-it-works-background.svg");
+    background-size: cover;
+}
+
+#hiw-container {
+    height: 100%;
+    width: 100%;
+    padding: 3.2em 1.2em 1.2em 1.2em;
+    color: white !important;
+}
+
+#hiw-container p {
+    font-weight: 300;
+    font-size: 1rem;
+}
+
+#hiw-container h2 {
+    margin-bottom: 0.4em;
+}
+
+/* Create new post page */
+
+.active {
+    color: var(--dark) !important;
+}
+
+.title {
+    font-weight: 600;
+    margin: 0;
+    text-transform: capitalize;
+    color: var(--dark-blue-text);
+}
+
+.section {
+    padding: 1.5em 2em;
+}
+
+.new-post {
+    display: block;
+    width: 100%;
+}
+
+.new-post input::placeholder, .new-post textarea::placeholder {
+    font-size: 0.8rem;
+}
+
+.new-post #description {
+    min-height: 50px;
+    max-height: 100px;
+}
+
+.new-post #content {
+    min-height: 150px;
+    max-height: 300px;
+}
+
+.new-post .chars {
+    font-size: 0.9rem;
+    color: rgba(42, 42, 42, 0.5);
+}
+
+.red {
+    color: red !important;
+}
+
+.dprim-btn {
+
+}
+
+.dprim-btn-outline {
+
+}
+
+

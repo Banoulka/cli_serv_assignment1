@@ -1,0 +1,40 @@
+<?php require(__DIR__ . "/../partials/header.phtml") ?>
+
+<div class="container section">
+    <h1 class="title">Create new post</h1>
+    <p class="subtext mb-5">Fields marked in * are optional</p>
+    <form class="new-post" action="#" method="POST">
+        <div class="row justify-content-around">
+            <div class="col-md-7">
+                <div class="form-group row align-items-center justify-content-between">
+                    <label for="title" class="col-md-3 col-form-label align-self-start py-0">Title:</label>
+                    <div class="col-md-8">
+                        <input class="form-control" type="text" name="title" id="title" placeholder="What do you want your game to be called?" maxlength="20" autocomplete="off">
+                        <p class="chars text-right m-0 pt-1">Character Limit: <span id="title-chars">20</span> Chars</p>
+                    </div>
+                </div>
+
+                <div class="form-group row align-items-center justify-content-between">
+                    <label for="description" class="col-md-3 col-form-label align-self-start py-0">Description:</label>
+                    <div class="col-md-8">
+                        <textarea class="form-control" name="desc" id="description" placeholder="Enter a short description about your game" maxlength="270"></textarea>
+                        <p class="chars text-right m-0 pt-1">Character Limit: <span id="description-chars">270</span> Chars</p>
+                    </div>
+                </div>
+
+                <div class="form-group row align-items-center justify-content-between">
+                    <div class="col">
+                        <textarea class="form-control" name="body" id="content" placeholder="This will be the main paragraph for your game post" maxlength="1500"></textarea>
+                        <p class="chars text-right m-0 pt-1">Character Limit: <span id="content-chars">1500</span> Chars</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <p>yo</p>
+            </div>
+        </div>
+    </form>
+</div>
+
+<?php require(__DIR__ . "/../partials/footer.phtml") ?>
+
