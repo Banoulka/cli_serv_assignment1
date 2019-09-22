@@ -1,4 +1,55 @@
 $(document).ready(function(){
+
+    setupNotificationEvents();
+    setupCharLimiters();
+    setupTagPicker();
+});
+
+
+
+function setupCharLimiters() {
+    $("#title").keyup((e) => {
+        checkLength("title", 20);
+    });
+
+    $("#description").keyup((e) => {
+        checkLength("description", 270);
+    });
+
+    $("#content").keyup((e) => {
+        checkLength("content", 1500);
+    });
+
+    function checkLength(id, number) {
+        // Get the length of the input and the "chars" span number
+        let input = $("#" + id);
+        let length = input[0].value.length;
+        let chars = $("#" + id + "-chars")[0];
+
+        // Make the number text equal to the number - the length of the input
+        chars.innerHTML = number - length;
+
+        // Find the full p tag after the id
+        let tag = $("#" + id + " + .chars");
+
+        // If the length is the max amount then add the red class
+        if(length > number && !tag.hasClass("red")) {
+            tag.addClass("red");
+            input.removeClass("is-valid");
+            input.addClass("is-invalid");
+        } else if (length === 0 ) {
+            tag.removeClass("red");
+            input.removeClass("is-invalid");
+            input.removeClass("is-valid");
+        } else if (length <= number) {
+            tag.removeClass("red");
+            input.removeClass("is-invalid");
+            input.addClass("is-valid");
+        }
+    }
+}
+
+function setupNotificationEvents() {
     let notifButton = $(".notify-drop");
     let notifBox = $("#notif-col");
     let adShown = false;
@@ -84,36 +135,48 @@ $(document).ready(function(){
             $("#signup").slideDown();
         });
     });
+}
 
-    $("#title").keyup((e) => {
-        checkLength("title", 20);
+function setupTagPicker() {
+    // <div class="picked-option"><span>Action</span><i class="fas fa-minus"></i></div>
+    let tagSelector = $("#tags");
+    let tagLimitChar = $("#tag-limits");
+    let canSelect = true;
+    let tags = [];
+
+    tagSelector.change((e) => {
+        e.preventDefault();
+        // Get the tag value
+       let tag = tagSelector.val();
+        // If tag isnt the default option and tag doesn't already exist in array
+       if(tag !== "Select a tag" && tags.indexOf(tag) === -1) {
+            // Add a new div with the value tag and the label tag.
+           $("#tag-list").append("<div id=\"" + tag + "\" class=\"picked-option\"><span>" + tag + "</span><i id=\"" + tag + "-tag\" class=\"fas fa-minus minus-tag\"></i></div>");
+           // Add to the array of tags
+           tags.push(tag);
+
+           // Add the event to remove on the little minus click
+           $("#" + tag + "-tag").click((e) => {
+               $("#" + tag).remove();
+               tags.splice( tags.indexOf(tag), 1);
+               checkTag();
+           });
+            checkTag();
+       }
+        tagSelector.val("Select a tag");
     });
 
-    $("#description").keyup((e) => {
-        checkLength("description", 270);
-    });
-
-    $("#content").keyup((e) => {
-        checkLength("content", 1500);
-    });
-
-});
-
-function checkLength(id, number) {
-    // Get the length of the input and the "chars" span number
-    let length = $("#" + id)[0].value.length;
-    let chars = $("#" + id + "-chars")[0];
-
-    // Make the number text equal to the number - the length of the input
-    chars.innerHTML = number - length;
-
-    // Find the full p tag after the id
-    let tag = $("#" + id + " + .chars");
-
-    // If the length is the max amount then add the red class
-    if(length === number && !tag.hasClass("red")) {
-        tag.addClass("red");
-    } else if (length !== number) {
-        tag.removeClass("red");
+    function checkTag() {
+        let tagLimitP = $("#tag-limit-p");
+        if(tags.length === 4) {
+            tagSelector.attr("disabled", true);
+            canSelect = false;
+            tagLimitP.addClass("red");
+        } else if(tags.length < 4 && canSelect === false ) {
+            tagSelector.attr("disabled", false);
+            canSelect = true;
+            tagLimitP.removeClass("red");
+        }
+        tagLimitChar[0].innerHTML = 4 - tags.length;
     }
 }

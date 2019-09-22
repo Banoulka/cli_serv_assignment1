@@ -19,6 +19,7 @@
     --lgray-border: #cbcbcb;
 
     --dark-button: #242729;
+    --dark-blue-button: #1A407A;
 }
 
 * {
@@ -844,6 +845,87 @@ footer .footer-addon a:hover {
 
 .dprim-btn-outline {
 
+}
+
+.blue-helper {
+    font-size: 0.8rem;
+    line-height: 20px;
+    margin: 0;
+    color: rgba(26, 64, 122, 0.66) !important;
+    display: inline-block;
+}
+
+.file-input {
+    font-size: 1rem;
+}
+
+.file-input {
+    border: 0;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute !important;
+    width: 1px;
+}
+
+.file-label {
+    background-color: white;
+    font-weight: 500;
+    font-size: 0.9rem;
+    border-radius: 0.5rem;
+    color: black;
+    cursor: pointer;
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    transition: 0.3s all;
+}
+
+.file-label:hover, .file-input:focus .file-label {
+    background-color: var(--dark-button);
+    color: white;
+}
+
+.file-help {
+    cursor: default;
+    font-size: 0.8rem;
+    height: auto;
+    display: inline-block;
+}
+
+.custom-select .default-tag{
+    font-size: 0.8rem;
+    color: inherit !important;
+}
+
+.custom-select option {
+    color: var(--dark-blue-text) !important;
+}
+
+.picked-option {
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    vertical-align: middle;
+    border: 1px solid rgba(106, 111, 128, 0.36);
+    border-radius: 3px;
+    padding: 0.3em 0.8em;
+    font-size: 1rem;
+    color: var(--dark-blue-text) !important;
+    margin-bottom: 10px;
+}
+
+.picked-option .minus-tag {
+    margin-left: auto;
+    color: #971010;
+    transition: 0.2s all;
+}
+
+.picked-option .minus-tag:hover {
+    cursor: pointer;
+    color: #e51111;
 }
 
 

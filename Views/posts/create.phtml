@@ -7,30 +7,64 @@
         <div class="row justify-content-around">
             <div class="col-md-7">
                 <div class="form-group row align-items-center justify-content-between">
-                    <label for="title" class="col-md-3 col-form-label align-self-start py-0">Title:</label>
+                    <label for="title" class="col-md-4 col-form-label align-self-start py-0">Title:</label>
                     <div class="col-md-8">
-                        <input class="form-control" type="text" name="title" id="title" placeholder="What do you want your game to be called?" maxlength="20" autocomplete="off">
+                        <input class="form-control" type="text" name="title" id="title" placeholder="What do you want your game to be called?" autocomplete="off">
                         <p class="chars text-right m-0 pt-1">Character Limit: <span id="title-chars">20</span> Chars</p>
                     </div>
                 </div>
 
                 <div class="form-group row align-items-center justify-content-between">
-                    <label for="description" class="col-md-3 col-form-label align-self-start py-0">Description:</label>
+                    <label for="description" class="col-md-4 col-form-label align-self-start py-0">Description:</label>
                     <div class="col-md-8">
-                        <textarea class="form-control" name="desc" id="description" placeholder="Enter a short description about your game" maxlength="270"></textarea>
+                        <textarea class="form-control" name="desc" id="description" placeholder="Enter a short description about your game"></textarea>
                         <p class="chars text-right m-0 pt-1">Character Limit: <span id="description-chars">270</span> Chars</p>
                     </div>
                 </div>
 
                 <div class="form-group row align-items-center justify-content-between">
                     <div class="col">
-                        <textarea class="form-control" name="body" id="content" placeholder="This will be the main paragraph for your game post" maxlength="1500"></textarea>
+                        <textarea class="form-control" name="body" id="content" placeholder="This will be the main paragraph for your game post" ></textarea>
                         <p class="chars text-right m-0 pt-1">Character Limit: <span id="content-chars">1500</span> Chars</p>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <p>yo</p>
+            <div class="col-md-5">
+                <div class="form-group row align-items-center justify-content-between">
+                    <label for="cover-image" class="col-md-5 col-form-label align-self-start py-0">Cover Image:<br><span class="blue-helper">This will only be viewable to logged in users</span></label>
+                    <div class="col-md-7">
+                        <p class="form-control file-help">Upload a cover image.</p>
+                        <input type="file" class="file-input" name="cover-image" id="cover-image">
+                        <label for="cover-image" class="file-label">Choose File</label>
+                    </div>
+                </div>
+
+                <div class="form-group row align-items-center justify-content-between">
+                    <label for="tags" class="col-md-5 col-form-label align-self-start py-0">Tags:</label>
+                    <div class="col-md-7">
+                        <div id="tag-list"></div>
+                        <select class="custom-select" name="tags" id="tags">
+                            <option selected class="default-tag">Select a tag</option>
+                            <?php for($i = 0; $i < count($view->tags); $i++) : ?>
+                                <option value="<?php echo $view->tags[$i];?>"><?php echo $view->tags[$i];?></option>
+                                <?php echo "for"; ?>
+                            <?php endfor; ?>
+                        </select>
+                        <p class="chars text-right m-0 pt-1" id="tag-limit-p">Tag Limit: <span id="tag-limits">4</span> tags</p>
+                    </div>
+                </div>
+
+                <div class="form-group row align-items-center justify-content-between">
+                    <label for="game-state" class="col-md-5 col-form-label align-self-start py-0">Game State:</label>
+                    <div class="col-md-7">
+                        <select class="custom-select" name="game-state" id="game-state">
+                            <option value="Alpha" class="" selected>Alpha</option>
+                            <option value="Beta" class="" selected>Beta</option>
+                            <option value="Released" class="" selected>Released</option>
+                            <option value="Concept" class="" selected>Concept</option>
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
     </form>
