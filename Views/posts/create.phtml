@@ -24,14 +24,16 @@
 
                 <div class="form-group row align-items-center justify-content-between">
                     <div class="col">
+                        <label for="content">Main Body:</label>
                         <textarea class="form-control" name="body" id="content" placeholder="This will be the main paragraph for your game post" ></textarea>
                         <p class="chars text-right m-0 pt-1">Character Limit: <span id="content-chars">1500</span> Chars</p>
                     </div>
                 </div>
+
             </div>
             <div class="col-md-5">
                 <div class="form-group row align-items-center justify-content-between">
-                    <label for="cover-image" class="col-md-5 col-form-label align-self-start py-0">Cover Image:<br><span class="blue-helper">This will only be viewable to logged in users</span></label>
+                    <label for="cover-image" class="col-md-5 col-form-label align-self-start py-0 optional">Cover Image:<br><span class="blue-helper">This will only be viewable to logged in users</span></label>
                     <div class="col-md-7">
                         <p class="form-control file-help">Upload a cover image.</p>
                         <input type="file" class="file-input" name="cover-image" id="cover-image">
@@ -40,7 +42,7 @@
                 </div>
 
                 <div class="form-group row align-items-center justify-content-between">
-                    <label for="tags" class="col-md-5 col-form-label align-self-start py-0">Tags:</label>
+                    <label for="tags" class="col-md-5 col-form-label align-self-start py-0 optional">Tags:<br><span class="blue-helper">Tags help your game stand out.</span></label>
                     <div class="col-md-7">
                         <div id="tag-list"></div>
                         <select class="custom-select" name="tags" id="tags">
@@ -63,6 +65,13 @@
                             <option value="Released" class="" selected>Released</option>
                             <option value="Concept" class="" selected>Concept</option>
                         </select>
+                    </div>
+                </div>
+
+                <div class="form-group row align-items-center justify-content-between mt-5 pt-5">
+                    <div class="col">
+                        <button type="submit" name="submit" class="dprim-btn dprim-btn-filled" value="Create Post">Create Post</button>
+                        <a href="../posts/create.php" class="dprim-btn dprim-btn-outline">Reset</a>
                     </div>
                 </div>
             </div>

@@ -5,8 +5,6 @@ $(document).ready(function(){
     setupTagPicker();
 });
 
-
-
 function setupCharLimiters() {
     $("#title").keyup((e) => {
         checkLength("title", 20);
