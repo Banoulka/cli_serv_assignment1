@@ -1,17 +1,17 @@
 <?php require("partials/header.phtml") ?>
-<div class="container">
-    <h1 class="text-danger">Welcome to page 1</h1>
-    <h1>Welcome to page 1</h1>
-    <h1>Welcome to page 1</h1>
-    <h1>Welcome to page 1</h1>
-    <h1>Welcome to page 1</h1>
-    <h1>Welcome to page 1</h1>
-    <h1>Welcome to page 1</h1>
-    <h1>Welcome to page 1</h1>
-    <h1>Welcome to page 1</h1>
-    <h1>Welcome to page 1</h1>
-    <h1>Welcome to page 1</h1>
-    <h1>Welcome to page 1</h1>
+<div class="container section">
+    <div class="row">
+        <div class="col-lg-8">
+            <h1 class="title">Trending Now<i class="fas fa-caret-down ml-5"></i></h1>
+            <label class="minified-label">
+                <input type="checkbox" class="minified-input">
+                <span class="minified-checkbox"></span><span>Minified View?</span>
+            </label>
+        </div>
+        <div class="col-lg-4 d-none d-lg-block">
+            <?php require("partials/watchlist-sidebar.phtml") ?>
+        </div>
+    </div>
 </div> <!-- Container end -->
 
 <?php require("partials/footer.phtml") ?>

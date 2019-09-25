@@ -21,6 +21,11 @@
     --dark-button: #242729;
     --dark-blue-button: #1A407A;
     --dark-blue-button-hover: #12224d;
+
+    --alpha-colour: #0C6D13;
+    --beta-colour: #8064DC;
+    --concept-colour: #FF5E00;
+    --released-colour: #953E3E;
 }
 
 * {
@@ -35,7 +40,7 @@ html {
 
 body {
     font-family: "Montserrat", sans-serif !important;
-    font-size: 20px;
+    font-size: 18px;
     background-color: #F3F3F3;
     max-width: 2100px;
     margin: auto !important;
@@ -968,4 +973,158 @@ footer .footer-addon a:hover {
     color: #e51111;
 }
 
+/* Games Page */
+
+.main-heading {
+    color: var(--dark-blue-text);
+    font-size: 2rem;
+}
+
+.minified-label {
+    position: relative;
+    margin: 10px 0;
+    padding-left: 50px;
+    cursor: pointer;
+}
+
+.minified-label input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.minified-checkbox {
+    position: absolute;
+    top: 3px;
+    left: 18px;
+    height: 22px;
+    width: 22px;
+}
+
+.minified-label input ~ .minified-checkbox {
+    background-color: var(--dark-blue-button);
+}
+
+.minified-label input:checked ~ .minified-checkbox {
+    /*background-color: #2196F3;*/
+}
+
+.minified-checkbox:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.minified-label input:checked ~ .minified-checkbox:after {
+    display: block;
+}
+
+.minified-label .minified-checkbox:after {
+    left: 8px;
+    top: 2px;
+    width: 7px;
+    height: 15px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+/* Sidebar watchlist */
+
+.watchlist-sidebar {
+    border-radius: 10px;
+    border: 1px solid #CBCBCB;
+    background-color: #EBEBEB;
+}
+
+.watchlist-sidebar-head-container {
+    padding: 20px 30px;
+    border-radius: 10px 10px 0 0;
+    background-color: white;
+    color: var(--dark-text) !important;
+}
+
+.watchlist-sidebar-body-container {
+    padding: 30px 0;
+    min-height: 200px;
+}
+
+.watchlist-sidebar-item-body {
+    padding: 5px 0 0 10px;
+    height: inherit;
+    width: 75%;
+    background-color: white;
+    transition: 0.2s background-color;
+}
+
+.watchlist-sidebar-item {
+    width: 350px;
+    height: 65px;
+    display: flex;
+}
+
+.watchlist-sidebar-item h4 {
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.watchlist-sidebar-item-detail-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    width: auto;
+    height: 40%;
+}
+
+.watchlist-item-author {
+    display: inline;
+    margin: 0 auto 0 0;
+    padding: 0;
+    font-size: 0.8rem;
+    color: #9A9A9A !important;
+    font-weight: 300;
+}
+
+.icon-count {
+    font-weight: 300;
+    font-size: 0.9rem;
+    margin-right: 8px;
+}
+
+.icon-count i {
+    margin-right: 2px;
+}
+
+.watchlist-link {
+    text-decoration: none !important;
+    color: inherit !important;
+}
+
+.watchlist-link:hover .watchlist-sidebar-item-body {
+    background-color: #e2ebff;
+}
+
+.watchlist-sidebar-item-colour {
+    height: inherit;
+    width: 10%;
+    border-radius: 0 18px 18px 0;
+}
+
+.watchlist-item-alpha {background-color: var(--alpha-colour);}
+.watchlist-item-beta {background-color: var(--beta-colour);}
+.watchlist-item-concept {background-color: var(--concept-colour);}
+.watchlist-item-released {background-color: var(--released-colour);}
+
+.sidebar-edit-link {
+    display: block;
+    text-align: right;
+    color: rgba(26, 64, 122, 0.61);
+    font-size: 0.9rem;
+    padding-right: 5px;
+}
 
