@@ -40,7 +40,7 @@ html {
 
 body {
     font-family: "Montserrat", sans-serif !important;
-    font-size: 18px;
+    font-size: 16px;
     background-color: #F3F3F3;
     max-width: 2100px;
     margin: auto !important;
@@ -59,7 +59,7 @@ body {
 /* Navbar */
 
 .navbar {
-    font-size: 1.35rem;
+    font-size: 1.15rem;
     z-index: 500;
     font-weight: 300;
     margin-bottom: 0 !important;
@@ -135,7 +135,7 @@ body {
 /* User area */
 
 .user .btn {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
 }
 
 .user .btn:hover {
@@ -145,7 +145,7 @@ body {
 .username {
     border-bottom: 1px solid gray;
     padding-bottom: 4px;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 400;
     letter-spacing: 2px;
     text-decoration: none;
@@ -190,7 +190,7 @@ body {
     top: 6px;
     left: 28px;
     border-radius: 150px;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
 }
 
 .notif-overlay {
@@ -231,7 +231,7 @@ body {
 }
 
 .popover .arrow {
-    left: 312px;
+    left: 265px;
 }
 
 @media (max-width: 992px) {
@@ -446,7 +446,7 @@ footer .footer-addon a:hover {
     height: 30px;
     border: 1px solid var(--lgray-border);
     border-radius: 6px 6px 0 0;
-    padding: 10px;
+    padding: 14px;
     text-decoration: none !important;
 }
 
@@ -669,6 +669,7 @@ footer .footer-addon a:hover {
     width: 240px;
     min-height: 50px;
     text-transform: uppercase;
+    font-size: 1.2rem;
 }
 
 .hero-subtext {
@@ -808,6 +809,7 @@ footer .footer-addon a:hover {
 }
 
 .title {
+    font-size: 2.5rem;
     font-weight: 600;
     margin: 0;
     text-transform: capitalize;
