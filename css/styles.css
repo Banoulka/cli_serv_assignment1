@@ -4,7 +4,7 @@
 /*breakpoint-lg: 992px;*/
 /*breakpoint-xl: 1200px;*/
 
-@import url('https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Poppins:200,300,300i,400,400i,500,500i,600,600i,700,700i&display=swap');
 
 :root {
     --primary: #278fe3;
@@ -39,7 +39,7 @@ html {
 }
 
 body {
-    font-family: "Montserrat", sans-serif !important;
+    font-family: "Poppins", sans-serif !important;
     font-size: 16px;
     background-color: #F3F3F3;
     max-width: 2100px;
@@ -1129,4 +1129,3 @@ footer .footer-addon a:hover {
     font-size: 0.9rem;
     padding-right: 5px;
 }
-
