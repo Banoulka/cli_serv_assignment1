@@ -8,7 +8,6 @@ $concept-colour: #FF5E00;
   min-height: 200px;
   margin-top: 5px;
   padding: 15px 0;
-  background-color: red;
 
   a {
     text-decoration: none;
@@ -17,7 +16,9 @@ $concept-colour: #FF5E00;
 
 
   //  POSTS ==================================================
+
   .post-reg {
+    margin: 15px 0;
     width: 80%;
     height: auto;
     display: flex;
@@ -28,12 +29,17 @@ $concept-colour: #FF5E00;
     border: 1px solid #CBCBCB;
     transition: background-color 0.2s;
 
+    @media (max-width: 768px) {
+      align-items: center;
+      width: 100%;
+    }
+
     &:hover {
       background-color: #ced7e9;
     }
 
     .post-colour {
-      width: 10%;
+      width: 8%;
       height: auto;
       border-radius: 0 18px 18px 0;
       background-color: #EBEBEB;
