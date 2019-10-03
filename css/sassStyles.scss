@@ -1,4 +1,7 @@
 $alpha-colour: #0C6D13;
+$beta-colour: #8064DC;
+$released-colour: #953E3E;
+$concept-colour: #FF5E00;
 
 .posts {
   width: 100%;
@@ -12,24 +15,33 @@ $alpha-colour: #0C6D13;
     color: inherit !important;
   }
 
+
+  //  POSTS ==================================================
   .post-reg {
     width: 80%;
     height: auto;
     display: flex;
     flex-direction: column;
     background-color: white;
-    padding: 0 15px;
+    padding-left: 15px;
     border-radius: 18px;
     border: 1px solid #CBCBCB;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #ced7e9;
+    }
 
     .post-colour {
-      width: 40px;
+      width: 10%;
+      height: auto;
       border-radius: 0 18px 18px 0;
       background-color: #EBEBEB;
       border-left: 1px solid #CBCBCB;
       text-transform: uppercase;
-      display: flex;
+      display: inline-flex;
       font-size: 1.5rem;
+      justify-self: flex-start;
       letter-spacing: 2px;
       align-items: center;
       justify-content: center;
@@ -37,11 +49,32 @@ $alpha-colour: #0C6D13;
       span {
         display: inline;
         transform: rotateZ(90deg);
+        &.alpha { color: $alpha-colour !important; &:before { content: "Alpha"; } }
+        &.beta { color: $beta-colour !important; &:before { content: "Beta"; }}
+        &.concept { color: $concept-colour !important; &:before { content: "concept"; }}
+        &.released { color: $released-colour !important; &:before { content: "released"; }}
       }
     }
 
-    .post-colour.alpha {
-      color: $alpha-colour !important;
+    .tags {
+      display: flex;
+      flex-direction: row;
+      font-size: 0.8rem;
+      color: #1A407A;
+      margin-top: 2px;
+
+      .tag {
+        display: inline;
+        margin-right: 5px;
+        margin-bottom: 0;
+        &:after {
+          content: ",";
+        }
+
+        &:last-of-type:after {
+          content: "";
+        }
+      }
     }
 
     .game-cover {
@@ -52,6 +85,7 @@ $alpha-colour: #0C6D13;
 
     .col {
       padding-left: 0;
+      padding-right: 30px;
     }
 
     .post-title {
@@ -62,15 +96,42 @@ $alpha-colour: #0C6D13;
     .author {
       margin: 0;
       color: #9A9A9A !important;
-      font-size: 0.8rem;
+      font-size: 0.9rem;
+    }
+
+    .content {
+      margin-top: 5px;
+      line-height: 1.2rem;
+      font-size: 1rem;
+      max-height: 200px;
+      margin-bottom: 0;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      //white-space: nowrap;
+    }
+
+    .row {
+      border-radius: 16px;
     }
 
     .row > * {
-      margin: 8px 0;
+      margin: 8px 0 0 0;
     }
 
-    .row > *:last-child {
-      margin: 0;
+    .extras {
+      width: 100%;
+      margin: 8px 0;
+      padding: 0 30px 0 15px;
+      span {
+        &:first-child {
+          margin-right: auto;
+        }
+        margin: 0 5px;
+      }
+
+      .far {
+        margin-right: 2px;
+      }
     }
   }
 }
