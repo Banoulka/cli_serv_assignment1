@@ -168,7 +168,7 @@ body {
 /* Notification overlay */
 
 .notif-col {
-    z-index: 10;
+    z-index: 2000;
     overflow: visible;
     right: 14em;
     width: 0;

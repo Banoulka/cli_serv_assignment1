@@ -7,11 +7,11 @@ $(document).ready(function(){
 
 function setupCharLimiters() {
     $("#title").keyup((e) => {
-        checkLength("title", 20);
+        checkLength("title", 19);
     });
 
     $("#description").keyup((e) => {
-        checkLength("description", 270);
+        checkLength("description", 220);
     });
 
     $("#content").keyup((e) => {

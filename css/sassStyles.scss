@@ -3,6 +3,39 @@ $beta-colour: #8064DC;
 $released-colour: #953E3E;
 $concept-colour: #FF5E00;
 
+
+
+//  Watchlist ==================================================
+.watch-wrapper {
+  z-index: 100;
+
+  .watchlist-sidebar {
+    max-height: 80vh;
+    overflow-y: scroll;
+  }
+  .watchlist-sidebar-item {
+    margin-bottom: 15px;
+  }
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(136, 136, 136, 0.6);
+    border-radius: 100px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(85, 85, 85, 0.6);
+  }
+}
+
+//  POSTS ==================================================
+
 .posts {
   width: 100%;
   min-height: 200px;
@@ -13,9 +46,6 @@ $concept-colour: #FF5E00;
     text-decoration: none;
     color: inherit !important;
   }
-
-
-  //  POSTS ==================================================
 
   .post-reg {
     margin: 15px 0;
@@ -35,7 +65,7 @@ $concept-colour: #FF5E00;
     }
 
     &:hover {
-      background-color: #ced7e9;
+      background-color: #e1eafc;
     }
 
     .post-colour {
@@ -96,13 +126,18 @@ $concept-colour: #FF5E00;
 
     .post-title {
       font-weight: 600;
+      width: 100%;
       margin: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      height: 35px;
     }
 
     .author {
       margin: 0;
       color: #9A9A9A !important;
-      font-size: 0.9rem;
+      font-size: 1rem;
     }
 
     .content {
@@ -141,3 +176,5 @@ $concept-colour: #FF5E00;
     }
   }
 }
+
+//  SOMETHING ==================================================
