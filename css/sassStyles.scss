@@ -1,0 +1,76 @@
+$alpha-colour: #0C6D13;
+
+.posts {
+  width: 100%;
+  min-height: 200px;
+  margin-top: 5px;
+  padding: 15px 0;
+  background-color: red;
+
+  a {
+    text-decoration: none;
+    color: inherit !important;
+  }
+
+  .post-reg {
+    width: 80%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    padding: 0 15px;
+    border-radius: 18px;
+    border: 1px solid #CBCBCB;
+
+    .post-colour {
+      width: 40px;
+      border-radius: 0 18px 18px 0;
+      background-color: #EBEBEB;
+      border-left: 1px solid #CBCBCB;
+      text-transform: uppercase;
+      display: flex;
+      font-size: 1.5rem;
+      letter-spacing: 2px;
+      align-items: center;
+      justify-content: center;
+
+      span {
+        display: inline;
+        transform: rotateZ(90deg);
+      }
+    }
+
+    .post-colour.alpha {
+      color: $alpha-colour !important;
+    }
+
+    .game-cover {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    .col {
+      padding-left: 0;
+    }
+
+    .post-title {
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .author {
+      margin: 0;
+      color: #9A9A9A !important;
+      font-size: 0.8rem;
+    }
+
+    .row > * {
+      margin: 8px 0;
+    }
+
+    .row > *:last-child {
+      margin: 0;
+    }
+  }
+}
