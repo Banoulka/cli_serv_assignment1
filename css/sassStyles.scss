@@ -283,27 +283,46 @@ $light-grey-border: 1px solid #CBCBCB;
       color: $dark-grey-text !important;
     }
 
-    .comment-box {
+    .comment-box, .announcement-box {
       background-color: white;
-      border: $light-grey-border;
-      border-radius: 50px;
-      min-height: 100px;
       width: 90%;
+      min-height: 100px;
+      border: $light-grey-border;
+    }
 
-      .comment-profile {
-        display: block;
-        height: 80px;
-        width: auto;
-        border-radius: 200px;
-      }
+    .announcement-box {
+      border-radius: 10px;
+    }
 
-      .text-area {
-        background-color: transparent;
-        overflow: auto;
+    .comment-box {
+      border-radius: 50px;
+    }
+
+    .form-profile {
+      display: block;
+      height: 80px;
+      width: auto;
+      border-radius: 200px;
+    }
+
+    .text-area {
+      background-color: transparent;
+      overflow: auto;
+      border: none;
+      border-radius: 0 50px 50px 0;
+      font-size: 1.2rem;
+      resize: none;
+      opacity: 1;
+      transition: 0.4s;
+
+      &:focus {
+        outline: none;
+        box-shadow: none;
         border: none;
-        border-radius: 0 50px 50px 0;
-        font-size: 1.2rem;
-        resize: none;
+
+        &::placeholder {
+          opacity: 0.5;
+        }
       }
 
       .comment-area {
