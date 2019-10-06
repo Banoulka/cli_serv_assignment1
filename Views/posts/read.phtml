@@ -1,1 +1,59 @@
-<?php
+<?php require(__DIR__ . "/../partials/header.phtml"); ?>
+
+<div class="container section">
+    <div class="post">
+        <div class="row text-center">
+            <div class="col-12">
+                <h3 class="game-state concept"></h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <h1 class="game-title">Gears of War 2</h1>
+                <p class="game-author">Johnny Davidson</p>
+                <p class="game-desc">Gears of war is about burley man sitting behind cover and shooting at the mean baddies. Aliens come to invade earth like they do and finally a big burley man with armour as big as kitchenware is sent into the depths of hell to purge the alien scum away from our beloved earth.</p>
+                <div class="game-body">
+                    <p>Morbi vitae est nec sem viverra eleifend nec non purus. Etiam odio odio, tempus euismod mollis ac, blandit ac quam. Suspendisse iaculis massa diam, id pharetra quam ornare in. Sed suscipit magna non nunc sodales suscipit. Sed vel nunc a est egestas pulvinar a ac diam. In nec turpis gravida velit volutpat facilisis. Nam vel pulvinar ipsum. Aenean ac vehicula risus. Suspendisse egestas libero est, eget venenatis orci blandit vel.</p>
+                    <p>Integer volutpat velit risus, ut ultrices nulla vestibulum a. Ut condimentum convallis odio, eu dignissim nisl aliquam in. Curabitur ac pellentesque libero. Quisque efficitur ultricies lectus, at consequat mauris congue a. Morbi volutpat laoreet ornare. Pellentesque eget urna elit. Praesent malesuada felis vel sem imperdiet ornare.</p>
+                </div>
+                <div class="game-extras">
+                    <?php foreach($view->tags as $tag ) : ?>
+                        <span class="game-tag"><?php echo $tag; ?></span>
+                    <?php endforeach; ?>
+                    <span class="game-date">Created on 2nd of December 2019</span>
+                </div>
+                <div class="game-stats">
+                    <p class="game-likes"><i class="far fa-thumbs-up"></i><span class="number">34</span>Like this</p>
+                    <p><i class="fas fa-eye"></i><span class="number">16</span>Watching this</p>
+                    <p><i class="far fa-comment-dots"></i><span class="number">3</span>Comments</p>
+                </div>
+            </div>
+            <div class="col-md-4 d-flex flex-column justify-content-center">
+                <img src="/img/artwork.png" alt="Game Artwork" class="artwork">
+            </div>
+        </div>
+        <div class="commentannounce">
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Comments</h3>
+                    <div class="comment-box row p-2">
+                        <div class="col-2 d-flex align-items-center justify-content-center pr-0">
+                            <img src="/uploads/profile_pictures/profilepic1.png" alt="" class="comment-profile">
+                        </div>
+                        <div class="col-10 d-flex align-items-center pl-0">
+                            <form action="#" class="comment-area pl-4">
+                                <textarea class="form-control text-area d-flex" name="comment" id="comment" rows="1" placeholder="Leave a comment:"></textarea>
+                                <input type="submit" name="submit" class="hidden">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h3>Announcements</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php require(__DIR__ . "/../partials/footer.phtml") ?>

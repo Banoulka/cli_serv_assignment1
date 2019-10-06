@@ -3,7 +3,12 @@ $beta-colour: #8064DC;
 $released-colour: #953E3E;
 $concept-colour: #FF5E00;
 
+$dark-blue-text: #1A407A;
+$light-blue-text: #6A80A2;
+$light-grey-text: #818181;
+$dark-grey-text: #2A2A2A;
 
+$light-grey-border: 1px solid #CBCBCB;
 
 //  Watchlist ==================================================
 .watch-wrapper {
@@ -177,4 +182,134 @@ $concept-colour: #FF5E00;
   }
 }
 
-//  SOMETHING ==================================================
+//  SINGLE POST ==================================================
+
+.post {
+  .game-state {
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    font-size: 2rem;
+    &.alpha {color: $alpha-colour !important; &:after {content: "alpha"}}
+    &.beta {color: $beta-colour !important; &:after {content: "beta"}}
+    &.released {color: $released-colour !important; &:after {content: "released"}}
+    &.concept {color: $concept-colour !important; &:after {content: "concept"}}
+  }
+
+  .artwork {
+    width: 100%;
+    height: auto;
+  }
+
+  .game-title {
+    color: $dark-blue-text !important;
+    font-size: 3.4rem;
+    font-weight: 600;
+    margin-bottom: 0;
+  }
+
+  .game-author {
+    color: $light-grey-text !important;
+    font-size: 1.4rem;
+    font-weight: 300;
+  }
+
+  p {
+    font-size: 1.15rem;
+  }
+
+  .game-desc {
+    color: $light-blue-text !important;
+    margin: 40px 0;
+  }
+
+  .game-extras {
+    color: $dark-blue-text !important;
+    font-size: 1rem;
+    display: flex;
+    flex-direction: row;
+    font-weight: 300;
+
+    .game-tag {
+      margin-right: 10px;
+      &:after {
+        content: ",";
+      }
+
+      &:last-child:after {
+        content: "";
+      }
+    }
+
+    .game-date {
+      margin-left: auto;
+      color: $light-grey-text !important;
+    }
+
+  }
+
+  .game-stats {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    font-weight: 300;
+    font-size: 1.2rem;
+
+    i {
+      margin-right: 5px;
+      color: $dark-blue-text !important;
+    }
+
+    .number:after {
+      content: " ";
+    }
+
+    p {
+      display: inline-block;
+      color: $light-grey-text !important;
+      margin-right: 20px;
+    }
+
+    .game-likes {
+      margin-right: auto;
+    }
+  }
+
+  .commentannounce {
+    margin-top: 40px;
+    h3 {
+      font-weight: 400;
+      color: $dark-grey-text !important;
+    }
+
+    .comment-box {
+      background-color: white;
+      border: $light-grey-border;
+      border-radius: 50px;
+      min-height: 100px;
+      width: 90%;
+
+      .comment-profile {
+        display: block;
+        height: 80px;
+        width: auto;
+        border-radius: 200px;
+      }
+
+      .text-area {
+        background-color: transparent;
+        overflow: auto;
+        border: none;
+        border-radius: 0 50px 50px 0;
+        font-size: 1.2rem;
+        resize: none;
+      }
+
+      .comment-area {
+        width: 100%;
+        margin: auto;
+      }
+    }
+  }
+}
