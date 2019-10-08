@@ -33,7 +33,7 @@
             </div>
             <div class="col-md-5">
                 <div class="form-group row align-items-center justify-content-between">
-                    <label for="cover-image" class="col-md-5 col-form-label align-self-start py-0 optional">Cover Image:<br><span class="blue-helper">This will only be viewable to logged in users</span></label>
+                    <label for="cover-image" class="col-md-5 col-form-label align-self-start py-0 optional">Cover Image:<span class="blue-helper">This will only be viewable to logged in users</span></label>
                     <div class="col-md-7">
                         <p class="form-control file-help">Upload a cover image.</p>
                         <input type="file" class="file-input" name="cover-image" id="cover-image" accept="image/*">
@@ -42,7 +42,7 @@
                 </div>
 
                 <div class="form-group row align-items-center justify-content-between">
-                    <label for="tags" class="col-md-5 col-form-label align-self-start py-0 optional">Tags:<br><span class="blue-helper">Tags help your game stand out.</span></label>
+                    <label for="tags" class="col-md-5 col-form-label align-self-start py-0 optional">Tags:<span class="blue-helper">Tags help your game stand out.</span></label>
                     <div class="col-md-7">
                         <div id="tag-list"></div>
                         <select class="custom-select" id="tags">
@@ -51,9 +51,11 @@
                                 <option value="<?php echo $tag;?>"><?php echo $tag;?></option>
                             <?php endforeach; ?>
                         </select>
+                        <div>
                         <?php foreach($view->tags as $tag) : ?>
-                            <input type="checkbox" name="tag[]" class="hidden" id="<?php echo $tag; ?>" value="<?php echo $tag; ?>">
+                            <input type="checkbox" name="tags[]" class="hidden" id="<?php echo $tag; ?>" value="<?php echo $tag; ?>">
                         <?php endforeach; ?>
+                        </div>
                         <p class="chars text-right m-0 pt-1" id="tag-limit-p">Tag Limit: <span id="tag-limits">4</span> tags</p>
                     </div>
                 </div>

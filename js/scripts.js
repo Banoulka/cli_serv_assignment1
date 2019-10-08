@@ -161,6 +161,7 @@ function setupTagPicker() {
                $("#" + tag + "box").remove();
                tags.splice( tags.indexOf(tag), 1);
                checkTag();
+               // Take the check box off of the check
                $("#" + tag).prop("checked", false);
            });
             checkTag();
