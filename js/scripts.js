@@ -149,15 +149,19 @@ function setupTagPicker() {
         // If tag isnt the default option and tag doesn't already exist in array
        if(tag !== "Select a tag" && tags.indexOf(tag) === -1) {
             // Add a new div with the value tag and the label tag.
-           $("#tag-list").append("<div id=\"" + tag + "\" class=\"picked-option\"><span>" + tag + "</span><i id=\"" + tag + "-tag\" class=\"fas fa-minus minus-tag\"></i></div>");
+           $("#tag-list").append("<div id=\"" + tag + "box" + "\" class=\"picked-option\"><span>" + tag + "</span><i id=\"" + tag + "-tag\" class=\"fas fa-minus minus-tag\"></i></div>");
            // Add to the array of tags
            tags.push(tag);
 
+           // Check the associated tag box
+           $("#" + tag).prop("checked", true);
+
            // Add the event to remove on the little minus click
            $("#" + tag + "-tag").click((e) => {
-               $("#" + tag).remove();
+               $("#" + tag + "box").remove();
                tags.splice( tags.indexOf(tag), 1);
                checkTag();
+               $("#" + tag).prop("checked", false);
            });
             checkTag();
        }

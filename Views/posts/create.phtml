@@ -3,7 +3,7 @@
 <div class="container section">
     <h1 class="title">Create new post</h1>
     <p class="subtext mb-5">Fields marked in * are optional</p>
-    <form class="new-post" action="#" method="POST">
+    <form class="new-post" action="/formtest.php" method="POST">
         <div class="row justify-content-around">
             <div class="col-md-7">
                 <div class="form-group row align-items-center justify-content-between">
@@ -45,13 +45,15 @@
                     <label for="tags" class="col-md-5 col-form-label align-self-start py-0 optional">Tags:<br><span class="blue-helper">Tags help your game stand out.</span></label>
                     <div class="col-md-7">
                         <div id="tag-list"></div>
-                        <select class="custom-select" name="tags" id="tags">
+                        <select class="custom-select" id="tags">
                             <option selected class="default-tag">Select a tag</option>
-                            <?php for($i = 0; $i < count($view->tags); $i++) : ?>
-                                <option value="<?php echo $view->tags[$i];?>"><?php echo $view->tags[$i];?></option>
-                                <?php echo "for"; ?>
-                            <?php endfor; ?>
+                            <?php foreach($view->tags as $tag) : ?>
+                                <option value="<?php echo $tag;?>"><?php echo $tag;?></option>
+                            <?php endforeach; ?>
                         </select>
+                        <?php foreach($view->tags as $tag) : ?>
+                            <input type="checkbox" name="tag[]" class="hidden" id="<?php echo $tag; ?>" value="<?php echo $tag; ?>">
+                        <?php endforeach; ?>
                         <p class="chars text-right m-0 pt-1" id="tag-limit-p">Tag Limit: <span id="tag-limits">4</span> tags</p>
                     </div>
                 </div>
@@ -70,7 +72,7 @@
 
                 <div class="form-group row align-items-center justify-content-between mt-5 pt-5">
                     <div class="col">
-                        <button type="submit" name="submit" class="dprim-btn dprim-btn-filled" value="Create Post">Create Post</button>
+                        <button type="submit" name="submit" class="dprim-btn dprim-btn-filled" value="submit">Create Post</button>
                         <a href="../posts/create.php" class="dprim-btn dprim-btn-outline">Reset</a>
                     </div>
                 </div>
