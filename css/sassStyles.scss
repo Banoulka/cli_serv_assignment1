@@ -332,3 +332,81 @@ $light-grey-border: 1px solid #CBCBCB;
     }
   }
 }
+
+/* SEARCH THINGS */
+.search-form {
+  .search-select {
+    background-color: transparent;
+    border: none;
+    color: $dark-blue-text;
+    font-weight: 500;
+    font-size: 1.4rem;
+
+    &:hover {
+
+    }
+
+    &:focus {
+      box-shadow: none;
+      border: none;
+      outline: none;
+    }
+  }
+
+  .search-titles {
+    font-size: 1rem;
+    color: $dark-grey-text;
+    opacity: 0.5;
+    font-weight: 300;
+  }
+
+  .search-col {
+    padding-top: 0.8em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    #followed-label { color: $dark-blue-text !important; }
+    #alpha-label { color: $alpha-colour !important; }
+    #beta-label { color: $beta-colour !important; }
+    #concept-label { color: $concept-colour!important; }
+    #released-label { color: $released-colour !important; }
+
+    .column {
+      width: 100%;
+    }
+
+    .sort-by-option {
+
+      label {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        color: $dark-blue-text;
+        margin-bottom: 8px;
+      }
+
+      .sort-by-radio {
+        margin-left: auto;
+        background-color: #919191;
+      }
+    }
+
+    .filter-option {
+      label {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 3px;
+        background-color: white;
+        padding: 0.2em 0.6em;
+        border-radius: 20px;
+        border: $light-grey-border;
+      }
+
+      .filter-by-checkbox {
+        margin-left: auto;
+      }
+    }
+  }
+}

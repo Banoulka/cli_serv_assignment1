@@ -1,0 +1,82 @@
+<?php require("partials/header.phtml"); ?>
+
+<div class="container section px-0">
+    <form action="#" method="GET" class="search-form row">
+    <div class="col-12 px-lg-0 px-xl-2 col-lg-9">
+        <div class="row">
+            <div class="col-8">
+                <h1 class="title px-2">Search Posts</h1>
+                <label class="minified-label">
+                    <input type="checkbox" class="minified-input">
+                    <span class="minified-checkbox"></span><span>Minified View?</span>
+                </label>
+                <div class="row my-3">
+                    <div class="col-4 px-3">
+                        <select class="form-control search-select">
+                            <option value="title">Title</option>
+                            <option value="author">Author</option>
+                        </select>
+                    </div>
+                    <div class="col-8 px-4">
+                        <input type="text" class="form-control" name="search" placeholder="Search text">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col px-4">
+                        <input type="submit" name="submit" class="dprim-btn dprim-btn-filled m-0 px-0" value="Search">
+                    </div>
+                </div>
+            </div>
+            <div class="col-2 search-col">
+                <h3 class="search-titles">Sort By</h3>
+                <div class="column">
+                    <div class="sort-by-option">
+                        <label>Relevance<input type="radio" value="relevance" name="sort-by" class="sort-by-radio"></label>
+                    </div>
+                    <div class="sort-by-option">
+                        <label>Likes<input type="radio" value="likes" name="sort-by" class="sort-by-radio"></label>
+                    </div>
+                    <div class="sort-by-option">
+                        <label>Watches<input type="radio" value="watches" name="sort-by" class="sort-by-radio"></label>
+                    </div>
+                    <div class="sort-by-option">
+                        <label>Comments<input type="radio" value="comments" name="sort-by" class="sort-by-radio"></label>
+                    </div>
+                    <div class="sort-by-option">
+                        <label>Newest<input type="radio" value="newest" name="sort-by" class="sort-by-radio"></label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2 search-col">
+                <h3 class="search-titles">Filters</h3>
+                <div class="column">
+                    <div class="filter-option">
+                        <label id="followed-label">Followed<input type="checkbox" class="filter-by-checkbox" name="filters[]" value="followed"></label>
+                    </div>
+                    <div class="filter-option">
+                        <label id="alpha-label">Alpha<input type="checkbox" class="filter-by-checkbox" name="filters[]" value="alpha"></label>
+                    </div>
+                    <div class="filter-option">
+                        <label id="beta-label">Beta<input type="checkbox" class="filter-by-checkbox" name="filters[]" value="beta"></label>
+                    </div>
+                    <div class="filter-option">
+                        <label id="concept-label">Concept<input type="checkbox" class="filter-by-checkbox" name="filters[]" value="concept"></label>
+                    </div>
+                    <div class="filter-option">
+                        <label id="released-label">Released<input type="checkbox" class="filter-by-checkbox" name="filters[]" value="released"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-none px-xl-0 col-lg-3 d-lg-block">
+        <h2 class="text-center">Tags</h2>
+        <div class="tag-column">
+            <label></label>
+        </div>
+    </div>
+    </form>
+</div>
+
+
+<?php require("partials/footer.phtml"); ?>
