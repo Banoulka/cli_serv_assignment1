@@ -372,6 +372,12 @@ $light-grey-border: 1px solid #CBCBCB;
     #concept-label { color: $concept-colour!important; }
     #released-label { color: $released-colour !important; }
 
+    label {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+
     .column {
       width: 100%;
     }
@@ -379,9 +385,6 @@ $light-grey-border: 1px solid #CBCBCB;
     .sort-by-option {
 
       label {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
         color: $dark-blue-text;
         margin-bottom: 8px;
       }
@@ -394,9 +397,6 @@ $light-grey-border: 1px solid #CBCBCB;
 
     .filter-option {
       label {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
         margin-bottom: 3px;
         background-color: white;
         padding: 0.2em 0.6em;
@@ -406,6 +406,60 @@ $light-grey-border: 1px solid #CBCBCB;
 
       .filter-by-checkbox {
         margin-left: auto;
+      }
+    }
+
+    .check-selections {
+      width: 80%;
+      height: 35px;
+      background-color: white;
+      border: $light-grey-border;
+      border-bottom: none;
+      border-radius: 10px 10px 0 0;
+    }
+  }
+
+  /* TAGS */
+  .tag-column {
+    width: 80%;
+    border: $light-grey-border;
+    background-color: #EBEBEB;
+    font-weight: 500;
+    padding: 0.3em;
+    color: $dark-blue-text !important;
+
+    .custom-checkbox .custom-control-input:checked~.custom-control-label::before {
+       background-color: $dark-blue-text;
+     }
+
+    // remove actual tick
+    .custom-checkbox .custom-control-input:checked~.custom-control-label::after {
+      background-image: none;
+    }
+
+    .custom-control {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding-left: 0.3rem !important;
+      padding-right: 1.5rem !important;
+    }
+
+    .custom-control-label {
+      cursor: pointer;
+
+      &:after, &:before {
+        left: 7.5em !important;
+      }
+
+      // Actual Tick
+      &:after {}
+
+      // Box
+      &:before {
+        background-color: #ebebeb;
+        border: 1.5px solid $dark-blue-text;
+        border-radius: 1px;
       }
     }
   }

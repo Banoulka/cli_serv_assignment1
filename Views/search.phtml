@@ -23,7 +23,7 @@
                 </div>
                 <div class="row">
                     <div class="col px-4">
-                        <input type="submit" name="submit" class="dprim-btn dprim-btn-filled m-0 px-0" value="Search">
+                        <button type="submit" name="submit" class="dprim-btn dprim-btn-filled m-0">Search<i class="fas fa-search pl-2"></i></button>
                     </div>
                 </div>
             </div>
@@ -69,14 +69,23 @@
             </div>
         </div>
     </div>
-    <div class="d-none px-xl-0 col-lg-3 d-lg-block">
-        <h2 class="text-center">Tags</h2>
-        <div class="tag-column">
-            <label></label>
+    <div class="d-none px-xl-0 col-lg-2 d-lg-block ml-5">
+        <div class="row">
+            <div class="col search-col">
+            <h3 class="search-titles">Tags</h3>
+                <div class="check-selections"></div>
+            <div class="tag-column">
+                <?php foreach($view->tags as $tag) : ?>
+                    <div class="custom-control custom-checkbox">
+                        <input id="<?php echo $tag; ?>-tag" type="checkbox" name="tags-fitler[]" class="custom-control-input" value="<?php echo strtolower($tag); ?>">
+                        <label class="custom-control-label" for="<?php echo $tag; ?>-tag"><?php echo $tag; ?></label>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+            </div>
         </div>
     </div>
     </form>
 </div>
-
 
 <?php require("partials/footer.phtml"); ?>
