@@ -2,79 +2,89 @@
 
 <div class="container section px-0">
     <form action="#" method="GET" class="search-form row">
-    <div class="col-12 px-lg-0 px-xl-2 col-lg-9">
-        <div class="row">
-            <div class="col-8">
-                <h1 class="title px-2">Search Posts</h1>
-                <label class="minified-label">
-                    <input type="checkbox" class="minified-input">
-                    <span class="minified-checkbox"></span><span>Minified View?</span>
-                </label>
-                <div class="row my-3">
-                    <div class="col-4 px-3">
-                        <select class="form-control search-select">
-                            <option value="title">Title</option>
-                            <option value="author">Author</option>
-                        </select>
-                    </div>
-                    <div class="col-8 px-4">
-                        <input type="text" class="form-control" name="search" placeholder="Search text">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col px-4">
-                        <button type="submit" name="submit" class="dprim-btn dprim-btn-filled m-0">Search<i class="fas fa-search pl-2"></i></button>
-                    </div>
-                </div>
+
+        <nav class="collapse-sidebar">
+            <div id="dismiss-sidebar"><i class="far fa-times-circle"></i></div>
+            <div class="collapse-sidebar-header">
+                <h3>Tags</h3>
             </div>
-            <div class="col-2 search-col">
-                <h3 class="search-titles">Sort By</h3>
-                <div class="column">
-                    <div class="sort-by-option">
-                        <label>Relevance<input type="radio" value="relevance" name="sort-by" class="sort-by-radio"></label>
+
+            <p>Something something something something</p>
+        </nav>
+
+        <div class="col-12 px-lg-0 px-xl-2 col-lg-12 col-xl-9">
+            <div class="row">
+                <div class="col-md-12 col-lg-8">
+                    <h1 class="title px-2">Search Posts <span id="sidebar-open" class="sidebar-icon"><i class="fas fa-bars"></i></span></h1>
+                    <label class="minified-label">
+                        <input type="checkbox" class="minified-input">
+                        <span class="minified-checkbox"></span><span>Minified View?</span>
+                    </label>
+                    <div class="row my-3">
+                        <div class="col-4 px-3">
+                            <select class="form-control search-select">
+                                <option value="title">Title</option>
+                                <option value="author">Author</option>
+                            </select>
+                        </div>
+                        <div class="col-8 px-4">
+                            <input type="text" class="form-control" name="search" placeholder="Search text">
+                        </div>
                     </div>
-                    <div class="sort-by-option">
-                        <label>Likes<input type="radio" value="likes" name="sort-by" class="sort-by-radio"></label>
-                    </div>
-                    <div class="sort-by-option">
-                        <label>Watches<input type="radio" value="watches" name="sort-by" class="sort-by-radio"></label>
-                    </div>
-                    <div class="sort-by-option">
-                        <label>Comments<input type="radio" value="comments" name="sort-by" class="sort-by-radio"></label>
-                    </div>
-                    <div class="sort-by-option">
-                        <label>Newest<input type="radio" value="newest" name="sort-by" class="sort-by-radio"></label>
+                    <div class="row">
+                        <div class="col px-4">
+                            <button type="submit" name="submit" class="dprim-btn dprim-btn-filled m-0">Search<i class="fas fa-search pl-2"></i></button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-2 search-col">
-                <h3 class="search-titles">Filters</h3>
-                <div class="column">
-                    <div class="filter-option">
-                        <label id="followed-label">Followed<input type="checkbox" class="filter-by-checkbox" name="filters[]" value="followed"></label>
+                <div class="col-2 search-col collapsable">
+                    <h3 class="search-titles">Sort By</h3>
+                    <div class="column">
+                        <div class="sort-by-option">
+                            <label>Relevance<input type="radio" value="relevance" name="sort-by" class="sort-by-radio"></label>
+                        </div>
+                        <div class="sort-by-option">
+                            <label>Likes<input type="radio" value="likes" name="sort-by" class="sort-by-radio"></label>
+                        </div>
+                        <div class="sort-by-option">
+                            <label>Watches<input type="radio" value="watches" name="sort-by" class="sort-by-radio"></label>
+                        </div>
+                        <div class="sort-by-option">
+                            <label>Comments<input type="radio" value="comments" name="sort-by" class="sort-by-radio"></label>
+                        </div>
+                        <div class="sort-by-option">
+                            <label>Newest<input type="radio" value="newest" name="sort-by" class="sort-by-radio"></label>
+                        </div>
                     </div>
-                    <div class="filter-option">
-                        <label id="alpha-label">Alpha<input type="checkbox" class="filter-by-checkbox" name="filters[]" value="alpha"></label>
-                    </div>
-                    <div class="filter-option">
-                        <label id="beta-label">Beta<input type="checkbox" class="filter-by-checkbox" name="filters[]" value="beta"></label>
-                    </div>
-                    <div class="filter-option">
-                        <label id="concept-label">Concept<input type="checkbox" class="filter-by-checkbox" name="filters[]" value="concept"></label>
-                    </div>
-                    <div class="filter-option">
-                        <label id="released-label">Released<input type="checkbox" class="filter-by-checkbox" name="filters[]" value="released"></label>
+                </div>
+                <div class="col-2 search-col collapsable">
+                    <h3 class="search-titles">Filters</h3>
+                    <div class="column">
+                        <div class="filter-option">
+                            <label id="followed-label">Followed<input type="checkbox" class="filter-by-checkbox" name="filters[]" value="followed"></label>
+                        </div>
+                        <div class="filter-option">
+                            <label id="alpha-label">Alpha<input type="checkbox" class="filter-by-checkbox" name="filters[]" value="alpha"></label>
+                        </div>
+                        <div class="filter-option">
+                            <label id="beta-label">Beta<input type="checkbox" class="filter-by-checkbox" name="filters[]" value="beta"></label>
+                        </div>
+                        <div class="filter-option">
+                            <label id="concept-label">Concept<input type="checkbox" class="filter-by-checkbox" name="filters[]" value="concept"></label>
+                        </div>
+                        <div class="filter-option">
+                            <label id="released-label">Released<input type="checkbox" class="filter-by-checkbox" name="filters[]" value="released"></label>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="d-none px-xl-0 col-lg-2 d-lg-block ml-5">
-        <div class="row">
+        <div class="d-none px-xl-0 col-lg-2 d-lg-block ml-5 collapsable-tags">
+            <div class="row">
             <div class="col search-col">
-            <h3 class="search-titles">Tags</h3>
+                <h3 class="search-titles">Tags</h3>
                 <div class="check-selections"></div>
-            <div class="tag-column">
+                <div class="tag-column">
                 <?php foreach($view->tags as $tag) : ?>
                     <div class="custom-control custom-checkbox">
                         <input id="<?php echo $tag; ?>-tag" type="checkbox" name="tags-fitler[]" class="custom-control-input" value="<?php echo strtolower($tag); ?>">
@@ -84,8 +94,10 @@
             </div>
             </div>
         </div>
-    </div>
+        </div>
     </form>
 </div>
+
+<div class="overlay"></div>
 
 <?php require("partials/footer.phtml"); ?>

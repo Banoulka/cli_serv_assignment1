@@ -3,6 +3,7 @@ $(document).ready(function(){
     setupNotificationEvents();
     setupCharLimiters();
     setupTagPicker();
+    setupOverlayNav();
 });
 
 function setupCharLimiters() {
@@ -182,4 +183,18 @@ function setupTagPicker() {
         }
         tagLimitChar[0].innerHTML = 4 - tags.length;
     }
+}
+
+function setupOverlayNav() {
+
+    $("#sidebar-open").on("click", function () {
+        // Fade in sidebar
+        $(".overlay").addClass("active");
+        $(".collapse-sidebar").addClass("active");
+    });
+
+    $("#dismiss-sidebar, .overlay").on("click", function() {
+        $(".collapse-sidebar").removeClass("active");
+        $(".overlay").removeClass("active");
+    });
 }

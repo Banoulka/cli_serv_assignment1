@@ -62,7 +62,7 @@ $light-grey-border: 1px solid #CBCBCB;
     padding-left: 15px;
     border-radius: 18px;
     border: 1px solid #CBCBCB;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s ease-in-out;
 
     @media (max-width: 768px) {
       align-items: center;
@@ -313,7 +313,7 @@ $light-grey-border: 1px solid #CBCBCB;
       font-size: 1.2rem;
       resize: none;
       opacity: 1;
-      transition: 0.4s;
+      transition: 0.4s ease-in-out;
 
       &:focus {
         outline: none;
@@ -335,6 +335,46 @@ $light-grey-border: 1px solid #CBCBCB;
 
 /* SEARCH THINGS */
 .search-form {
+  .title {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+    .sidebar-icon {
+      cursor: pointer;
+      margin-left: auto;
+      transition: color 0.2s ease-in-out;
+      display: none;
+      padding: 7px 12px;
+      font-size: 1.5rem;
+      border-radius: 5px;
+      border: 1px solid $dark-blue-text;
+
+      @media (max-width: 1200px) {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      &:hover {
+        color: $light-grey-text;
+      }
+    }
+  }
+
+  .collapsable-tags {
+    @media (max-width: 1200px ) {
+      display: none !important;
+    }
+  }
+
+  .collapsable {
+    @media (max-width: 992px) {
+      display: none !important;
+    }
+  }
+
   .search-select {
     background-color: transparent;
     border: none;
@@ -463,4 +503,90 @@ $light-grey-border: 1px solid #CBCBCB;
       }
     }
   }
+}
+
+.collapse-sidebar {
+  min-width: 350px;
+  max-width: 350px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  background-color: $light-blue-text;
+  color: white !important;
+  padding: 10px 20px;
+  display: none;
+  animation-name: slideInLeft;
+  animation-duration: 0.35s;
+
+  &.active {
+    display: block;
+  }
+
+  #dismiss-sidebar {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    border-radius: 5px;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.16);
+      color: white !important;
+    }
+  }
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  z-index:  998;
+  opacity: 0;
+  transition: all 0.5s ease-in-out;
+
+  &.active {
+    display: block;
+    opacity: 1;
+  }
+}
+
+
+@keyframes slideInLeft {
+  from {
+    transform: translate3d(-100%, 0 ,0);
+    visibility: visible;
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(-100%, 0 ,0);
+    visibility: hidden;
+  }
+}
+
+.slideOutRightAnim {
+  animation-name: slideOutRight;
+  animation-duration: 0.35s;
 }
