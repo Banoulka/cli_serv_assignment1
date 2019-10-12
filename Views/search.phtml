@@ -1,7 +1,7 @@
 <?php require("partials/header.phtml"); ?>
 
 <div class="container section px-0">
-    <form action="#" method="GET" class="search-form row">
+    <form action="formtest.php" method="GET" class="search-form row">
 
         <aside class="collapse-sidebar">
             <div id="dismiss-sidebar"><i class="far fa-times-circle"></i></div>
@@ -25,7 +25,7 @@
                         <input type="checkbox" class="minified-input">
                         <span class="minified-checkbox"></span><span>Minified View?</span>
                     </label>
-                    <div class="row my-3">
+                    <div class="row my-3 align-items-center">
                         <div class="col-4 px-3">
                             <select class="form-control search-select">
                                 <option value="title">Title</option>
@@ -46,7 +46,7 @@
                     <h3 class="search-titles">Sort By</h3>
                     <div class="column">
                         <div class="sort-by-option">
-                            <label>Relevance<input type="radio" value="relevance" name="sort-by" class="sort-by-radio"></label>
+                            <label>Relevance<input type="radio" value="relevance" name="sort-by" class="sort-by-radio" checked></label>
                         </div>
                         <div class="sort-by-option">
                             <label>Likes<input type="radio" value="likes" name="sort-by" class="sort-by-radio"></label>
@@ -66,19 +66,19 @@
                     <h3 class="search-titles">Filters</h3>
                     <div class="column">
                         <div class="filter-option">
-                            <label id="followed-label">Followed<input type="checkbox" class="filter-by-checkbox" name="filters[]" value="followed"></label>
+                            <label id="followed-label">Followed<input type="checkbox" class="filter-by-checkbox" name="filters[]" value="followed" checked></label>
                         </div>
                         <div class="filter-option">
-                            <label id="alpha-label">Alpha<input type="checkbox" class="filter-by-checkbox" name="filters[]" value="alpha"></label>
+                            <label id="alpha-label">Alpha<input type="checkbox" class="filter-by-checkbox" name="filters[]" value="alpha" checked></label>
                         </div>
                         <div class="filter-option">
-                            <label id="beta-label">Beta<input type="checkbox" class="filter-by-checkbox" name="filters[]" value="beta"></label>
+                            <label id="beta-label">Beta<input type="checkbox" class="filter-by-checkbox" name="filters[]" value="beta" checked></label>
                         </div>
                         <div class="filter-option">
-                            <label id="concept-label">Concept<input type="checkbox" class="filter-by-checkbox" name="filters[]" value="concept"></label>
+                            <label id="concept-label">Concept<input type="checkbox" class="filter-by-checkbox" name="filters[]" value="concept" checked></label>
                         </div>
                         <div class="filter-option">
-                            <label id="released-label">Released<input type="checkbox" class="filter-by-checkbox" name="filters[]" value="released"></label>
+                            <label id="released-label">Released<input type="checkbox" class="filter-by-checkbox" name="filters[]" value="released" checked></label>
                         </div>
                     </div>
                 </div>
@@ -92,7 +92,7 @@
                 <div class="tag-column">
                 <?php foreach($view->tags as $tag) : ?>
                     <div class="custom-control custom-checkbox">
-                        <input id="<?php echo $tag; ?>-tag" type="checkbox" name="tags-fitler[]" class="custom-control-input" value="<?php echo strtolower($tag); ?>">
+                        <input id="<?php echo $tag; ?>-tag" type="checkbox" name="tags[]" class="custom-control-input" value="<?php echo strtolower($tag); ?>" checked>
                         <label class="custom-control-label" for="<?php echo $tag; ?>-tag"><?php echo $tag; ?></label>
                     </div>
                 <?php endforeach; ?>
