@@ -519,6 +519,12 @@ $light-grey-border: 1px solid #CBCBCB;
   display: none;
   animation-name: slideInLeft;
   animation-duration: 0.35s;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar { width: 5px; height: 40%; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { background: white !important; border-radius: 100px; }
+  &::-webkit-scrollbar-thumb:hover { background: rgba(85, 85, 85, 0.6); }
 
   &.active {
     display: block;
@@ -542,6 +548,10 @@ $light-grey-border: 1px solid #CBCBCB;
       background-color: rgba(255, 255, 255, 0.16);
       color: white !important;
     }
+  }
+
+  .search-titles {
+    color: white !important;
   }
 }
 

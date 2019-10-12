@@ -191,10 +191,17 @@ function setupOverlayNav() {
         // Fade in sidebar
         $(".overlay").addClass("active");
         $(".collapse-sidebar").addClass("active");
+
+        // Remove the tags element
+        let tagContent = $("#tag-content").detach();
+        tagContent.appendTo("#tags-sidebar-section");
     });
 
     $("#dismiss-sidebar, .overlay").on("click", function() {
         $(".collapse-sidebar").removeClass("active");
         $(".overlay").removeClass("active");
+
+        let tagContent = $("#tag-content").detach();
+        tagContent.appendTo("#tag-row-main");
     });
 }
