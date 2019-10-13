@@ -8,6 +8,9 @@ $light-blue-text: #6A80A2;
 $light-grey-text: #818181;
 $dark-grey-text: #2A2A2A;
 
+$dark-blue-button-hover: #12224d;
+$light-blue-button-hover: #278fe3;
+
 $light-grey-border: 1px solid #CBCBCB;
 
 //  Watchlist ==================================================
@@ -348,7 +351,7 @@ $light-grey-border: 1px solid #CBCBCB;
       display: none;
       padding: 7px 12px;
       font-size: 1.5rem;
-      border-radius: 5px;
+      border-radius: 100%;
       border: 1px solid $dark-blue-text;
 
       @media (max-width: 1200px) {
@@ -360,6 +363,28 @@ $light-grey-border: 1px solid #CBCBCB;
       &:hover {
         color: $light-grey-text;
       }
+    }
+  }
+
+  .tag-check-btn {
+    display: inline-block;
+    font-size: 0.8rem;
+    padding: 7px;
+    border-radius: 5px;
+    border: 1px solid $dark-blue-text;
+    color: white !important;
+    font-weight: 600;
+    transition: all 0.2s ease-in-out;
+
+    &:first-child {
+      background-color: $dark-blue-text;
+      &:hover { background-color: $light-blue-button-hover; color: white !important; border-color: white; }
+    }
+
+    &:last-child {
+      background-color: white;
+      color: $dark-blue-text !important;
+      &:hover { color: $light-blue-button-hover !important; border-color: $light-blue-button-hover; background-color: #e9e9e9; }
     }
   }
 
@@ -454,20 +479,29 @@ $light-grey-border: 1px solid #CBCBCB;
         margin-left: auto;
       }
     }
+  }
 
-    .check-selections {
-      width: 80%;
-      height: 35px;
-      background-color: white;
-      border: $light-grey-border;
-      border-bottom: none;
-      border-radius: 10px 10px 0 0;
+  .check-selections {
+    width: 90%;
+    padding: 10px 0;
+    background-color: white;
+    border: $light-grey-border;
+    border-bottom: none;
+    border-radius: 10px 10px 0 0;
+
+    #check-buttons-content {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-around;
     }
+
   }
 
   /* TAGS */
   .tag-column {
-    width: 80%;
+    width: 90%;
     border: $light-grey-border;
     background-color: #EBEBEB;
     font-weight: 500;
@@ -495,7 +529,7 @@ $light-grey-border: 1px solid #CBCBCB;
       cursor: pointer;
 
       &:after, &:before {
-        left: 7.5em !important;
+        left: 10em !important;
       }
 
       // Actual Tick
@@ -510,6 +544,8 @@ $light-grey-border: 1px solid #CBCBCB;
     }
   }
 }
+
+/* COLLAPSE SIDEBAR */
 
 .collapse-sidebar {
   min-width: 350px;
@@ -562,6 +598,14 @@ $light-grey-border: 1px solid #CBCBCB;
 
 
   // Changing of styles when they are on the sidebar
+  #check-buttons-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    margin-top: 20px;
+  }
+
   #tag-content {
     .tag-column {
       background-color: transparent;
@@ -627,6 +671,9 @@ $light-grey-border: 1px solid #CBCBCB;
   }
 }
 
+
+/* OVERLAY */
+
 .overlay {
   display: none;
   position: fixed;
@@ -645,6 +692,8 @@ $light-grey-border: 1px solid #CBCBCB;
   }
 }
 
+
+/* ANIMATIONS */
 
 @keyframes slideInLeft {
   from {

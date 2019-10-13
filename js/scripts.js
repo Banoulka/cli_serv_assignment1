@@ -4,6 +4,7 @@ $(document).ready(function(){
     setupCharLimiters();
     setupTagPicker();
     setupOverlayNav();
+    setupTagCheckButtons();
 });
 
 function setupCharLimiters() {
@@ -194,9 +195,15 @@ function setupOverlayNav() {
 
         // Figure out what needs to be moved
         if($(window).width() < 1200) {
+
+
             // Move the tags
             let tagContent = $("#tag-content").detach();
             tagContent.appendTo("#tags-sidebar-section");
+
+            // Move the tag check buttons
+            let tagButtons = $("#check-buttons-content").detach();
+            tagButtons.appendTo("#tags-sidebar-section");
         }
 
         if($(window).width() < 992) {
@@ -222,5 +229,22 @@ function setupOverlayNav() {
 
         let sortByContent = $("#sort-content").detach();
         sortByContent.appendTo("#sort-row-main");
+
+        let tagButtons = $("#check-buttons-content").detach();
+        tagButtons.appendTo("#check-buttons-row");
+    });
+}
+
+function setupTagCheckButtons () {
+    $("#check-all-tags").click(function(e) {
+        $(".custom-checkbox").each(function() {
+            this.children[0].checked = true;
+        });
+    });
+
+    $("#uncheck-all-tags").click(function(e) {
+        $(".custom-checkbox").each(function() {
+            this.children[0].checked = false;
+        });
     });
 }

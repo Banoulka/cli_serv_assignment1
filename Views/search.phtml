@@ -87,9 +87,14 @@
         </div>
         <div class="d-none px-xl-0 col-lg-2 d-lg-block ml-5 collapsable-tags">
             <div class="row" id="tag-row-main">
-            <div class="col search-col" id="tag-content">
+            <div class="col search-col px-0" id="tag-content">
                 <h3 class="search-titles">Tags</h3>
-                <div class="check-selections"></div>
+                <div class="check-selections" id="check-buttons-row">
+                    <div id="check-buttons-content">
+                        <button type="button" class="tag-check-btn" id="check-all-tags">Check All</button>
+                        <button type="button" class="tag-check-btn" id="uncheck-all-tags">Uncheck All</button>
+                    </div>
+                </div>
                 <div class="tag-column">
                 <?php foreach($view->tags as $tag) : ?>
                     <div class="custom-control custom-checkbox">
