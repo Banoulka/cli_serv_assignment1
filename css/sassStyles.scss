@@ -370,6 +370,12 @@ $light-grey-border: 1px solid #CBCBCB;
   }
 
   .collapsable {
+
+    #filter-content, #sort-content {
+      text-align: center;
+      width: 100%;
+    }
+
     @media (max-width: 992px) {
       display: none !important;
     }
@@ -470,7 +476,7 @@ $light-grey-border: 1px solid #CBCBCB;
 
     .custom-checkbox .custom-control-input:checked~.custom-control-label::before {
        background-color: $dark-blue-text;
-     }
+    }
 
     // remove actual tick
     .custom-checkbox .custom-control-input:checked~.custom-control-label::after {
@@ -552,6 +558,72 @@ $light-grey-border: 1px solid #CBCBCB;
 
   .search-titles {
     color: white !important;
+  }
+
+
+  // Changing of styles when they are on the sidebar
+  #tag-content {
+    .tag-column {
+      background-color: transparent;
+      color: white !important;
+      font-weight: 400;
+      border: none;
+      width: 100%;
+      padding: 0;
+
+      .custom-control-label {
+        margin: auto;
+        width: 60%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        &:after, &:before {
+          left: 102% !important;
+        }
+      }
+    }
+
+    .check-selections {
+      display: none;
+    }
+  }
+
+  #filters-sidebar-section, #sortby-sidebar-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    #filter-content, #sort-content {
+      width: 100%;
+
+      label {
+        width: 60%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin: auto;
+
+        input {
+          margin-left: auto;
+        }
+      }
+    }
+  }
+
+  h3 {
+    font-size: 1.5rem !important;
+    font-weight: 500 !important;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+    width: 100%;
+    display: block;
+    text-align: center;
+  }
+
+  #tag-content {
+    padding: 0 !important;
   }
 }
 

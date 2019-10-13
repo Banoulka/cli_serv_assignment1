@@ -192,9 +192,22 @@ function setupOverlayNav() {
         $(".overlay").addClass("active");
         $(".collapse-sidebar").addClass("active");
 
-        // Remove the tags element
-        let tagContent = $("#tag-content").detach();
-        tagContent.appendTo("#tags-sidebar-section");
+        // Figure out what needs to be moved
+        if($(window).width() < 1200) {
+            // Move the tags
+            let tagContent = $("#tag-content").detach();
+            tagContent.appendTo("#tags-sidebar-section");
+        }
+
+        if($(window).width() < 992) {
+            // Move the filters
+            let filterContent = $("#filter-content").detach();
+            filterContent.appendTo("#filters-sidebar-section");
+
+            // Move the sort by content
+            let sortContent = $("#sort-content").detach();
+            sortContent.appendTo("#sortby-sidebar-section");
+        }
     });
 
     $("#dismiss-sidebar, .overlay").on("click", function() {
@@ -203,5 +216,11 @@ function setupOverlayNav() {
 
         let tagContent = $("#tag-content").detach();
         tagContent.appendTo("#tag-row-main");
+
+        let filterContent = $("#filter-content").detach();
+        filterContent.appendTo("#filter-row-main");
+
+        let sortByContent = $("#sort-content").detach();
+        sortByContent.appendTo("#sort-row-main");
     });
 }

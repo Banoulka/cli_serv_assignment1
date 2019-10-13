@@ -3,18 +3,15 @@
 <div class="container section px-0">
     <form action="formtest.php" method="GET" class="search-form row">
 
-        <aside class="collapse-sidebar">
+        <aside class="collapse-sidebar  ">
             <div id="dismiss-sidebar"><i class="far fa-times-circle"></i></div>
             <div class="collapse-sidebar-header">
-                <h3>Filters &amp; Tags</h3>
+                <h2>Filters &amp; Tags</h2>
             </div>
 
             <div id="tags-sidebar-section" class="my-3"></div>
             <div id="filters-sidebar-section" class="my-3"></div>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim est inventore mollitia repudiandae. Ad aut et harum quam sit sunt!</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim est inventore mollitia repudiandae. Ad aut et harum quam sit sunt!</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim est inventore mollitia repudiandae. Ad aut et harum quam sit sunt!</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim est inventore mollitia repudiandae. Ad aut et harum quam sit sunt!</p>
+            <div id="sortby-sidebar-section" class="my-3"></div>
         </aside>
 
         <div class="col-12 px-lg-0 px-xl-2 col-lg-12 col-xl-9">
@@ -42,7 +39,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-2 search-col collapsable">
+                <div class="col-2 search-col collapsable" id="sort-row-main">
+                    <div id="sort-content">
                     <h3 class="search-titles">Sort By</h3>
                     <div class="column">
                         <div class="sort-by-option">
@@ -61,8 +59,10 @@
                             <label>Newest<input type="radio" value="newest" name="sort-by" class="sort-by-radio"></label>
                         </div>
                     </div>
+                    </div>
                 </div>
-                <div class="col-2 search-col collapsable">
+                <div class="col-2 search-col collapsable" id="filter-row-main">
+                    <div id="filter-content">
                     <h3 class="search-titles">Filters</h3>
                     <div class="column">
                         <div class="filter-option">
@@ -80,6 +80,7 @@
                         <div class="filter-option">
                             <label id="released-label">Released<input type="checkbox" class="filter-by-checkbox" name="filters[]" value="released" checked></label>
                         </div>
+                    </div>
                     </div>
                 </div>
             </div>
