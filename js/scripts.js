@@ -196,7 +196,6 @@ function setupOverlayNav() {
         // Figure out what needs to be moved
         if($(window).width() < 1200) {
 
-
             // Move the tags
             let tagContent = $("#tag-content").detach();
             tagContent.appendTo("#tags-sidebar-section");
