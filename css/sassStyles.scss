@@ -347,10 +347,12 @@ $light-grey-border: 1px solid #CBCBCB;
     .sidebar-icon {
       cursor: pointer;
       margin-left: auto;
-      transition: color 0.2s ease-in-out;
+      transition: all 0.2s ease-in-out;
       display: none;
-      padding: 7px 12px;
-      font-size: 1.5rem;
+      width: 20px;
+      height: 20px;
+      padding: 25px;
+      font-size: 1.7rem;
       border-radius: 100%;
       border: 1px solid $dark-blue-text;
 
@@ -362,6 +364,7 @@ $light-grey-border: 1px solid #CBCBCB;
 
       &:hover {
         color: $light-grey-text;
+        border-color: $light-grey-text;
       }
     }
   }
@@ -684,7 +687,7 @@ $light-grey-border: 1px solid #CBCBCB;
   background: rgba(0, 0, 0, 0.7);
   z-index:  998;
   opacity: 0;
-  transition: all 0.5s ease-in-out;
+  //transition: all 0.5s ease-in-out;
 
   &.active {
     display: block;
