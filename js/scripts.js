@@ -5,6 +5,7 @@ $(document).ready(function(){
     setupTagPicker();
     setupOverlayNav();
     setupTagCheckButtons();
+    setMinifiedForm();
 });
 
 function setupCharLimiters() {
@@ -245,5 +246,19 @@ function setupTagCheckButtons () {
         $(".custom-checkbox").each(function() {
             this.children[0].checked = false;
         });
+    });
+}
+
+function setMinifiedForm () {
+    $("#mini-checkbox").click((e) => {
+        let hiddenCheck = $("#hidden-checkbox");
+        if(hiddenCheck.is(":checked")) {
+            console.log("checked");
+            hiddenCheck.prop("checked", false);
+        } else {
+            console.log("not checked.");
+            hiddenCheck.prop("checked", true);
+        }
+        $("#minified-form").submit();
     });
 }

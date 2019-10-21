@@ -1,14 +1,16 @@
 <?php require("partials/header.phtml"); ?>
 
+<form id="minified-form" action="formtest.php" method="post">
+    <input type="checkbox" class="hidden" id="hidden-checkbox" name="minified">
+</form>
+
 <div class="container section px-0">
     <form action="formtest.php" method="GET" class="search-form row">
-
         <aside class="collapse-sidebar  ">
             <div id="dismiss-sidebar"><i class="far fa-times-circle"></i></div>
             <div class="collapse-sidebar-header">
                 <h2>Refine Search</h2>
             </div>
-
             <div id="filters-sidebar-section" class="my-3"></div>
             <div id="sortby-sidebar-section" class="my-3"></div>
             <div id="tags-sidebar-section" class="my-3"></div>
@@ -18,10 +20,12 @@
             <div class="row">
                 <div class="col-md-12 col-lg-8">
                     <h1 class="title px-2">Search Posts <span id="sidebar-open" class="sidebar-icon"><i class="fas fa-bars"></i></span></h1>
-                    <label class="minified-label">
-                        <input type="checkbox" class="minified-input">
-                        <span class="minified-checkbox"></span><span>Minified View?</span>
-                    </label>
+<!--                    <form action="formtest.php" method="POST">-->
+                        <label class="minified-label">
+                            <input id="mini-checkbox" type="checkbox" class="minified-input">
+                            <span class="minified-checkbox"></span><span>Minified View?</span>
+                        </label>
+<!--                    </form>-->
                     <div class="row my-3 align-items-center">
                         <div class="col-4 px-3">
                             <select class="form-control search-select" name="search-type">
