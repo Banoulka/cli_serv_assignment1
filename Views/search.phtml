@@ -1,9 +1,5 @@
 <?php require("partials/header.phtml"); ?>
 
-<form id="minified-form" action="formtest.php" method="post">
-    <input type="checkbox" class="hidden" id="hidden-checkbox" name="minified">
-</form>
-
 <div class="container section px-0">
     <form action="formtest.php" method="GET" class="search-form row">
         <aside class="collapse-sidebar  ">
@@ -114,5 +110,9 @@
 </div>
 
 <div class="overlay"></div>
+
+<form id="minified-form" class="hidden" action="formtest.php" method="post">
+    <input type="checkbox" class="hidden" id="hidden-checkbox" name="minified">
+</form>
 
 <?php require("partials/footer.phtml"); ?>
