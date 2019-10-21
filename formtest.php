@@ -6,7 +6,6 @@ if(isset($_POST )) {
     } else {
         echo "minifed off";
     }
-    die();
 }
 
 //if(isset($_GET)) {
