@@ -724,3 +724,65 @@ $light-grey-border: 1px solid #CBCBCB;
   animation-name: slideOutRight;
   animation-duration: 0.35s;
 }
+
+.profile-menu {
+  width: 100%;
+  min-height: 100px;
+  background-color: #ebebeb;
+  border-radius: 10px;
+  padding: 0.8em 0;
+
+  .menu-item {
+    background-color: white;
+    padding: 0.4em 0.8em;
+    text-align: left;
+    text-transform: uppercase;
+    font-size: 1.4rem;
+    margin: 0 0 15px 0;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+
+    &.active {
+      background-color: $dark-blue-text;
+      color: white !important;
+    }
+
+    &:hover {
+      background-color: #dbdbf2;
+    }
+  }
+}
+.profile-header {
+  width: 100%;
+  height: 75px;
+  padding: 0.8em;
+  background-color: white !important;
+  border-radius: 10px;
+
+  h1 {
+    color: $dark-blue-text !important;
+  }
+}
+
+
+.menu-display {
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  border-radius: 10px;
+  padding: 2em;
+
+  .profile-menu {
+    font-size: 2rem;
+  }
+
+  .profile-name {
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+
+  .aka {
+    color: lightgray;
+    margin: 0;
+  }
+}
