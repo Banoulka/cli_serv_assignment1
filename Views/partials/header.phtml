@@ -42,7 +42,7 @@
                     <button class="btn btn-secondary search-button" type="submit"><i class="fas fa-search"></i></button>
                 </form>
             </div>
-            <?php if($view->user == true) : ?>
+            <?php if (Authentication::isLoggedOn()) : ?>
                 <!-- USER LOGGED IN -->
                 <div class="user d-inline">
                     <div class="text-center">
