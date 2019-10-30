@@ -98,8 +98,8 @@
                 <div class="tag-column">
                 <?php foreach($view->tags as $tag) : ?>
                     <div class="custom-control custom-checkbox">
-                        <input id="<?php echo $tag; ?>-tag" type="checkbox" name="tags[]" class="custom-control-input" value="<?php echo strtolower($tag); ?>" checked>
-                        <label class="custom-control-label" for="<?php echo $tag; ?>-tag"><?php echo $tag; ?></label>
+                        <input id="<?php echo $tag->title; ?>-tag" type="checkbox" name="tags[]" class="custom-control-input" value="<?php echo strtolower($tag->title); ?>" checked>
+                        <label class="custom-control-label" for="<?php echo $tag->title; ?>-tag"><?php echo $tag->title; ?></label>
                     </div>
                 <?php endforeach; ?>
             </div>

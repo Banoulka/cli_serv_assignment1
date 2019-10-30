@@ -6,8 +6,9 @@ spl_autoload_register(function ($className) {
 });
 
 $view = new stdClass();
-$view->title = "ProfileName - uGame";
-$view->page = "profile";
+$view->title = "Logout - uGame";
+$view->page = "logout";
 
-$page = new stdClass();
-require_once("../Views/users/view.phtml");
+Authentication::logout();
+
+Route::redirect("login.php");
