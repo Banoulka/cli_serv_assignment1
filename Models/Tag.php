@@ -5,7 +5,8 @@ require_once "Model.php";
 class Tag extends Model {
 
     // Set the class and table of the model
-    protected static function setClassAndTable() {
+    protected static function setClassAndTable()
+    {
         parent::$className = "Tag";
         parent::$tableName = "tags";
     }

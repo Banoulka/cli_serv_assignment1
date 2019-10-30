@@ -5,7 +5,8 @@ require_once "Model.php";
 class User extends Model {
 
     // Set the class and table of the model
-    protected static function setClassAndTable() {
+    protected static function setClassAndTable()
+    {
         parent::$className = "User";
         parent::$tableName = "users";
     }

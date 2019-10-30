@@ -8,17 +8,20 @@ class Authentication {
     private static $sessionID = "user";
     public static $err;
 
-    private static function logonUser(User $user) {
+    private static function logonUser(User $user)
+    {
         Session::setSession(self::$sessionID, serialize($user));
     }
 
-    public static function logout() {
+    public static function logout()
+    {
         if (self::isLoggedOn()) {
             Session::removeSession(self::$sessionID);
         }
     }
 
-    public static function validateAndLogonUser($email, $password) {
+    public static function validateAndLogonUser($email, $password)
+    {
         self::$err = [];
         $foundUser = User::findByEmail($email);
         if ($foundUser) {
@@ -34,11 +37,13 @@ class Authentication {
         return false;
     }
 
-    public static function isLoggedOn() {
+    public static function isLoggedOn()
+    {
         return Session::isSet(self::$sessionID);
     }
 
-    public static function User() {
+    public static function User()
+    {
         return unserialize(Session::getSession(self::$sessionID));
     }
 }
