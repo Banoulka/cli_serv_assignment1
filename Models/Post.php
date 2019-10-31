@@ -3,8 +3,9 @@
 require_once "Model.php";
 require_once "User.php";
 require_once "Tag.php";
+require_once "Comparable.php";
 
-class Post extends Model {
+class Post extends Model implements Comparable {
 
     const TYPE_ALPHA = "alpha", TYPE_BETA = "beta", TYPE_RELEASED = "released", TYPE_CONCEPT = "concept";
 
@@ -56,6 +57,21 @@ class Post extends Model {
         $now = new DateTime();
         $this->time = $now->getTimestamp();
         parent::saveModel();
+    }
+
+    public function compareTo(Comparable $other)
+    {
+        // TODO: Implement compareTo() method.
+        if ($other instanceof Post) {
+            if ($this->time == $other->time ) {
+                return 0;
+            } else if ($this->time < $other->time ) {
+                return 1;
+            } else {
+                return -1;
+            }
+        }
+        return 0;
     }
 
     public function getTimeSince() {
