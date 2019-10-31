@@ -32,9 +32,9 @@
 
         <div class="collapse navbar-collapse justify-content-between" id="navbarToggler" aria-expanded="false">
             <div class="navbar-nav my-sm-3">
-                <a href="../page1.php" class="nav-item nav-link<?php if(!strcmp($view->page, "page1")) echo " active"; ?>">Page1</a>
-                <a href="../search.php" class="nav-item nav-link<?php if(!strcmp($view->page, "search")) echo " active"; ?>">Search</a>
-                <a href="#" class="nav-item nav-link<?php if(!strcmp($view->page, "page3")) echo " active"; ?>">Page3</a>
+                <a href="../page1.php" class="nav-item nav-link <?php Helpers::echoActive($view->page, "page1") ?>">Page1</a>
+                <a href="../search.php" class="nav-item nav-link <?php Helpers::echoActive($view->page, "search") ?>">Search</a>
+                <a href="#" class="nav-item nav-link <?php Helpers::echoActive($view->page, "page3") ?>">Page3</a>
             </div>
             <div class="search">
                 <form action="" class="d-flex justify-content-center align-items-center">
@@ -46,12 +46,16 @@
                 <!-- USER LOGGED IN -->
                 <div class="user d-inline">
                     <div class="text-center">
-                        <a href="/users/view.php" class="m-0 username text-body" data-toggle="tooltip" data-placement="bottom" title="Profile">Banoulka</a>
+                        <a href="/users/view.php" class="m-0 username text-body <?php Helpers::echoActive($view->page, "profile") ?>" data-toggle="tooltip" data-placement="bottom" title="Profile">
+                            <?php echo isset(Authentication::User()->display_name) ?
+                                Authentication::User()->display_name : Authentication::User()->first_name;?>
+                        </a>
                     </div>
                     <a class="btn toolover <?php if($view->page == "create-post") echo "active"; ?>" href="../posts/create.php" data-toggle="tooltip" data-placement="bottom" title="Create New Post"><i class="fas fa-edit"></i></a>
                     <div class="notify-drop d-inline-block" data-placement="bottom" title="Notifications">
                         <?php require("notifications.phtml") ?>
                     </div>
+                    <a class="btn toolover logout" href="/users/logout.php" data-toggle="tooltip" data-placement="bottom" title="Logout"><i class="fas fa-sign-out-alt"></i></a>
                 </div>
             <?php else : ?>
                 <!-- USER NOT LOGGED IN -->

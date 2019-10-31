@@ -1,5 +1,13 @@
 <?php require(__DIR__ . "/../partials/header.phtml"); ?>
 
+<?php if(isset($view->errors)) : ?>
+    <div class="alert alert-danger alert-dismissable fade show mb-0" role="alert">
+        <?php foreach ($view->errors as $err) echo $err; ?>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+<?php endif; ?>
 <div id="signup-page" class="signup-container d-flex">
     <div id="signup" class="signup-box m-auto flex-column" style="<?php echo "display: " . ($page->signup == true ? "flex" : "none"); ?>">
         <div class="d-flex flex-row justify-content-center align-items-center">
@@ -12,21 +20,25 @@
             <div class="form-group row">
                 <div class="col-6">
                     <label for="inputFirstname">First name</label>
-                    <input type="text" name="firstname" class="form-control" id="inputFirstname" placeholder="John" required>
+                    <input type="text" name="first_name" class="form-control" id="inputFirstname" placeholder="John" required value="<?php if(isset($view->formData)) echo $view->formData["first_name"]; ?>">
                 </div>
                 <div class="col-6">
                     <label for="inputSurname">Surname</label>
-                    <input type="text" name="surname" class="form-control" id="inputSurname" placeholder="Smith" required>
+                    <input type="text" name="last_name" class="form-control" id="inputSurname" placeholder="Smith" required value="<?php if(isset($view->formData)) echo $view->formData["last_name"]; ?>">
                 </div>
             </div>
             <div class="form-group">
                 <label for="inputEmail">Email address</label>
-                <input type="email" name="name" class="form-control" id="inputEmail" placeholder="jsmith0600@gmail.com" required>
+                <input type="email" name="email" class="form-control" id="inputEmail" placeholder="jsmith0600@gmail.com" required value="<?php if(isset($view->formData)) echo $view->formData["email"]; ?>">
                 <small class="form-text text-muted text-left">We'll never share your email with anyone else.</small>
             </div>
             <div class="form-group">
-                <label for="inputPassword">Password</label>
-                <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password" required>
+                <label for="inputConfirm_Password">Password</label>
+                <input type="password" name="password" class="form-control" id="inputConfirm_Password" placeholder="Password" required value="<?php if(isset($view->formData)) echo $view->formData["password"]; ?>">
+            </div>
+            <div class="form-group">
+                <label for="inputConfirm_Password">Confirm Password</label>
+                <input type="password" name="confirm_password" class="form-control" id="inputConfirm_Password" placeholder="Password" required value="<?php if(isset($view->formData)) echo $view->formData["confirm_password"]; ?>">
             </div>
             <div class="submit-area">
                 <div class="d-flex flex-row align-items-center justify-content-center mt-3">
@@ -47,14 +59,14 @@
         </div>
         <p class="subtext align-self-center d-block">Dont have an account? Register one <span id="login-to-sign">here.</span></p>
         <hr/>
-        <form action="#" method="POST" class="text-left">
+        <form action="/users/login.php" method="POST" class="text-left">
             <div class="form-group">
                 <label for="loginEmail">Email address</label>
-                <input type="email" name="name" class="form-control" id="loginEmail" placeholder="jsmith0600@gmail.com" required>
+                <input type="email" name="email" class="form-control" id="loginEmail" placeholder="jsmith0600@gmail.com" required value="<?php if(isset($view->formDataLogin)) echo $view->formDataLogin["email"]; ?>">
             </div>
             <div class="form-group">
                 <label for="loginPassword">Password</label>
-                <input type="password" name="password" class="form-control" id="loginPassword" placeholder="Password" required>
+                <input type="password" name="password" class="form-control" id="loginPassword" placeholder="Password" required value="<?php if(isset($view->formDataLogin)) echo $view->formDataLogin["password"]; ?>">
             </div>
             <div class="d-flex flex-row justify-content-around align-items-center">
                 <button type="submit" name="submit" class="btn btn-success d-inline">Login</button>

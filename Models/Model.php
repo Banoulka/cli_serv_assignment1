@@ -77,7 +77,8 @@ abstract class Model {
      * @param $keyValueArr ArrayObject associative array with key value pairs
      * @return PDOStatement A pdo statement containing the prepared SQL and values
      */
-    private static function findByKey($keyValueArr) {
+    private static function findByKey($keyValueArr)
+    {
         $tableName = self::$tableName;
         $sql = "SELECT * FROM $tableName WHERE ";
         foreach ($keyValueArr as $k => $v) {
@@ -122,7 +123,8 @@ abstract class Model {
     protected abstract function save();
 
     // Base CRUD methods
-    protected function saveModel() {
+    protected function saveModel()
+    {
         // Get tablename
         $tableName = self::$tableName;
 
@@ -159,7 +161,7 @@ abstract class Model {
         $stmt = self::db()->prepare($sql);
         $stmt->execute();
 
-        // Display errors if there are any
+        // Display errors if there are any (shouldnt be if i can program right)
         if(!is_null($stmt->errorInfo()[2]))
             var_dump($stmt->errorInfo());
     }
