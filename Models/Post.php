@@ -58,28 +58,6 @@ class Post extends Model {
         parent::saveModel();
     }
 
-    // Relationships
-
-    /**
-     * @return User
-     * */
-    public function user() {
-        return User::find([
-            "id" => $this->user_id,
-        ]);
-    }
-
-    public function tags() {
-        self::setCustomClassAndTable("Tag", "post_tags");
-        $postTags = parent::findAllByKey(["post_id" => $this->id]);
-        $tags = array();
-        foreach ($postTags as $tag) {
-            $tag->title = Tag::find(["id" => $tag->tag_id])->title;
-            array_push($tags, $tag);
-        }
-        return $tags;
-    }
-
     public function getTimeSince() {
         $postDateTime = new DateTime();
         $postDateTime->setTimestamp($this->time);
@@ -100,11 +78,11 @@ class Post extends Model {
 
         } else if ($difference->h > 0) {
             // Print hours
-            return $difference->h . " hrs";
+            return $difference->h . " hr" . ($difference->h != 1 ? "s" : "");
 
         } else if ($difference->i > 0) {
             // Print minutes
-            return $difference->i . " mins";
+            return $difference->i . " min" . ($difference->i != 1 ? "s" : "");
 
         } else if ($difference->s > 30) {
             // Print seconds
@@ -114,5 +92,27 @@ class Post extends Model {
             // Print just now
             return "just now";
         }
+    }
+
+    // Relationships
+
+    /**
+     * @return User
+     * */
+    public function user() {
+        return User::find([
+            "id" => $this->user_id,
+        ]);
+    }
+
+    public function tags() {
+        self::setCustomClassAndTable("Tag", "post_tags");
+        $postTags = parent::findAllByKey(["post_id" => $this->id]);
+        $tags = array();
+        foreach ($postTags as $tag) {
+            $tag->title = Tag::find(["id" => $tag->tag_id])->title;
+            array_push($tags, $tag);
+        }
+        return $tags;
     }
 }
