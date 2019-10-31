@@ -7,8 +7,7 @@ spl_autoload_register(function ($className) {
 
 $view = new stdClass();
 $view->title = "ProfileName - uGame";
-$view->page = "viewProfile";
+$view->page = "profile";
 
 $page = new stdClass();
-echo "View profile page";
-//require_once("../Views/users/profile.phtml");
+require_once("../Views/users/profile.phtml");

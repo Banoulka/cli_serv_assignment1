@@ -8,9 +8,9 @@ spl_autoload_register(function ($className) {
 });
 
 $view = new stdClass();
-$view->page = "page1";
+$view->page = "games";
 $view->title = "Page 1 - uGame";
 $view->posts = Post::all();
 
-require_once("Views/page1.phtml");
+require_once("Views/games.phtml");
 

@@ -37,7 +37,7 @@ if (isset($_POST["submit"])) {
 
         // Login user
         Authentication::validateAndLogonUser($user->email, $_POST["password"]);
-        Route::redirect("/page1.php");
+        Route::redirect("/games.php");
     }
 }
 

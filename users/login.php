@@ -17,7 +17,7 @@ if (isset($_POST["submit"])) {
 
     if (Authentication::validateAndLogonUser(htmlentities($_POST["email"]), htmlentities($_POST["password"]) )) {
         // If logon redirct to page1
-        Route::redirect("/page1.php");
+        Route::redirect("/games.php");
     } else {
         $view->errors = Authentication::$err;
     }

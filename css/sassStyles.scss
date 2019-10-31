@@ -738,13 +738,16 @@ $light-grey-border: 1px solid #CBCBCB;
 
   .menu-item {
     background-color: white;
+    display: block;
     padding: 0.4em 0.8em;
     text-align: left;
-    text-transform: uppercase;
+    text-transform: capitalize;
     font-size: 1.4rem;
     margin: 0 0 15px 0;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
+    text-decoration: none;
+    color: inherit !important;
 
     &.active {
       background-color: $dark-blue-text;
@@ -788,5 +791,11 @@ $light-grey-border: 1px solid #CBCBCB;
   .aka {
     color: lightgray;
     margin: 0;
+  }
+
+  .user-label {
+    color: $light-grey-text !important;
+    font-weight: 300;
+    margin-top: 30px;
   }
 }

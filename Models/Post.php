@@ -2,6 +2,7 @@
 
 require_once "Model.php";
 require_once "User.php";
+require_once "Tag.php";
 
 class Post extends Model {
 
@@ -12,6 +13,12 @@ class Post extends Model {
     {
         parent::$className = "Post";
         parent::$tableName = "posts";
+    }
+
+    protected static function setCustomClassAndTable($className, $tableName)
+    {
+        parent::$className = $className;
+        parent::$tableName = $tableName;
     }
 
     // Writable attributes to be pulled from the database
@@ -52,6 +59,7 @@ class Post extends Model {
     }
 
     // Relationships
+
     /**
      * @return User
      * */
@@ -59,5 +67,16 @@ class Post extends Model {
         return User::find([
             "id" => $this->user_id,
         ]);
+    }
+
+    public function tags() {
+        self::setCustomClassAndTable("Tag", "post_tags");
+        $postTags = parent::findAllByKey(["post_id" => $this->id]);
+        $tags = array();
+        foreach ($postTags as $tag) {
+            $tag->title = Tag::find(["id" => $tag->tag_id])->title;
+            array_push($tags, $tag);
+        }
+        return $tags;
     }
 }

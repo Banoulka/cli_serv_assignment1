@@ -17,8 +17,8 @@
                     <p><?php echo $post->body; ?></p>
                 </div>
                 <div class="game-extras">
-                    <?php foreach($view->tags as $tag ) : ?>
-                        <span class="game-tag"><?php echo $tag; ?></span>
+                    <?php foreach($post->tags() as $tag ) : ?>
+                        <span class="game-tag"><?php echo $tag->title; ?></span>
                     <?php endforeach; ?>
                     <span class="game-date">Created <?php echo date("jS \of F Y H:i", $post->time); ?></span>
                 </div>

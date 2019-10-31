@@ -10,13 +10,18 @@ require_once "../Models/Post.php";
 $view = new stdClass();
 $view->title = "View Post - uGame";
 $view->page = "create-post";
-$view->owner = true;
 $view->tags = ["Action", "Adventure", "SHit"];
 
 if(isset($_GET["post_id"])) {
+    // Find the post associated with the id in the url
     $view->post = Post::find(["id" => $_GET["post_id"]]);
+
+    // Check if the current logged in user is the owner of the post
+    if($view->post)
+        $view->owner = Authentication::User()->id == $view->post->user()->id;
+
     require_once("../views/posts/read.phtml");
 } else {
-    Route::redirect("../page1.php");
+    Route::redirect("../games.php");
 }
 

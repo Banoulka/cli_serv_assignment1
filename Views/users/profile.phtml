@@ -1,0 +1,37 @@
+<?php require(__DIR__ . "/../partials/header.phtml"); ?>
+<?php $user = Authentication::User(); ?>
+<div class="container section">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="profile-header">
+                <h1>Your Profile:</h1>
+            </div>
+            <div class="profile-menu">
+                <a href="#" class="menu-item active">Details</a>
+                <a href="#" class="menu-item">Messages &amp; Followers</a>
+                <a href="#" class="menu-item">Posts</a>
+                <a href="#" class="menu-item">Watchlist</a>
+                <a href="#" class="menu-item">Settings</a>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="menu-display">
+                <div class="row">
+                    <div class="col-8">
+                        <h1 class="profile-name"><?php echo $user->name(); ?></h1>
+                        <p class="aka">aka</p>
+                        <h4 class="mb-5"><?php echo isset($user->display_name) ? $user->display_name : "No display name set"?></h4>
+                        <h6 class="user-label">Email:</h6>
+                        <p><?php echo $user->email; ?></p>
+                        <h6 class="user-label">Password:</h6>
+                        <p>*********</p>
+                        <h6 class="user-label">Bio:</h6>
+                        <p><?php echo isset($user->bio) ? $user->bio : "No bio set"; ?></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php require(__DIR__ . "/../partials/footer.phtml") ?>
