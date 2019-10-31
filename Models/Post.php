@@ -53,8 +53,8 @@ class Post extends Model {
     public function save()
     {
         self::setClassAndTable();
-        $this->time = strtotime(date("Y-m-d H:i:s"));
-        var_dump($this);
+        $now = new DateTime();
+        $this->time = $now->getTimestamp();
         parent::saveModel();
     }
 
@@ -78,5 +78,41 @@ class Post extends Model {
             array_push($tags, $tag);
         }
         return $tags;
+    }
+
+    public function getTimeSince() {
+        $postDateTime = new DateTime();
+        $postDateTime->setTimestamp($this->time);
+        $nowDateTime = new DateTime();
+
+        $difference = $nowDateTime->diff($postDateTime);
+        if ($difference->y > 0) {
+            // Print full date plus year
+            return $postDateTime->format("d F Y \a\\t G:i");
+        }
+        if ($difference->d > 1) {
+            // Print full date
+            return $postDateTime->format("d F \a\\t G:i");
+
+        } else if ($difference->d == 1) {
+            // Print yesterday
+            return "yesterday at " . $difference->h . ":" . $difference->i;
+
+        } else if ($difference->h > 0) {
+            // Print hours
+            return $difference->h . " hrs";
+
+        } else if ($difference->i > 0) {
+            // Print minutes
+            return $difference->i . " mins";
+
+        } else if ($difference->s > 30) {
+            // Print seconds
+            return $difference->s . " sec";
+
+        } else {
+            // Print just now
+            return "just now";
+        }
     }
 }
