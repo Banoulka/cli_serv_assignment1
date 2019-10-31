@@ -1,6 +1,7 @@
 <?php
 
 require_once "Model.php";
+require_once "Post.php";
 
 class User extends Model {
 
@@ -47,6 +48,10 @@ class User extends Model {
         ]);
     }
 
+    public function name() {
+        return $this->first_name . " " . $this->last_name;
+    }
+
     // CRUD methods
     public function save()
     {
@@ -59,4 +64,10 @@ class User extends Model {
 
     // Relationships
 
+    /**
+     * @return Post[]
+     * */
+    public function posts() {
+        return Post::find(["user_id" => $this->id]);
+    }
 }

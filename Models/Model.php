@@ -57,7 +57,7 @@ abstract class Model {
      * This is a reusable class that allows a sub class of model to find
      * all by setting a table name and getting all in the form of a class
      * with those stats.
-     * @return GenericClass[] collection of class objects from the database
+     * @return array collection of class objects from the database
      * */
     protected static function getAllByTableName()
     {

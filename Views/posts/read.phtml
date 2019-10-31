@@ -1,26 +1,26 @@
 <?php require(__DIR__ . "/../partials/header.phtml"); ?>
-
+<?php $post = $view->post; ?>
 <div class="container section">
+    <?php if($post) : ?>
     <div class="post">
         <div class="row text-center">
             <div class="col-12">
-                <h3 class="game-state concept"></h3>
+                <h3 class="game-state <?php echo $post->type_stage; ?>"></h3>
             </div>
         </div>
         <div class="row">
             <div class="col-md-8">
-                <h1 class="game-title">Gears of War 2</h1>
-                <p class="game-author">Johnny Davidson</p>
-                <p class="game-desc">Gears of war is about burley man sitting behind cover and shooting at the mean baddies. Aliens come to invade earth like they do and finally a big burley man with armour as big as kitchenware is sent into the depths of hell to purge the alien scum away from our beloved earth.</p>
+                <h1 class="game-title"><?php echo $post->title ?></h1>
+                <p class="game-author"><?php echo $post->user()->name(); ?></p>
+                <p class="game-desc"><?php echo $post->description ?></p>
                 <div class="game-body">
-                    <p>Morbi vitae est nec sem viverra eleifend nec non purus. Etiam odio odio, tempus euismod mollis ac, blandit ac quam. Suspendisse iaculis massa diam, id pharetra quam ornare in. Sed suscipit magna non nunc sodales suscipit. Sed vel nunc a est egestas pulvinar a ac diam. In nec turpis gravida velit volutpat facilisis. Nam vel pulvinar ipsum. Aenean ac vehicula risus. Suspendisse egestas libero est, eget venenatis orci blandit vel.</p>
-                    <p>Integer volutpat velit risus, ut ultrices nulla vestibulum a. Ut condimentum convallis odio, eu dignissim nisl aliquam in. Curabitur ac pellentesque libero. Quisque efficitur ultricies lectus, at consequat mauris congue a. Morbi volutpat laoreet ornare. Pellentesque eget urna elit. Praesent malesuada felis vel sem imperdiet ornare.</p>
+                    <p><?php echo $post->body; ?></p>
                 </div>
                 <div class="game-extras">
                     <?php foreach($view->tags as $tag ) : ?>
                         <span class="game-tag"><?php echo $tag; ?></span>
                     <?php endforeach; ?>
-                    <span class="game-date">Created on 2nd of December 2019</span>
+                    <span class="game-date">Created <?php echo date("jS \of F Y H:i", $post->time); ?></span>
                 </div>
                 <div class="game-stats">
                     <p class="game-likes"><i class="far fa-thumbs-up"></i><span class="number">34</span>Like this</p>
@@ -69,6 +69,11 @@
             </div>
         </div>
     </div>
+    <?php else : ?>
+        <h1 class="display-3 text-danger text-center">Post not found</h1>
+        <h4 class="display-5 text-danger text-center" style="margin-bottom: 200px">This post may have been deleted or be unavailable</h4>
+        <h4 class="text-danger text-center">:(</h4>
+    <?php endif; ?>
 </div>
 
 <?php require(__DIR__ . "/../partials/footer.phtml") ?>
