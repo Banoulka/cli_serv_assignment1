@@ -55,6 +55,7 @@ class User extends Model {
     // CRUD methods
     public function save()
     {
+        // TODO: revamp email to id (duh)
         // Check if user already exists
         $foundUser = isset($this->oldEmail) ? self::findByEmail($this->oldEmail) : self::findByEmail($this->email);
         self::setClassAndTable();
