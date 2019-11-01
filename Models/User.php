@@ -55,11 +55,35 @@ class User extends Model {
     // CRUD methods
     public function save()
     {
-        // Encrypt the password
-        $this->password = password_hash($this->password, PASSWORD_DEFAULT);
+        // Check if user already exists
+        $foundUser = isset($this->oldEmail) ? self::findByEmail($this->oldEmail) : self::findByEmail($this->email);
         self::setClassAndTable();
-        parent::saveModel();
-        return true;
+
+        if($foundUser && isset($this->oldEmail)) {
+
+            // Update with old email
+            $oldEmail = $this->oldEmail;
+            unset($this->oldEmail);
+
+            parent::updateModel([
+                "email" => $oldEmail
+            ]);
+            return true;
+        } else if ($foundUser) {
+
+            parent::updateModel([
+                "email" => $this->email
+            ]);
+            return true;
+        } else {
+            // Fresh save
+
+            // Encrypt the password
+            $this->password = password_hash($this->password, PASSWORD_DEFAULT);
+
+            parent::saveModel();
+            return true;
+        }
     }
 
     // Relationships

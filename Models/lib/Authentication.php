@@ -46,4 +46,10 @@ class Authentication {
     {
         return unserialize(Session::getSession(self::$sessionID));
     }
+
+    public static function refresh()
+    {
+        $refreshedUser = User::findByEmail(self::User()->email);
+        Session::setSession(self::$sessionID, serialize($refreshedUser));
+    }
 }

@@ -12,12 +12,5 @@ $view->page = "games";
 $view->title = "Games - uGame";
 $view->posts = array_reverse(Post::all());
 
-$loggedInUser = Authentication::User();
-
-var_dump(
-    $loggedInUser
-);
-
-
 require_once("Views/games.phtml");
 

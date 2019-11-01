@@ -128,15 +128,7 @@ abstract class Model {
         // Get tablename
         $tableName = self::$tableName;
 
-        // Get array of data from the current model
-        $dataAttributes = array();
-
-        // Get the variables and attributes from the array and add them to the
-        // sql query
-        foreach ($this as $var => $value) {
-            if($var != "errs")
-            $dataAttributes[$var] = $value;
-        }
+        $dataAttributes = $this->getAttributes();
 
         // Start building the SQL query
         $sql = "INSERT INTO $tableName ( ";
@@ -164,6 +156,59 @@ abstract class Model {
         // Display errors if there are any (shouldnt be if i can program right)
         if(!is_null($stmt->errorInfo()[2]))
             var_dump($stmt->errorInfo());
+    }
+
+    protected function updateModel($whereKeyValArr)
+    {
+        if(count($whereKeyValArr) > 1 ) {
+            return false;
+        }
+
+        $tableName = self::$tableName;
+
+        $dataAttributes = $this->getAttributes();
+
+        $sql = "UPDATE $tableName SET ";
+        foreach ($dataAttributes as $attKey => $attValue) {
+            if ($attKey != "errs" && $attKey != "attributes" && !is_null($attValue)) {
+
+                if (is_numeric($attValue))
+                    $sql .= "$attKey = $attValue";
+                else
+                    $sql .= "$attKey = '$attValue'";
+
+                // Check if at the end of the attributes
+                if ($attValue != end($dataAttributes))
+                    $sql .= ", ";
+            }
+        }
+        $key = array_keys($whereKeyValArr)[0];
+        $value = array_values($whereKeyValArr)[0];
+
+        $sql .= " WHERE $key = '$value'";
+
+        $stmt = self::db()->prepare($sql);
+        $completed = $stmt->execute();
+
+        // Display errors if there are any (shouldnt be if i can program right)
+        if(!is_null($stmt->errorInfo()[2]))
+            var_dump($stmt->errorInfo());
+
+        return $completed;
+    }
+
+    private function getAttributes()
+    {
+        // Get array of data from the current model
+        $dataAttributes = array();
+
+        // Get the variables and attributes from the array and add them to the
+        // sql query
+        foreach ($this as $key => $value) {
+            $dataAttributes[$key] = $value;
+        }
+
+        return $dataAttributes;
     }
 
 }

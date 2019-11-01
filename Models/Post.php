@@ -88,8 +88,8 @@ class Post extends Model implements Comparable {
             return $postDateTime->format("d F \a\\t G:i");
 
         } else if ($difference->d == 1) {
-            // Print yesterday
-            return "yesterday at " . $difference->h . ":" . $difference->i;
+            // Print yesterday and time
+            return "Yesterday at " . $postDateTime->format("H:i");
 
         } else if ($difference->h > 0) {
             // Print hours
