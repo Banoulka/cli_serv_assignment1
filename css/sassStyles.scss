@@ -779,6 +779,13 @@ $light-grey-border: 1px solid #CBCBCB;
   border-radius: 10px;
   padding: 2em;
 
+  .edit-prof {
+    padding-left: 0.2em;
+    font-size: 2rem;
+    border: 1px solid rgba(211, 211, 211, 1);
+    border-radius: 5px;
+  }
+
   .profile-menu {
     font-size: 2rem;
   }

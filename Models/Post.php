@@ -61,7 +61,6 @@ class Post extends Model implements Comparable {
 
     public function compareTo(Comparable $other)
     {
-        // TODO: Implement compareTo() method.
         if ($other instanceof Post) {
             if ($this->time == $other->time ) {
                 return 0;

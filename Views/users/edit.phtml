@@ -1,0 +1,46 @@
+<?php require(__DIR__ . "/../partials/header.phtml"); ?>
+<?php $user = Authentication::User(); ?>
+<div class="container section">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="profile-header">
+                <h1>Your Profile:</h1>
+            </div>
+            <div class="profile-menu">
+                <a href="#" class="menu-item active">Details</a>
+                <a href="#" class="menu-item">Messages &amp; Followers</a>
+                <a href="#" class="menu-item">Posts</a>
+                <a href="#" class="menu-item">Watchlist</a>
+                <a href="#" class="menu-item">Settings</a>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="menu-display">
+                <div class="row">
+                    <div class="col-12">
+                        <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
+                            <div class="d-flex flex-row align-items-center justify-space-between">
+                                <input type="text" name="first_name" class="form-control edit-prof mr-3" value="<?php echo $user->first_name ?>" placeholder="<?php echo $user->first_name; ?>">
+                                <input type="text" name="last_name" class="form-control edit-prof" value="<?php echo $user->last_name ?>" placeholder="<?php echo $user->last_name; ?>">
+                            </div>
+                            <p class="aka">aka</p>
+                            <input type="text" name="display_name" class="form-control edit-prof" style="font-size: 1.4rem" value="<?php echo isset($user->display_name) ? $user->display_name : "" ?>" placeholder="<?php echo isset($user->display_name) ? $user->display_name : "No display name set" ?>">
+                            <label for="email" class="user-label">Email:</label>
+                            <input type="email" id="email" name="email" class="form-control edit-prof" style="font-size: 1rem;" value="<?php echo $user->email ?>" placeholder="<?php echo $user->email ?>">
+                            <h6 class="user-label">Password:</h6>
+                            <p>*********</p>
+                            <label for="bio" class="user-label mt-0">Bio:</label>
+                            <textarea id="bio" name="bio" class="form-control edit-prof" style="font-size: 1rem;" placeholder="<?php echo isset($user->bio) ? "" : "No bio set" ?>"><?php echo isset($user->bio) ? $user->bio : ""?></textarea>
+                            <div class="d-flex flex-row align-items-center">
+                                <input type="submit" name="submit" class="btn btn-primary mt-4 mr-2" value="Save">
+                                <a href="profile.php" class="btn btn-outline-danger mt-4 mx-2">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php require(__DIR__ . "/../partials/footer.phtml") ?>
