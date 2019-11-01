@@ -10,7 +10,6 @@ require_once "../Models/Post.php";
 $view = new stdClass();
 $view->title = "View Post - uGame";
 $view->page = "create-post";
-$view->tags = ["Action", "Adventure", "SHit"];
 
 if(isset($_GET["post_id"])) {
     // Find the post associated with the id in the url
@@ -20,7 +19,7 @@ if(isset($_GET["post_id"])) {
     if($view->post)
         $view->owner = Authentication::User()->id == $view->post->user()->id;
 
-    require_once("../views/posts/read.phtml");
+    require_once("../views/posts/view.phtml");
 } else {
     Route::redirect("../games.php");
 }

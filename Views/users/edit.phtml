@@ -18,19 +18,29 @@
             <div class="menu-display">
                 <div class="row">
                     <div class="col-12">
-                        <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
+                        <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST" enctype="multipart/form-data">
                             <div class="d-flex flex-row align-items-center justify-space-between">
                                 <input type="text" name="first_name" class="form-control edit-prof mr-3" value="<?php echo $user->first_name ?>" placeholder="<?php echo $user->first_name; ?>">
                                 <input type="text" name="last_name" class="form-control edit-prof" value="<?php echo $user->last_name ?>" placeholder="<?php echo $user->last_name; ?>">
                             </div>
                             <p class="aka">aka</p>
                             <input type="text" name="display_name" class="form-control edit-prof" style="font-size: 1.4rem" value="<?php echo isset($user->display_name) ? $user->display_name : "" ?>" placeholder="<?php echo isset($user->display_name) ? $user->display_name : "No display name set" ?>">
+
                             <label for="email" class="user-label">Email:</label>
                             <input type="email" id="email" name="email" class="form-control edit-prof" style="font-size: 1rem;" value="<?php echo $user->email ?>" placeholder="<?php echo $user->email ?>">
+
                             <h6 class="user-label">Password:</h6>
                             <p>*********</p>
+
                             <label for="bio" class="user-label mt-0">Bio:</label>
                             <textarea id="bio" name="bio" class="form-control edit-prof" style="font-size: 1rem;" placeholder="<?php echo isset($user->bio) ? "" : "No bio set" ?>"><?php echo isset($user->bio) ? $user->bio : ""?></textarea>
+
+                            <img src="../uploads/profile_pictures/<?php echo $user->display_pic; ?>" class="profile-pic edit" alt="Profile Picture">
+                            <div class="custom-file">
+                                <input type="file" name="display_pic" class="custom-file-input" id="custom-file" accept="image/*">
+                                <label for="custom-file" class="custom-file-label">Choose file</label>
+                            </div>
+
                             <div class="d-flex flex-row align-items-center">
                                 <input type="submit" name="submit" class="btn btn-primary mt-4 mr-2" value="Save">
                                 <a href="profile.php" class="btn btn-outline-danger mt-4 mx-2">Cancel</a>

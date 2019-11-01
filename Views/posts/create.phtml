@@ -48,12 +48,12 @@
                         <select class="custom-select" id="tags">
                             <option selected class="default-tag">Select a tag</option>
                             <?php foreach($view->tags as $tag) : ?>
-                                <option value="<?php echo $tag;?>"><?php echo $tag;?></option>
+                                <option value="<?php echo $tag->title;?>"><?php echo $tag->title;?></option>
                             <?php endforeach; ?>
                         </select>
                         <div>
                         <?php foreach($view->tags as $tag) : ?>
-                            <input type="checkbox" name="tags[]" class="hidden" id="<?php echo $tag; ?>" value="<?php echo $tag; ?>">
+                            <input type="checkbox" name="tags[]" class="hidden" id="<?php echo $tag->id; ?>" value="<?php echo $tag->title; ?>">
                         <?php endforeach; ?>
                         </div>
                         <p class="chars text-right m-0 pt-1" id="tag-limit-p">Tag Limit: <span id="tag-limits">4</span> tags</p>

@@ -1,0 +1,18 @@
+<?php require(__DIR__ . "/../partials/header.phtml"); ?>
+<?php $user = $view->user ?>
+
+<div class="container section">
+    <?php if($user) : ?>
+    <div class="row">
+        <div class="col-12">
+            <h3 class="title"><?php echo $user->name(); ?></h3>
+
+        </div>
+    </div>
+    <?php else : ?>
+        <h1 class="display-4 text-danger text-center">User not found</h1>
+        <h4 class="text-danger text-center">:(</h4>
+        <div style="margin: 150px 0"></div>
+    <?php endif; ?>
+</div>
+<?php require(__DIR__ . "/../partials/footer.phtml") ?>

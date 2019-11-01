@@ -1,9 +1,18 @@
 <?php
 
+session_start();
+spl_autoload_register(function ($className) {
+    require_once "../Models/lib/" . $className . ".php";
+});
+
+// Require authentication to get to this page
+require_once "../auth.php";
+
+require_once "../Models/Post.php";
+
 $view = new stdClass();
 $view->title = "Create New Post - uGame";
 $view->page = "create-post";
-$view->user = true;
-$view->tags = ["Action", "Shooter", "Fighting", "Stealth", "Survival", "Adventure", "Horror"];
+$view->tags = Tag::all();
 
 require_once("../views/posts/create.phtml");

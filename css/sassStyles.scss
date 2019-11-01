@@ -805,4 +805,16 @@ $light-grey-border: 1px solid #CBCBCB;
     font-weight: 300;
     margin-top: 30px;
   }
+
+  .profile-pic {
+    height: auto;
+    max-height: 350px;
+    width: 100%;
+    border-radius: 6px;
+    margin: 20px 0;
+
+    &.edit {
+      width: 250px;
+    }
+  }
 }

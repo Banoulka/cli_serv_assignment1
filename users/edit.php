@@ -13,6 +13,7 @@ $view->title = "ProfileName - uGame";
 $view->page = "profile";
 
 if (isset($_POST["submit"])) {
+
     $user = Authentication::User();
     $user->first_name = htmlentities($_POST["first_name"]);
     $user->last_name = htmlentities($_POST["last_name"]);
@@ -21,16 +22,35 @@ if (isset($_POST["submit"])) {
     $user->email = htmlentities($_POST["email"]);
     $user->bio = htmlentities($_POST["bio"]);
 
+    // If there is a file to upload, process it
+    if (count($_FILES) > 0) {
+        $imageFileType =  strtolower(pathinfo($_FILES["display_pic"]["name"], PATHINFO_EXTENSION ));
+
+        $targetDir = "../uploads/profile_pictures/";
+        $userFileName = "user-$user->id.$imageFileType";
+        $targetFile = $targetDir . $userFileName;
+        //TODO: file checks
+
+        move_uploaded_file($_FILES["display_pic"]["tmp_name"], $targetFile);
+        $user->display_pic = $userFileName;
+    }
+
+    $logout = false;
     if ($oldEmail != $user->email) {
         // Logout and set old email
         $user->oldEmail = $oldEmail;
-        $user->save();
+        $logout = true;
+    }
+
+    $user->save();
+
+    // Finish the process by handling logout
+    if ($logout) {
         Authentication::logout();
         Route::redirect("login.php");
     } else {
-        $user->save();
         Authentication::refresh();
-        require_once("../Views/users/profile.phtml");
+        Route::redirect("profile.php");
     }
 }
 require_once("../Views/users/edit.phtml");

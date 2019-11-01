@@ -7,6 +7,7 @@ spl_autoload_register(function ($className) {
 
 // Require authentication to get to this page
 require_once "../auth.php";
+Authentication::refresh();
 
 $view = new stdClass();
 $view->title = "ProfileName - uGame";
