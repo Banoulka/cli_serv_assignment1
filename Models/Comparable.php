@@ -2,10 +2,13 @@
 
 interface Comparable {
     /**
-     * @param Comparable $self
-     * @param Comparable $other
+     * Custom compare to function
      *
-     * @return Int -1, 0 or 1 Depending on result of comparison
+     * @param Comparable $self  this object
+     * @param Comparable $other other object
+     *
+     * @return int Int -1, 0 or 1 Depending on result of comparison
+     * @throws Exception
      */
     public static function compareTo(Comparable $self, Comparable $other);
 }

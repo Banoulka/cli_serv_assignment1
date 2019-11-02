@@ -5,7 +5,7 @@ require_once "User.php";
 require_once "Tag.php";
 require_once "Comparable.php";
 
-class Notification extends Model
+class Notification extends Model implements Comparable
 {
 
     // Type of notifcations
@@ -122,6 +122,28 @@ class Notification extends Model
             return "fas fa-comment-dots";
         default:
             return "";
+        }
+    }
+
+    /**
+     * Compare to function
+     *
+     * @param Comparable $self  this object
+     * @param Comparable $other other object
+     *
+     * @return int Int -1, 0 or 1 Depending on result of comparison
+     * @throws Exception
+     */
+    public static function compareTo(Comparable $self, Comparable $other)
+    {
+        if ($other instanceof Notification) {
+            if ($self->time == $other->time ) {
+                return 0;
+            } else {
+                return $self->time < $other->time ? 1 : -1;
+            }
+        } else {
+            throw new Exception("Cannot compare objects of different types");
         }
     }
 

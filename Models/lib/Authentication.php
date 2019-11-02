@@ -1,7 +1,6 @@
 <?php
 
-define("HOMEDIR", __DIR__ . "/../../");
-require_once HOMEDIR . "/Models/User.php";
+require_once  $_SERVER["DOCUMENT_ROOT"] . "/Models/User.php";
 
 class Authentication {
 

@@ -4,6 +4,8 @@
 
     $countUnread = 0;
     foreach ($userNotifs as $notifs) { if (!$notifs->isRead()) $countUnread++; }
+
+    uasort($userNotifs, array("Notification", "compareTo"));
 ?>
 
 <a tabindex="0" class="btn" data-toggle="popover" role="button"><i class="fas fa-bell"></i>

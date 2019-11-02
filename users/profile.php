@@ -1,9 +1,11 @@
 <?php
 
 session_start();
-spl_autoload_register(function ($className) {
-    require_once "../Models/lib/" . $className . ".php";
-});
+spl_autoload_register(
+    function ($className) {
+        include_once "../Models/lib/" . $className . ".php";
+    }
+);
 
 // Require authentication to get to this page
 require_once "../auth.php";
@@ -12,6 +14,7 @@ require_once "../auth.php";
 $view = new stdClass();
 $view->title = "ProfileName - uGame";
 $view->page = "profile";
+$view->tab = isset($_GET["tab"]) ? $_GET["tab"] : "details";
 
 Authentication::refresh();
 require_once "../Views/users/profile.phtml";

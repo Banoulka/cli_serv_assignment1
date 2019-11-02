@@ -1,0 +1,19 @@
+<div class="col-8">
+    <h1 class="profile-name"><?php echo $user->name(); ?></h1>
+    <p class="aka">aka</p>
+    <h4 class="mb-5"><?php echo isset($user->display_name) ? $user->display_name : "No display name set"?></h4>
+
+    <h6 class="user-label">Email:</h6>
+    <p><?php echo $user->email; ?></p>
+
+    <h6 class="user-label">Password:</h6>
+    <p>*********</p>
+
+    <h6 class="user-label">Bio:</h6>
+    <p><?php echo isset($user->bio) ? $user->bio : "No bio set"; ?></p>
+
+    <a href="edit.php" class="btn btn-success mt-4">Edit Profile<i class="fas fa-user-edit ml-2"></i></a>
+</div>
+<div class="col-4">
+    <img src="../uploads/profile_pictures/<?php echo $user->display_pic; ?>" class="profile-pic" alt="Profile Picture">
+</div>
