@@ -10,7 +10,7 @@ spl_autoload_register(function ($className) {
 $view = new stdClass();
 $view->page = "games";
 $view->title = "Games - uGame";
-$view->posts = array_reverse(Post::all());
+$view->posts = Post::all();
 
 require_once("Views/games.phtml");
 

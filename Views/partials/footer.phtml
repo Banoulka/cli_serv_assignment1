@@ -1,7 +1,7 @@
 
 <!-- FOOTER -->
 <footer class="d-flex flex-column">
-    <?php if (Authentication::isLoggedOn()) : ?>
+    <?php if (Authentication::isLoggedOn() && $view->page != "index") : ?>
         <div class="chat-button-contain">
             <a class="chat-button" href="#"><span>Chat</span></a>
         </div>

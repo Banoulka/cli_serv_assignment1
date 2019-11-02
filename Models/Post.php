@@ -41,7 +41,10 @@ class Post extends Model implements Comparable {
     public static function all()
     {
         self::setClassAndTable();
-        return parent::getAllByTableName();
+        // TODO: Sort by time
+        $postArr = parent::getAllByTableName();
+        usort($postArr, array("Post", "compareTo"));
+        return $postArr;
     }
 
     // Find by id
@@ -59,18 +62,25 @@ class Post extends Model implements Comparable {
         parent::saveModel();
     }
 
-    public function compareTo(Comparable $other)
+    /**
+     * Custom function to compare to
+     *
+     * @param Comparable $self
+     * @param Comparable $other
+     * @return int
+     * @throws Exception
+     */
+    public static function compareTo(Comparable $self, Comparable $other)
     {
         if ($other instanceof Post) {
-            if ($this->time == $other->time ) {
+            if ($self->time == $other->time ) {
                 return 0;
-            } else if ($this->time < $other->time ) {
-                return 1;
             } else {
-                return -1;
+                return $self->time < $other->time ? 1 : -1;
             }
+        } else {
+            throw new Exception("compareTo - Cannot compare objects of different types");
         }
-        return 0;
     }
 
     public function getTimeSince() {
@@ -81,11 +91,11 @@ class Post extends Model implements Comparable {
         $difference = $nowDateTime->diff($postDateTime);
         if ($difference->y > 0) {
             // Print full date plus year
-            return $postDateTime->format("d F Y \a\\t G:i");
+            return $postDateTime->format("j F Y \a\\t G:i");
         }
         if ($difference->d > 1) {
             // Print full date
-            return $postDateTime->format("d F \a\\t G:i");
+            return $postDateTime->format("j F \a\\t G:i");
 
         } else if ($difference->d == 1) {
             // Print yesterday and time
@@ -109,7 +119,7 @@ class Post extends Model implements Comparable {
         }
     }
 
-    // Relationships
+    // Relationships ============================
 
     /**
      * @return User
@@ -122,9 +132,11 @@ class Post extends Model implements Comparable {
 
     public function tags() {
         self::setCustomClassAndTable("Tag", "post_tags");
+        // Get all tags relating to the selected post from the pivot table
         $postTags = parent::findAllByKey(["post_id" => $this->id]);
         $tags = array();
         foreach ($postTags as $tag) {
+            // Get the title of the selected tag from the database
             $tag->title = Tag::find(["id" => $tag->tag_id])->title;
             array_push($tags, $tag);
         }

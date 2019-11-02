@@ -24,7 +24,7 @@ class Validation
      * @param string $name
      * @return self
      */
-     public function name (string $name): self
+     public function name(string $name): self
      {
         $this->name = $name;
         return $this;
@@ -36,7 +36,7 @@ class Validation
      * @param mixed $value
      * @return self
      */
-    public function value ($value): self
+    public function value($value): self
     {
         $this->value = $value;
         return $this;
@@ -47,7 +47,7 @@ class Validation
      *
      * @return self
      */
-    public function required (): self
+    public function required(): self
     {
         if ($this->value == "" || $this->value == null) {
             $this->addError("Field %s is required");
@@ -62,7 +62,7 @@ class Validation
      * @param int $max
      * @return self
      */
-    public function length (int $min, int $max): self
+    public function length(int $min, int $max): self
     {
         $lengthError = false;
         if (is_string($this->value)) {
