@@ -16,10 +16,10 @@ if(isset($_GET["post_id"])) {
     $view->post = Post::find(["id" => $_GET["post_id"]]);
 
     // Check if the current logged in user is the owner of the post
-    if($view->post)
+    if($view->post && Authentication::isLoggedOn())
         $view->owner = Authentication::User()->id == $view->post->user()->id;
 
-    require_once("../views/posts/view.phtml");
+    require_once "../views/posts/view.phtml";
 } else {
     Route::redirect("../games.php");
 }

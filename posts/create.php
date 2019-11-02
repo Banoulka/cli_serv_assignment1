@@ -1,5 +1,7 @@
 <?php
 
+require_once "../Models/Post.php";
+
 session_start();
 spl_autoload_register(
     function ($className) {
@@ -9,8 +11,6 @@ spl_autoload_register(
 
 // Require authentication to get to this page
 require_once "../auth.php";
-
-require_once "../Models/Post.php";
 
 $view = new stdClass();
 $view->title = "Create New Post - uGame";

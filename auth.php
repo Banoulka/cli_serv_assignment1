@@ -1,5 +1,6 @@
 <?php
 
+
 if (!Authentication::isLoggedOn()) {
-    Route::redirect( "create.php");
+    Route::redirect("create.php");
 }

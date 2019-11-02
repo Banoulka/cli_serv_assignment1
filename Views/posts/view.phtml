@@ -1,5 +1,5 @@
 <?php require(__DIR__ . "/../partials/header.phtml"); ?>
-<?php $post = $view->post; ?>
+<?php $post = $view->post; if ($post instanceof Post) ?>
 <div class="container section">
     <?php if($post) : ?>
     <div class="post">
@@ -54,7 +54,7 @@
                 </div>
                 <div class="col-md-6 text-right">
                     <h3>Announcements</h3>
-                    <?php if($view->owner) : ?>
+                    <?php if(Authentication::isLoggedOn() && $view->owner) : ?>
                     <form action="#" method="POST">
                     <div class="announcement-box row p-2 m-0 ml-auto">
                         <div class="col-9 d-flex align-items-center pl-0">

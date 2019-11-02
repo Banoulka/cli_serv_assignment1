@@ -90,6 +90,8 @@ class User extends Model {
     // Relationships
 
     /**
+     * Get all posts by user
+     *
      * @return Post[]
      * */
     public function posts(): array
@@ -98,13 +100,14 @@ class User extends Model {
     }
 
     /**
+     * Get all notifications to user
+     *
      * @return Notification[]
      * */
-    public function notifications(): array
+    public function notifications()
     {
         parent::setCustomClassAndTable("Notification", "user_notifications");
         // Get all notifications relating to the user
-        $notifications = parent::findAllByKey(["user_id_to" => $this->id]);
-        return $notifications;
+        return parent::findAllByKey(["user_id_to" => $this->id]);
     }
 }

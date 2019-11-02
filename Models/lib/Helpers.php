@@ -26,7 +26,6 @@ class Helpers {
      * @param $timestamp int
      *
      * @return string
-     * @throws Exception
      */
     public static function getTimeSince($timestamp)
     {

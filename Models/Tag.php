@@ -17,31 +17,49 @@ class Tag extends Model {
     public function __construct()
     {
         // Construct with attributes
-        parent::__construct([
+        parent::__construct(
+            [
             "title",
-        ]);
+            ]
+        );
     }
 
-    // Get all
+    /**
+     * Get all tags
+     *
+     * @return Tag[]
+     * */
     public static function all()
     {
         self::setClassAndTable();
         return parent::getAllByTableName();
     }
 
-    // Find by id
+    /**
+     * Find tag by ID
+     *
+     * @param $keyValueArr array
+     *
+     * @return Tag
+     */
     public static function find($keyValueArr)
     {
         self::setClassAndTable();
         return parent::findOneByKey($keyValueArr);
     }
 
+
+    /**
+     * Save tag
+     *
+     * @return void
+     */
     public function save()
     {
         self::setClassAndTable();
         parent::saveModel();
     }
 
-    // Relationships
+    // Relationships =============================
 
 }

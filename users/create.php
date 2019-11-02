@@ -7,6 +7,10 @@ spl_autoload_register(function ($className) {
     require_once __DIR__ . "/../Models/lib/" . $className . ".php";
 });
 
+if (Authentication::isLoggedOn() ) {
+    Route::redirect("../games.php");
+}
+
 $view = new stdClass();
 $view->title = "Sign Up - uGame";
 $view->page = "signup";

@@ -109,7 +109,6 @@ class Post extends Model implements Comparable
      * format
      *
      * @return string
-     * @throws Exception
      */
     public function getTimeSince()
     {
