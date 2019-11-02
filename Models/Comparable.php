@@ -1,6 +1,5 @@
 <?php
 
-
 interface Comparable {
     /**
      * @param Comparable $self

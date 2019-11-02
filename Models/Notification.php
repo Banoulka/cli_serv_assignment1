@@ -54,4 +54,30 @@ class Notification extends Model
     {
         // TODO: Implement all() method.
     }
+
+    // Relationships
+
+    /**
+     * Method to get the user who the notification
+     * is to
+     *
+     * @return User
+     * */
+    public function userTo(): User
+    {
+        parent::setCustomClassAndTable("User", "users");
+        return parent::find(["id" => $this->user_id_to]);
+    }
+
+    /**
+     * Method to get the user who the notification
+     * is from
+     *
+     * @return User
+     * */
+    public function userFrom(): User
+    {
+        parent::setCustomClassAndTable("User", "users");
+        return parent::find(["id" => $this->user_id_from]);
+    }
 }

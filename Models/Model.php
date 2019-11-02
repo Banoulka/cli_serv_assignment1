@@ -6,14 +6,14 @@ abstract class Model {
 
     // Model database handler and error array
     protected $errs;
-    private static $dbHandler;
+    private static $_dbHandler;
 
     // Database table and class name to return
     protected static $tableName;
     protected static $className;
 
     // Dynamic attributes for each model class
-    private $attributes;
+    private $_attributes;
 
     /*
      * This constructor will simply create a new array of errors that the
@@ -23,24 +23,24 @@ abstract class Model {
     protected function __construct($attributes)
     {
         $this->errs = array();
-        $this->attributes = $attributes;
+        $this->_attributes = $attributes;
 
         /*
          * Set the base attributes that can be set for public use
          * One fetch mode has been used then it will return a class
          * with these fields not as null
          * */
-        foreach ($this->attributes as $att) {
+        foreach ($this->_attributes as $att) {
             $this->$att = null;
         }
         // Remove old attributes??
-        unset($this->attributes);
+        unset($this->_attributes);
     }
 
     protected static function db()
     {
-        self::$dbHandler = Database::getInstance()->getdbConnection();
-        return self::$dbHandler;
+        self::$_dbHandler = Database::getInstance()->getdbConnection();
+        return self::$_dbHandler;
     }
 
     protected function addError($errMsg)
@@ -75,6 +75,7 @@ abstract class Model {
      * This is a reusable method that allows a sub class of model to find a specific
      * row with a key value pair.
      * @param $keyValueArr ArrayObject associative array with key value pairs
+     *
      * @return PDOStatement A pdo statement containing the prepared SQL and values
      */
     private static function findByKey($keyValueArr)
@@ -128,17 +129,19 @@ abstract class Model {
     /**
      * Get one from table using keyValue
      *
-     * @param $keyValueArr
-     * @return object
+     * @param $keyValueArr array
+     *
+     * @return mixed
      */
     protected abstract static function find($keyValueArr);
 
     /**
-     * Set class and table to use by SQL queries
+     * Set class and table to use by SQL queries.
+     * Must always be called before doing data and class takes
      *
      * @return void
      */
-    protected abstract static function setClassAndTable(); // must always be called before doing data and class takes
+    protected abstract static function setClassAndTable();
 
     /**
      * Save the model to the database
@@ -148,6 +151,7 @@ abstract class Model {
     protected abstract function save();
 
     // Base CRUD methods
+
     protected function saveModel()
     {
         // Get tablename
@@ -181,7 +185,7 @@ abstract class Model {
 
     protected function updateModel($whereKeyValArr)
     {
-        if(count($whereKeyValArr) > 1 ) {
+        if (count($whereKeyValArr) > 1 ) {
             return false;
         }
 

@@ -9,32 +9,34 @@
             </label>
             <div class="posts">
                 <?php foreach ($view->posts as $post) : ?>
+                    <?php if ($post instanceof Post) : ?>
                     <a href="../posts/view.php?post_id=<?php echo $post->id ?>" class="post-reg">
-                    <div class="rows d-flex">
-                        <div class="row">
-                            <div class="col-5">
-                                <img src="/img/artwork.png" alt="" class="game-cover">
-                            </div>
-                            <div class="col">
-                                <h3 class="post-title"><?php echo $post->title; ?></h3>
-                                <p class="author"><?php echo $post->user()->name(); ?></p>
-                                <p class="content"><?php echo $post->description; ?></p>
-                                <div class="tags">
-                                    <?php foreach ($post->tags() as $tag) : ?>
-                                        <p class="tag"><?php echo $tag->title; ?></p>
-                                    <?php endforeach; ?>
+                        <div class="rows d-flex">
+                            <div class="row">
+                                <div class="col-5">
+                                    <img src="/img/artwork.png" alt="" class="game-cover">
+                                </div>
+                                <div class="col">
+                                    <h3 class="post-title"><?php echo $post->title; ?></h3>
+                                    <p class="author"><?php echo $post->user()->name(); ?></p>
+                                    <p class="content"><?php echo $post->description; ?></p>
+                                    <div class="tags">
+                                        <?php foreach ($post->tags() as $tag) : ?>
+                                            <p class="tag"><?php echo $tag->title; ?></p>
+                                        <?php endforeach; ?>
+                                    </div>
+                                </div>
+                                <div class="row extras">
+                                    <span class="likes"><i class="far fa-thumbs-up"></i>45</span>
+                                    <span class="watches"><i class="fas fa-eye"></i>23</span>
+                                    <span class="comments"><i class="far fa-comment-dots"></i>52</span>
+                                    <span class="ml-3"><?php echo $post->getTimeSince(); ?></span>
                                 </div>
                             </div>
-                            <div class="row extras">
-                                <span class="likes"><i class="far fa-thumbs-up"></i>45</span>
-                                <span class="watches"><i class="fas fa-eye"></i>23</span>
-                                <span class="comments"><i class="far fa-comment-dots"></i>52</span>
-                                <span class="ml-3"><?php echo $post->getTimeSince(); ?></span>
-                            </div>
+                            <div class="post-colour"><span class="<?php echo $post->type_stage; ?>"></span></div>
                         </div>
-                        <div class="post-colour"><span class="<?php echo $post->type_stage; ?>"></span></div>
-                    </div>
-                </a>
+                    </a>
+                    <?php endif; ?>
                 <?php endforeach; ?>
             </div>
         </div>

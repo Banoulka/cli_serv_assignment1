@@ -1,9 +1,11 @@
 <?php
 
 session_start();
-spl_autoload_register(function ($className) {
-    require_once "../Models/lib/" . $className . ".php";
-});
+spl_autoload_register(
+    function ($className) {
+        include_once "Models/lib/" . $className . ".php";
+    }
+);
 
 // Require authentication to get to this page
 require_once "../auth.php";
@@ -15,4 +17,4 @@ $view->title = "Create New Post - uGame";
 $view->page = "create-post";
 $view->tags = Tag::all();
 
-require_once("../views/posts/create.phtml");
+require_once "../views/posts/create.phtml";

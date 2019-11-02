@@ -5,22 +5,30 @@ require_once "User.php";
 require_once "Tag.php";
 require_once "Comparable.php";
 
-class Post extends Model implements Comparable {
+class Post extends Model implements Comparable
+{
 
     const TYPE_ALPHA = "alpha", TYPE_BETA = "beta", TYPE_RELEASED = "released", TYPE_CONCEPT = "concept";
 
-    // Set the class and table of the model
+    /**
+     * Set the class and table of the model
+     *
+     * @return void;
+     * */
     protected static function setClassAndTable()
     {
         parent::$className = "Post";
         parent::$tableName = "posts";
     }
 
-    // Writable attributes to be pulled from the database
+    /**
+     * Writable attributes to be pulled from the database
+     * */
     public function __construct()
     {
         // Construct with attributes
-        parent::__construct([
+        parent::__construct(
+            [
             "user_id",
             "title",
             "description",
@@ -28,7 +36,8 @@ class Post extends Model implements Comparable {
             "cover_image",
             "time",
             "type_stage",
-        ]);
+            ]
+        );
     }
 
     /**
@@ -49,7 +58,8 @@ class Post extends Model implements Comparable {
     /**
      * Find by ID
      *
-     * @param $keyValueArr
+     * @param $keyValueArr array
+     *
      * @return Post
      */
     public static function find($keyValueArr)
@@ -58,19 +68,12 @@ class Post extends Model implements Comparable {
         return parent::findOneByKey($keyValueArr);
     }
 
-    public function save()
-    {
-        self::setClassAndTable();
-        $now = new DateTime();
-        $this->time = $now->getTimestamp();
-        parent::saveModel();
-    }
-
     /**
      * Custom function to compare to using the post time as a reference
      *
-     * @param Comparable $self
-     * @param Comparable $other
+     * @param Comparable $self  this object
+     * @param Comparable $other object to compare to
+     *
      * @return int
      * @throws Exception
      */
@@ -83,59 +86,51 @@ class Post extends Model implements Comparable {
                 return $self->time < $other->time ? 1 : -1;
             }
         } else {
-            throw new Exception("compareTo - Cannot compare objects of different types");
+            throw new Exception("Cannot compare objects of different types");
         }
     }
 
-    public function getTimeSince() {
-        $postDateTime = new DateTime();
-        $postDateTime->setTimestamp($this->time);
-        $nowDateTime = new DateTime();
+    /**
+     * Save the Post
+     *
+     * @throws Exception
+     * @return void
+     */
+    public function save()
+    {
+        self::setClassAndTable();
+        $now = new DateTime();
+        $this->time = $now->getTimestamp();
+        parent::saveModel();
+    }
 
-        $difference = $nowDateTime->diff($postDateTime);
-        if ($difference->y > 0) {
-            // Print full date plus year
-            return $postDateTime->format("j F Y \a\\t G:i");
-        }
-        if ($difference->d > 1) {
-            // Print full date
-            return $postDateTime->format("j F \a\\t G:i");
-
-        } else if ($difference->d == 1) {
-            // Print yesterday and time
-            return "Yesterday at " . $postDateTime->format("H:i");
-
-        } else if ($difference->h > 0) {
-            // Print hours
-            return $difference->h . " hr" . ($difference->h != 1 ? "s" : "");
-
-        } else if ($difference->i > 0) {
-            // Print minutes
-            return $difference->i . " min" . ($difference->i != 1 ? "s" : "");
-
-        } else if ($difference->s > 30) {
-            // Print seconds
-            return $difference->s . " sec";
-
-        } else {
-            // Print just now
-            return "just now";
-        }
+    /**
+     * Function to return the time since posted to a human readable
+     * format
+     *
+     * @return string
+     * @throws Exception
+     */
+    public function getTimeSince()
+    {
+        return Helpers::getTimeSince($this->time);
     }
 
     // Relationships ============================
 
     /**
+     * Method to get the owner of the post
+     *
      * @return User
      * */
     public function user(): User
     {
-        return User::find([
-            "id" => $this->user_id,
-        ]);
+        return User::find(["id" => $this->user_id]);
     }
 
     /**
+     * Method to get all the tags of the post
+     *
      * @return Tag[]
      * */
     public function tags(): array
