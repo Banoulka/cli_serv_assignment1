@@ -46,7 +46,7 @@
                 <!-- USER LOGGED IN -->
                 <div class="user d-inline">
                     <div class="text-center">
-                        <a href="/users/profile.php" class="m-0 username text-body <?php Helpers::echoActive($view->page, "profile") ?>" data-toggle="tooltip" data-placement="bottom" title="Profile">
+                        <a href="../users/profile.php" class="m-0 username text-body <?php Helpers::echoActive($view->page, "profile") ?>" data-toggle="tooltip" data-placement="bottom" title="Profile">
                             <?php echo isset(Authentication::User()->display_name) ?
                                 Authentication::User()->display_name : Authentication::User()->first_name;?>
                         </a>
@@ -55,7 +55,7 @@
                     <div class="notify-drop d-inline-block" data-placement="bottom" title="Notifications">
                         <?php require("notifications.phtml") ?>
                     </div>
-                    <a class="btn toolover logout" href="/users/logout.php" data-toggle="tooltip" data-placement="bottom" title="Logout"><i class="fas fa-sign-out-alt"></i></a>
+                    <a class="btn toolover logout" href="../users/logout.php" data-toggle="tooltip" data-placement="bottom" title="Logout"><i class="fas fa-sign-out-alt"></i></a>
                 </div>
             <?php else : ?>
                 <!-- USER NOT LOGGED IN -->

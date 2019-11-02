@@ -20,7 +20,7 @@ class Authentication {
         }
     }
 
-    public static function validateAndLogonUser($email, $password)
+    public static function validateAndLogonUser($email, $password): bool
     {
         self::$err = [];
         $foundUser = User::findByEmail($email);
@@ -37,12 +37,12 @@ class Authentication {
         return false;
     }
 
-    public static function isLoggedOn()
+    public static function isLoggedOn(): bool
     {
         return Session::isSet(self::$sessionID);
     }
 
-    public static function User()
+    public static function User(): User
     {
         return unserialize(Session::getSession(self::$sessionID));
     }

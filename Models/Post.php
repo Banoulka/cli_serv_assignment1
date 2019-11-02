@@ -16,12 +16,6 @@ class Post extends Model implements Comparable {
         parent::$tableName = "posts";
     }
 
-    protected static function setCustomClassAndTable($className, $tableName)
-    {
-        parent::$className = $className;
-        parent::$tableName = $tableName;
-    }
-
     // Writable attributes to be pulled from the database
     public function __construct()
     {
@@ -37,17 +31,27 @@ class Post extends Model implements Comparable {
         ]);
     }
 
-    // Get all
+    /**
+     * Find all by key
+     *
+     * @return Post[]
+     * */
     public static function all()
     {
         self::setClassAndTable();
-        // TODO: Sort by time
         $postArr = parent::getAllByTableName();
+        // Sort by time
+        // TODO: implment other sort methods
         usort($postArr, array("Post", "compareTo"));
         return $postArr;
     }
 
-    // Find by id
+    /**
+     * Find by ID
+     *
+     * @param $keyValueArr
+     * @return Post
+     */
     public static function find($keyValueArr)
     {
         self::setClassAndTable();
@@ -124,14 +128,19 @@ class Post extends Model implements Comparable {
     /**
      * @return User
      * */
-    public function user() {
+    public function user(): User
+    {
         return User::find([
             "id" => $this->user_id,
         ]);
     }
 
-    public function tags() {
-        self::setCustomClassAndTable("Tag", "post_tags");
+    /**
+     * @return Tag[]
+     * */
+    public function tags(): array
+    {
+        parent::setCustomClassAndTable("Tag", "post_tags");
         // Get all tags relating to the selected post from the pivot table
         $postTags = parent::findAllByKey(["post_id" => $this->id]);
         $tags = array();

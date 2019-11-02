@@ -92,7 +92,19 @@ class User extends Model {
     /**
      * @return Post[]
      * */
-    public function posts() {
-        return Post::find(["user_id" => $this->id]);
+    public function posts(): array
+    {
+        return Post::findAllByKey(["user_id" => $this->id]);
+    }
+
+    /**
+     * @return Notification[]
+     * */
+    public function notifications(): array
+    {
+        parent::setCustomClassAndTable("Notification", "user_notifications");
+        // Get all notifications relating to the user
+        $notifications = parent::findAllByKey(["user_id_to" => $this->id]);
+        return $notifications;
     }
 }

@@ -117,9 +117,34 @@ abstract class Model {
      * The methods that need to be implement does checking etc with that
      * specific model, this class only containst the base methods
      * */
+
+    /**
+     * Get all from table
+     *
+     * @return array
+     * */
     protected abstract static function all();
+
+    /**
+     * Get one from table using keyValue
+     *
+     * @param $keyValueArr
+     * @return object
+     */
     protected abstract static function find($keyValueArr);
+
+    /**
+     * Set class and table to use by SQL queries
+     *
+     * @return void
+     */
     protected abstract static function setClassAndTable(); // must always be called before doing data and class takes
+
+    /**
+     * Save the model to the database
+     *
+     * @return void
+     */
     protected abstract function save();
 
     // Base CRUD methods
@@ -133,19 +158,15 @@ abstract class Model {
         // Start building the SQL query
         $sql = "INSERT INTO $tableName ( ";
         foreach ($dataAttributes as $key => $value) {
-            if(!is_null($value)) {
-                $sql .= $key;
-                if ($value != end($dataAttributes))
-                    $sql .= ", ";
-            }
+            $sql .= $key;
+            if ($value != end($dataAttributes))
+                $sql .= ", ";
         }
         $sql .= ") VALUES (";
         foreach ($dataAttributes as $key => $value) {
-            if(!is_null($value)) {
-                $sql .= "'" . $value . "'";
-                if ($value != end($dataAttributes))
-                    $sql .= ", ";
-            }
+            $sql .= "'" . $value . "'";
+            if ($value != end($dataAttributes))
+                $sql .= ", ";
         }
         $sql .= ");";
 
@@ -170,17 +191,14 @@ abstract class Model {
 
         $sql = "UPDATE $tableName SET ";
         foreach ($dataAttributes as $attKey => $attValue) {
-            if ($attKey != "errs" && $attKey != "attributes" && !is_null($attValue)) {
+            if (is_numeric($attValue))
+                $sql .= "$attKey = $attValue";
+            else
+                $sql .= "$attKey = '$attValue'";
 
-                if (is_numeric($attValue))
-                    $sql .= "$attKey = $attValue";
-                else
-                    $sql .= "$attKey = '$attValue'";
-
-                // Check if at the end of the attributes
-                if ($attValue != end($dataAttributes))
-                    $sql .= ", ";
-            }
+            // Check if at the end of the attributes
+            if ($attValue != end($dataAttributes))
+                $sql .= ", ";
         }
         $key = array_keys($whereKeyValArr)[0];
         $value = array_values($whereKeyValArr)[0];
@@ -205,10 +223,17 @@ abstract class Model {
         // Get the variables and attributes from the array and add them to the
         // sql query
         foreach ($this as $key => $value) {
-            $dataAttributes[$key] = $value;
+            if ($key != "errs" && $key != "attributes" && !is_null($value))
+                $dataAttributes[$key] = $value;
         }
 
         return $dataAttributes;
+    }
+
+    protected static function setCustomClassAndTable($className, $tableName)
+    {
+        self::$className = $className;
+        self::$tableName = $tableName;
     }
 
 }
