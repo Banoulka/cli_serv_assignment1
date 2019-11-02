@@ -11,7 +11,9 @@
         <div class="row">
             <div class="col-md-8">
                 <h1 class="game-title"><?php echo $post->title ?></h1>
-                <p class="game-author"><?php echo $post->user()->name(); ?></p>
+                <a href="../../users/view.php?id=<?php echo $post->user()->id; ?>">
+                    <p class="game-author"><?php echo $post->user()->name(); ?></p>
+                </a>
                 <p class="game-desc"><?php echo $post->description ?></p>
                 <div class="game-body">
                     <p><?php echo $post->body; ?></p>

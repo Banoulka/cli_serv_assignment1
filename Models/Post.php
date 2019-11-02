@@ -63,7 +63,7 @@ class Post extends Model implements Comparable {
     }
 
     /**
-     * Custom function to compare to
+     * Custom function to compare to using the post time as a reference
      *
      * @param Comparable $self
      * @param Comparable $other
