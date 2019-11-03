@@ -92,7 +92,11 @@ abstract class Model {
         $stmt->execute();
         if(!is_null($stmt->errorInfo()[2]))
             var_dump($stmt->errorInfo());
-        $stmt->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, self::$className);
+        if (self::$className == "") {
+            $stmt->setFetchMode(PDO::FETCH_OBJ);
+        } else {
+            $stmt->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, self::$className);
+        }
         return $stmt;
     }
 

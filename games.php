@@ -14,6 +14,7 @@ $view = new stdClass();
 $view->page = "games";
 $view->title = "Games - uGame";
 $view->posts = Post::all();
+$view->userWatchlist = Authentication::isLoggedOn() ? Authentication::User()->watchlist() : [];
 
 require_once "Views/games.phtml";
 

@@ -87,6 +87,22 @@ class User extends Model {
         }
     }
 
+    public function addToWatchList($postID)
+    {
+        parent::setCustomClassAndTable("Post", "user_watchlist");
+        parent::insert()->value("user_id", $this->id)->value("post_id", $postID)->execute();
+    }
+
+    public function isOnWatchList($postID)
+    {
+        $watchlist = $this->watchlist();
+        foreach ($watchlist as $post) {
+            if ($postID == $post->id)
+                return true;
+        }
+        return false;
+    }
+
     // Relationships
 
     /**
@@ -109,5 +125,21 @@ class User extends Model {
         parent::setCustomClassAndTable("Notification", "user_notifications");
         // Get all notifications relating to the user
         return parent::findAllByKey(["user_id_to" => $this->id]);
+    }
+
+    /**
+     * Get all posts on users watchlist
+     *
+     * @return Post[]
+     * */
+    public function watchlist()
+    {
+        $posts = array();
+        parent::setCustomClassAndTable("", "user_watchlist");
+        $watchListEntries = parent::findAllByKey(["user_id" => $this->id]);
+        foreach ($watchListEntries as $entry) {
+            array_push($posts, Post::find(["id" => $entry->post_id]));
+        }
+        return $posts;
     }
 }

@@ -4,90 +4,23 @@
         <h3 class="m-0">Your Watchlist</h3>
     </div>
     <div class="watchlist-sidebar-body-container">
-        <a href="#" class="watchlist-link">
-        <div class="watchlist-sidebar-item">
-            <div class="watchlist-sidebar-item-body">
-                <h4>this is a new game 2</h4>
-                <div class="watchlist-sidebar-item-detail-container">
-                    <p class="watchlist-item-author">Johnny Davidson</p>
-                    <span class="icon-count"><i class="far fa-thumbs-up"></i>34</span>
-                    <span class="icon-count"><i class="fas fa-eye"></i>13</span>
-                    <span class="icon-count"><i class="far fa-comment-dots"></i>3</span>
-                </div>
-            </div>
-            <div class="watchlist-sidebar-item-colour watchlist-item-beta"></div>
-        </div>
-        </a>
-        <a href="#" class="watchlist-link">
-            <div class="watchlist-sidebar-item">
-                <div class="watchlist-sidebar-item-body">
-                    <h4>this is a new game 2</h4>
-                    <div class="watchlist-sidebar-item-detail-container">
-                        <p class="watchlist-item-author">Johnny Davidson</p>
-                        <span class="icon-count"><i class="far fa-thumbs-up"></i>34</span>
-                        <span class="icon-count"><i class="fas fa-eye"></i>13</span>
-                        <span class="icon-count"><i class="far fa-comment-dots"></i>3</span>
+        <?php foreach ($view->userWatchlist as $post) : ?>
+            <?php if ($post instanceof Post) : ?>
+                <a href="<?php echo $_SERVER["DOCUMENT_ROOT"]; ?>/posts/view.php?post_id=<?php echo $post->id; ?>" class="watchlist-link">
+                    <div class="watchlist-sidebar-item">
+                        <div class="watchlist-sidebar-item-body">
+                            <h4><?php echo $post->title; ?></h4>
+                            <div class="watchlist-sidebar-item-detail-container">
+                                <p class="watchlist-item-author"><?php $post->user()->name(); ?></p>
+                                <span class="icon-count"><i class="far fa-thumbs-up"></i>34</span>
+                                <span class="icon-count"><i class="fas fa-eye"></i><?php echo $post->watchCount(); ?></span>
+                                <span class="icon-count"><i class="far fa-comment-dots"></i>3</span>
+                            </div>
+                        </div>
+                        <div class="watchlist-sidebar-item-colour watchlist-item-beta"></div>
                     </div>
-                </div>
-                <div class="watchlist-sidebar-item-colour watchlist-item-beta"></div>
-            </div>
-        </a>
-        <a href="#" class="watchlist-link">
-            <div class="watchlist-sidebar-item">
-                <div class="watchlist-sidebar-item-body">
-                    <h4>this is a new game 2</h4>
-                    <div class="watchlist-sidebar-item-detail-container">
-                        <p class="watchlist-item-author">Johnny Davidson</p>
-                        <span class="icon-count"><i class="far fa-thumbs-up"></i>34</span>
-                        <span class="icon-count"><i class="fas fa-eye"></i>13</span>
-                        <span class="icon-count"><i class="far fa-comment-dots"></i>3</span>
-                    </div>
-                </div>
-                <div class="watchlist-sidebar-item-colour watchlist-item-beta"></div>
-            </div>
-        </a>
-        <a href="#" class="watchlist-link">
-            <div class="watchlist-sidebar-item">
-                <div class="watchlist-sidebar-item-body">
-                    <h4>this is a new game 2</h4>
-                    <div class="watchlist-sidebar-item-detail-container">
-                        <p class="watchlist-item-author">Johnny Davidson</p>
-                        <span class="icon-count"><i class="far fa-thumbs-up"></i>34</span>
-                        <span class="icon-count"><i class="fas fa-eye"></i>13</span>
-                        <span class="icon-count"><i class="far fa-comment-dots"></i>3</span>
-                    </div>
-                </div>
-                <div class="watchlist-sidebar-item-colour watchlist-item-beta"></div>
-            </div>
-        </a>
-        <a href="#" class="watchlist-link">
-            <div class="watchlist-sidebar-item">
-                <div class="watchlist-sidebar-item-body">
-                    <h4>this is a new game 2</h4>
-                    <div class="watchlist-sidebar-item-detail-container">
-                        <p class="watchlist-item-author">Johnny Davidson</p>
-                        <span class="icon-count"><i class="far fa-thumbs-up"></i>34</span>
-                        <span class="icon-count"><i class="fas fa-eye"></i>13</span>
-                        <span class="icon-count"><i class="far fa-comment-dots"></i>3</span>
-                    </div>
-                </div>
-                <div class="watchlist-sidebar-item-colour watchlist-item-beta"></div>
-            </div>
-        </a>
-        <a href="#" class="watchlist-link">
-            <div class="watchlist-sidebar-item">
-                <div class="watchlist-sidebar-item-body">
-                    <h4>this is a new game 2</h4>
-                    <div class="watchlist-sidebar-item-detail-container">
-                        <p class="watchlist-item-author">Johnny Davidson</p>
-                        <span class="icon-count"><i class="far fa-thumbs-up"></i>34</span>
-                        <span class="icon-count"><i class="fas fa-eye"></i>13</span>
-                        <span class="icon-count"><i class="far fa-comment-dots"></i>3</span>
-                    </div>
-                </div>
-                <div class="watchlist-sidebar-item-colour watchlist-item-beta"></div>
-            </div>
-        </a>
+                </a>
+            <?php endif; endforeach; ?>
     </div>
 </div>
 <a href="#" class="sidebar-edit-link">Edit Your Sidebar</a>

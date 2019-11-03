@@ -26,7 +26,7 @@
                 </div>
                 <div class="game-stats">
                     <p class="game-likes"><i class="far fa-thumbs-up"></i><span class="number">34</span>Like this</p>
-                    <p><i class="fas fa-eye"></i><span class="number">16</span>Watch this</p>
+                    <p><i class="fas fa-eye"></i><span class="number"><?php echo $post->watchCount(); ?></span>Watch this</p>
                     <p><i class="far fa-comment-dots"></i><span class="number">3</span>Comments</p>
                 </div>
             </div>
@@ -34,10 +34,18 @@
                 <img src="../../uploads/post_covers/<?php echo Authentication::isLoggedOn() ? $post->cover_image : "cover-hidden.jpg" ?>" alt="Game Artwork" class="artwork">
                 <div class="like-watch-buttons">
                     <?php if (Authentication::isLoggedOn()) : ?>
-                    <div class="post-btn disabled">Like<i class="ml-3 fas fa-thumbs-up"></i></div>
-<!--                    <div class="post-btn disabled">Watch<i class="ml-3 fas fa-eye"></i></div>-->
-                    <a href="#" class="post-btn watch">Watch<i class="ml-3 fas fa-eye"></i></a>
-<!--                    <a href="#" class="post-btn like">Like<i class="ml-3 fas fa-thumbs-up"></i></a>-->
+
+                        <?php if (Authentication::User()->isOnWatchList($post->id)) : ?>
+                            <div class="post-btn disabled">Un-watch<i class="ml-2 fas fa-eye"></i></div>
+                        <?php else : ?>
+                            <form action="<?php echo $_SERVER["PHP_SELF"]; ?>?post_id=<?php echo $post->id ?>" method="post">
+                                <button type="submit" name="watchlistAdd" class="post-btn watch">Watch<i class="ml-2 fas fa-eye"></i></button>
+                            </form>
+                        <?php endif; ?>
+
+
+                        <div class="post-btn disabled">Like<i class="ml-2 fas fa-thumbs-up"></i></div>
+<!--                        <a href="#" class="post-btn like">Like<i class="ml-3 fas fa-thumbs-up"></i></a>-->
                     <?php else : ?>
                         <div class="post-btn disabled sign">Sign in to like<i class="ml-2 fas fa-thumbs-up"></i></div>
                         <div class="post-btn disabled sign">Sign in to watch<i class="ml-2 fas fa-eye"></i></div>

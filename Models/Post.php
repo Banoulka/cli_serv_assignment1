@@ -125,6 +125,12 @@ class Post extends Model implements Comparable
         }
     }
 
+    public function watchCount()
+    {
+        parent::setCustomClassAndTable("", "user_watchlist");
+        return count(parent::findAllByKey(["post_id" => $this->id]));
+    }
+
     // Relationships ============================
 
     /**
