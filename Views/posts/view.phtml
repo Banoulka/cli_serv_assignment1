@@ -31,7 +31,18 @@
                 </div>
             </div>
             <div class="col-md-4 d-flex flex-column justify-content-center">
-                <img src="/img/artwork.png" alt="Game Artwork" class="artwork">
+                <img src="../../uploads/post_covers/<?php echo Authentication::isLoggedOn() ? $post->cover_image : "cover-hidden.jpg" ?>" alt="Game Artwork" class="artwork">
+                <div class="like-watch-buttons">
+                    <?php if (Authentication::isLoggedOn()) : ?>
+                    <div class="post-btn disabled">Like<i class="ml-3 fas fa-thumbs-up"></i></div>
+<!--                    <div class="post-btn disabled">Watch<i class="ml-3 fas fa-eye"></i></div>-->
+                    <a href="#" class="post-btn watch">Watch<i class="ml-3 fas fa-eye"></i></a>
+<!--                    <a href="#" class="post-btn like">Like<i class="ml-3 fas fa-thumbs-up"></i></a>-->
+                    <?php else : ?>
+                        <div class="post-btn disabled sign">Sign in to like<i class="ml-2 fas fa-thumbs-up"></i></div>
+                        <div class="post-btn disabled sign">Sign in to watch<i class="ml-2 fas fa-eye"></i></div>
+                    <?php endif; ?>
+                </div>
             </div>
         </div>
         <div class="commentannounce">

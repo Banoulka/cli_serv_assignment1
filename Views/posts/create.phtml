@@ -3,30 +3,39 @@
 <div class="container section">
     <h1 class="title">Create new post</h1>
     <p class="subtext mb-5">Fields marked in * are optional</p>
-    <form class="new-post" action="/formtest.php" method="POST">
+    <form class="new-post" action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST" enctype="multipart/form-data">
         <div class="row justify-content-around">
             <div class="col-md-7">
                 <div class="form-group row align-items-center justify-content-between">
                     <label for="title" class="col-md-4 col-form-label align-self-start py-0">Title:</label>
                     <div class="col-md-8">
-                        <input class="form-control" type="text" name="title" id="title" placeholder="What do you want your game to be called?" autocomplete="off">
+                        <input class="form-control" type="text" name="title" id="title" placeholder="What do you want your game to be called?" autocomplete="off" value="<?php if (isset($view->post)) echo $view->post->title; ?>">
                         <p class="chars text-right m-0 pt-1">Character Limit: <span id="title-chars">19</span> Chars</p>
+                        <?php if (isset($view->errors)) foreach ($view->errors["title"] as $error) : ?>
+                            <p class="text-danger small"><?php echo $error; ?></p>
+                        <?php endforeach; ?>
                     </div>
                 </div>
 
                 <div class="form-group row align-items-center justify-content-between">
                     <label for="description" class="col-md-4 col-form-label align-self-start py-0">Description:</label>
                     <div class="col-md-8">
-                        <textarea class="form-control" name="desc" id="description" placeholder="Enter a short description about your game"></textarea>
+                        <textarea class="form-control" name="desc" id="description" placeholder="Enter a short description about your game"><?php if (isset($view->post)) echo $view->post->description; ?></textarea>
                         <p class="chars text-right m-0 pt-1">Character Limit: <span id="description-chars">220</span> Chars</p>
+                        <?php if (isset($view->errors)) foreach ($view->errors["description"] as $error) : ?>
+                            <p class="text-danger small"><?php echo $error; ?></p>
+                        <?php endforeach; ?>
                     </div>
                 </div>
 
                 <div class="form-group row align-items-center justify-content-between">
                     <div class="col">
                         <label for="content">Main Body:</label>
-                        <textarea class="form-control" name="body" id="content" placeholder="This will be the main paragraph for your game post" ></textarea>
+                        <textarea class="form-control" name="body" id="content" placeholder="This will be the main paragraph for your game post"><?php if (isset($view->post)) echo $view->post->body; ?></textarea>
                         <p class="chars text-right m-0 pt-1">Character Limit: <span id="content-chars">1500</span> Chars</p>
+                        <?php if (isset($view->errors)) foreach ($view->errors["body"] as $error) : ?>
+                            <p class="text-danger small"><?php echo $error; ?></p>
+                        <?php endforeach; ?>
                     </div>
                 </div>
 
@@ -36,7 +45,7 @@
                     <label for="cover-image" class="col-md-5 col-form-label align-self-start py-0 optional">Cover Image:<span class="blue-helper">This will only be viewable to logged in users</span></label>
                     <div class="col-md-7">
                         <p class="form-control file-help">Upload a cover image.</p>
-                        <input type="file" class="file-input" name="cover-image" id="cover-image" accept="image/*">
+                        <input type="file" class="file-input" name="cover_image" id="cover-image" accept="image/*">
                         <label for="cover-image" class="file-label">Choose File</label>
                     </div>
                 </div>
@@ -51,9 +60,12 @@
                                 <option value="<?php echo $tag->title;?>"><?php echo $tag->title;?></option>
                             <?php endforeach; ?>
                         </select>
+                        <?php if (isset($view->errors)) foreach ($view->errors["tags"] as $error) : ?>
+                            <p class="text-danger small"><?php echo $error; ?></p>
+                        <?php endforeach; ?>
                         <div>
                         <?php foreach($view->tags as $tag) : ?>
-                            <input type="checkbox" name="tags[]" class="hidden" id="<?php echo $tag->id; ?>" value="<?php echo $tag->title; ?>">
+                            <input type="checkbox" name="tags[]" class="hidden" id="<?php echo $tag->title; ?>" value="<?php echo $tag->title; ?>">
                         <?php endforeach; ?>
                         </div>
                         <p class="chars text-right m-0 pt-1" id="tag-limit-p">Tag Limit: <span id="tag-limits">4</span> tags</p>
@@ -63,7 +75,7 @@
                 <div class="form-group row align-items-center justify-content-between">
                     <label for="game-state" class="col-md-5 col-form-label align-self-start py-0">Game State:</label>
                     <div class="col-md-7">
-                        <select class="custom-select" name="game-state" id="game-state">
+                        <select class="custom-select" name="type_stage" id="game-state">
                             <option value="Alpha" class="" selected>Alpha</option>
                             <option value="Beta" class="" selected>Beta</option>
                             <option value="Released" class="" selected>Released</option>

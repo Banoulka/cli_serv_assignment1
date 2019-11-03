@@ -192,6 +192,48 @@ $light-grey-border: 1px solid #CBCBCB;
 //  SINGLE POST ==================================================
 
 .post {
+  .like-watch-buttons {
+    margin-top: 1.6em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .post-btn {
+      display: inline-block;
+      margin-right: 1em;
+      border-radius: 4px;
+      padding: 0.1em 0.5em;
+      font-size: 1.4rem;
+      transition: 0.2s background-color ease-in-out;
+      text-decoration: none;
+      color: inherit;
+
+      &.watch {
+        color: deeppink;
+        border: 1px solid deeppink;
+        &:hover {
+          background-color: white;
+        }
+      }
+      &.like {
+        color: #1a407a;
+        border: 1px solid #1a407a;
+        &:hover {
+          background-color: white;
+        }
+      }
+
+      &.disabled {
+        cursor: default;
+        background-color: darkgray;
+        &.sign {
+          font-size: 0.8rem;
+          padding: 0.7em;
+        }
+      }
+    }
+  }
+
   .game-state {
     text-transform: uppercase;
     letter-spacing: 5px;
@@ -228,6 +270,7 @@ $light-grey-border: 1px solid #CBCBCB;
     color: $light-blue-text !important;
     margin: 40px 0;
   }
+
 
   .game-extras {
     color: $dark-blue-text !important;

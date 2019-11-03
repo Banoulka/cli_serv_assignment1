@@ -144,6 +144,7 @@ function setupTagPicker() {
     let tagLimitChar = $("#tag-limits");
     let canSelect = true;
     let tags = [];
+    console.log("tag change");
 
     tagSelector.change((e) => {
         e.preventDefault();

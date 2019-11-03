@@ -16,7 +16,6 @@ class Database {
      */
     public static function getInstance()
     {
-
         if (self::$_dbInstance === null) {
             //checks if the PDO exists
             $username ='root';

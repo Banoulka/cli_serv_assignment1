@@ -181,6 +181,7 @@ abstract class Model {
         // Display errors if there are any (shouldnt be if i can program right)
         if(!is_null($stmt->errorInfo()[2]))
             var_dump($stmt->errorInfo());
+
     }
 
     protected function updateModel($whereKeyValArr)
@@ -240,4 +241,45 @@ abstract class Model {
         self::$tableName = $tableName;
     }
 
+    protected function insert()
+    {
+        $tableName = self::$tableName;
+        $this->values = array();
+        $this->sql = "INSERT INTO $tableName (";
+        return $this;
+    }
+
+    protected function value($colName, $value)
+    {
+        $this->values[$colName] = $value;
+        return $this;
+    }
+
+    protected function execute()
+    {
+        end($this->values);
+        $lastElementKey = key($this->values);
+        foreach ($this->values as $colName => $value) {
+            $this->sql .= "$colName";
+            if ($colName != $lastElementKey)
+                $this->sql .= ", ";
+        }
+        $this->sql .= ") VALUES (";
+        foreach ($this->values as $colName => $value) {
+            $this->sql .= "$value";
+            if ($colName != $lastElementKey)
+                $this->sql .= ", ";
+        }
+        $this->sql .= ");";
+
+        self::db()->query($this->sql);
+
+        unset($this->values);
+        unset($this->sql);
+    }
+
+    public function getLastID()
+    {
+        return self::db()->lastInsertId();
+    }
 }

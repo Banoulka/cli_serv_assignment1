@@ -115,6 +115,16 @@ class Post extends Model implements Comparable
         return Helpers::getTimeSince($this->time);
     }
 
+    public function addTags($tagsArr)
+    {
+        $this->id = self::getLastID();
+        foreach ($tagsArr as $tag) {
+            $tagID = Tag::find(["title" => $tag])->id;
+            self::setCustomClassAndTable("Tag", "post_tags");
+            parent::insert()->value("post_id", $this->id)->value("tag_id", $tagID)->execute();
+        }
+    }
+
     // Relationships ============================
 
     /**

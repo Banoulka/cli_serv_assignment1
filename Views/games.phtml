@@ -14,7 +14,7 @@
                         <div class="rows d-flex">
                             <div class="row">
                                 <div class="col-5">
-                                    <img src="/img/artwork.png" alt="" class="game-cover">
+                                    <img src="../../uploads/post_covers/<?php echo Authentication::isLoggedOn() ? $post->cover_image : "cover-hidden.jpg" ?>" alt="" class="game-cover">
                                 </div>
                                 <div class="col">
                                     <h3 class="post-title"><?php echo $post->title; ?></h3>

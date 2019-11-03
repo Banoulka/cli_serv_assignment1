@@ -3,7 +3,7 @@
 <footer class="d-flex flex-column">
     <?php if (Authentication::isLoggedOn() && $view->page != "index") : ?>
         <div class="chat-button-contain">
-            <a class="chat-button" href="#"><span>Chat</span></a>
+            <a class="chat-button" href="/users/profile.php?tab=messages"><span>Chat</span></a>
         </div>
     <?php endif ?>
     <div class="banner">

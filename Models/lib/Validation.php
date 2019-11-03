@@ -7,10 +7,15 @@ class Validation
      private $name;
      private $value;
 
-     public function addError($errMsg)
+     public function __construct()
+     {
+         $this->error = array();
+     }
+
+    public function addError($errMsg)
      {
          $errMsg = sprintf($errMsg, $this->name);
-         array_push($this->error, array($this->name => $errMsg));
+         array_push($this->error[$this->name], $errMsg);
      }
 
      public function getErrors(): array
@@ -27,6 +32,7 @@ class Validation
      public function name(string $name): self
      {
         $this->name = $name;
+        $this->error[$this->name] = array();
         return $this;
      }
 
@@ -107,5 +113,14 @@ class Validation
             $this->addError("Field %s does not match type");
         }
         return $this;
+    }
+
+    public function isSuccess() {
+        $success = true;
+        foreach ($this->error as $arr) {
+            if (!empty($arr))
+                $success = false;
+        }
+        return $success;
     }
 }
