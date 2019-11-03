@@ -2,6 +2,7 @@
 
 require_once "Model.php";
 require_once "Post.php";
+require_once "Notification.php";
 
 class User extends Model {
 
@@ -89,8 +90,18 @@ class User extends Model {
 
     public function addToWatchList($postID)
     {
+        // Insert the watchlist row
         parent::setCustomClassAndTable("Post", "user_watchlist");
         parent::insert()->value("user_id", $this->id)->value("post_id", $postID)->execute();
+        $postAdded = Post::find(["id" => $postID]);
+
+        // Send a notification to the owner of the post
+        $notif = new Notification();
+        $notif->user_id_from = $this->id;
+        $notif->user_id_to = $postAdded->user()->id;
+        $notif->type = Notification::WATCH_TO_USER;
+        $notif->link = "/posts/view.php?post_id=$postID";
+        $notif->save();
     }
 
     public function isOnWatchList($postID)

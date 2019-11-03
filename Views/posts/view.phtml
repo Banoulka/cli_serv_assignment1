@@ -35,7 +35,7 @@
                 <div class="like-watch-buttons">
                     <?php if (Authentication::isLoggedOn()) : ?>
 
-                        <?php if (Authentication::User()->isOnWatchList($post->id)) : ?>
+                        <?php if (Authentication::User()->isOnWatchList($post->id) || Authentication::User() == $view->owner) : ?>
                             <div class="post-btn disabled">Un-watch<i class="ml-2 fas fa-eye"></i></div>
                         <?php else : ?>
                             <form action="<?php echo $_SERVER["PHP_SELF"]; ?>?post_id=<?php echo $post->id ?>" method="post">

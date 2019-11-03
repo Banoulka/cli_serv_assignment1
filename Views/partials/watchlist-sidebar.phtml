@@ -11,7 +11,7 @@
                         <div class="watchlist-sidebar-item-body">
                             <h4><?php echo $post->title; ?></h4>
                             <div class="watchlist-sidebar-item-detail-container">
-                                <p class="watchlist-item-author"><?php $post->user()->name(); ?></p>
+                                <p class="watchlist-item-author"><?php echo $post->user()->name(); ?></p>
                                 <span class="icon-count"><i class="far fa-thumbs-up"></i>34</span>
                                 <span class="icon-count"><i class="fas fa-eye"></i><?php echo $post->watchCount(); ?></span>
                                 <span class="icon-count"><i class="far fa-comment-dots"></i>3</span>

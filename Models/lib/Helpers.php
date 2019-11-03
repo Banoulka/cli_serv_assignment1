@@ -63,4 +63,45 @@ class Helpers {
             return "just now";
         }
     }
+
+    /**
+     * Function to return the time since posted to a human readable
+     * format
+     *
+     * @param $timestamp int
+     *
+     * @return string
+     */
+    public static function getTimeSinceMin($timestamp)
+    {
+        $postDateTime = new DateTime();
+        $postDateTime->setTimestamp($timestamp);
+        $nowDateTime = new DateTime();
+
+        $difference = $nowDateTime->diff($postDateTime);
+        if ($difference->y > 0) {
+            // Print full date plus year
+            return $postDateTime->format("j F Y \a\\t G:i");
+        }
+        if ($difference->d > 1) {
+            // Print days
+            return $difference->d . " d";
+
+        } else if ($difference->h > 0) {
+            // Print hours
+            return $difference->h . " h";
+
+        } else if ($difference->i > 0) {
+            // Print minutes
+            return $difference->i . " m";
+
+        } else if ($difference->s > 30) {
+            // Print seconds
+            return $difference->s . " s";
+
+        } else {
+            // Print just now
+            return "now";
+        }
+    }
 }

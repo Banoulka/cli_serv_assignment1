@@ -9,7 +9,7 @@ require_once "../Models/Post.php";
 
 $view = new stdClass();
 $view->title = "View Post - uGame";
-$view->page = "create-post";
+$view->page = "view-post";
 
 if (isset($_GET["post_id"])) {
     // Find the post associated with the id in the url

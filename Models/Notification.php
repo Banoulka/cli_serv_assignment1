@@ -35,6 +35,7 @@ class Notification extends Model implements Comparable
             "user_id_to",
             "type",
             "read",
+            "link",
             ]
         );
     }
@@ -75,7 +76,7 @@ class Notification extends Model implements Comparable
      */
     public function getTimeSince()
     {
-        return Helpers::getTimeSince($this->time);
+        return Helpers::getTimeSinceMin($this->time);
     }
 
     public function getMessage()
