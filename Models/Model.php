@@ -199,6 +199,8 @@ abstract class Model {
         $tableName = self::$tableName;
 
         $dataAttributes = $this->getAttributes();
+        $keys = array_keys($dataAttributes);
+        $lastKey = end($keys);
 
         $sql = "UPDATE $tableName SET ";
         foreach ($dataAttributes as $attKey => $attValue) {
@@ -208,13 +210,13 @@ abstract class Model {
                 $sql .= "$attKey = '$attValue'";
 
             // Check if at the end of the attributes
-            if ($attValue != end($dataAttributes))
+            if ($attKey != $lastKey)
                 $sql .= ", ";
         }
         $key = array_keys($whereKeyValArr)[0];
         $value = array_values($whereKeyValArr)[0];
 
-        $sql .= " WHERE $key = '$value'";
+        $sql .= " WHERE $key = '$value';";
 
         $stmt = self::db()->prepare($sql);
         $completed = $stmt->execute();
@@ -257,13 +259,21 @@ abstract class Model {
         return $this;
     }
 
+    protected function delete()
+    {
+        $tableName = self::$tableName;
+        $this->values = array();
+        $this->sql = "DELETE FROM $tableName WHERE ";
+        return $this;
+    }
+
     protected function value($colName, $value)
     {
         $this->values[$colName] = $value;
         return $this;
     }
 
-    protected function execute()
+    protected function executeInsert()
     {
         end($this->values);
         $lastElementKey = key($this->values);
@@ -280,6 +290,26 @@ abstract class Model {
         }
         $this->sql .= ");";
 
+        $this->execute();
+    }
+
+    protected function executeDelete()
+    {
+        end($this->values);
+        $lastElementKey = key($this->values);
+        foreach ($this->values as $colName => $value) {
+            $this->sql .= "$colName = $value";
+            if ($colName != $lastElementKey)
+                $this->sql .= " AND ";
+        }
+        $this->sql .= ";";
+        $this->execute();
+    }
+
+    private function execute()
+    {
+        var_dump($this->sql);
+//        die();
         self::db()->query($this->sql);
 
         unset($this->values);

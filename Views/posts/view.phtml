@@ -25,7 +25,7 @@
                     <span class="game-date">Created <?php echo date("jS \of F Y H:i", $post->time); ?></span>
                 </div>
                 <div class="game-stats">
-                    <p class="game-likes"><i class="far fa-thumbs-up"></i><span class="number">34</span>Like this</p>
+                    <p class="game-likes"><i class="far fa-thumbs-up"></i><span class="number"><?php echo $post->likesCount(); ?></span>Like this</p>
                     <p><i class="fas fa-eye"></i><span class="number"><?php echo $post->watchCount(); ?></span>Watch this</p>
                     <p><i class="far fa-comment-dots"></i><span class="number">3</span>Comments</p>
                 </div>
@@ -34,18 +34,24 @@
                 <img src="../../uploads/post_covers/<?php echo Authentication::isLoggedOn() ? $post->cover_image : "cover-hidden.jpg" ?>" alt="Game Artwork" class="artwork">
                 <div class="like-watch-buttons">
                     <?php if (Authentication::isLoggedOn()) : ?>
-
-                        <?php if (Authentication::User()->isOnWatchList($post->id) || Authentication::User() == $view->owner) : ?>
-                            <div class="post-btn disabled">Un-watch<i class="ml-2 fas fa-eye"></i></div>
-                        <?php else : ?>
-                            <form action="<?php echo $_SERVER["PHP_SELF"]; ?>?post_id=<?php echo $post->id ?>" method="post">
-                                <button type="submit" name="watchlistAdd" class="post-btn watch">Watch<i class="ml-2 fas fa-eye"></i></button>
-                            </form>
+                    <form action="<?php echo $_SERVER["PHP_SELF"]; ?>?post_id=<?php echo $post->id ?>" method="post">
+                        <?php if (Authentication::User() == $view->owner) : ?>
+                            <div class="post-btn disabled"><i class="fas fa-eye"></i></div>
+                        <?php elseif (Authentication::User()->isOnWatchList($post->id)) : ?>
+                            <button type="submit" name="watchlistRemove" class="post-btn watch reverse"><i class="fas fa-eye-slash"></i></button>
+                        <?php else: ?>
+                            <button type="submit" name="watchlistAdd" class="post-btn watch">Watch<i class="ml-2 fas fa-eye"></i></button>
                         <?php endif; ?>
 
+                        <?php if (Authentication::User() == $view->owner) : ?>
+                            <div class="post-btn disabled"><i class="fas fa-thumbs-up"></i></div>
+                        <?php elseif (Authentication::User()->isLiked($post->id)) : ?>
+                            <button type="submit" name="likeAdd" class="post-btn like">Like<i class="ml-3 fas fa-thumbs-up"></i></button>
+                        <?php else : ?>
+                            <button type="submit" name="likeRemove" class="post-btn like reverse"><i class="fas fa-thumbs-down"></i></button>
+                        <?php endif; ?>
+                    </form>
 
-                        <div class="post-btn disabled">Like<i class="ml-2 fas fa-thumbs-up"></i></div>
-<!--                        <a href="#" class="post-btn like">Like<i class="ml-3 fas fa-thumbs-up"></i></a>-->
                     <?php else : ?>
                         <div class="post-btn disabled sign">Sign in to like<i class="ml-2 fas fa-thumbs-up"></i></div>
                         <div class="post-btn disabled sign">Sign in to watch<i class="ml-2 fas fa-eye"></i></div>

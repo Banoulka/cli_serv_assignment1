@@ -92,7 +92,7 @@ class User extends Model {
     {
         // Insert the watchlist row
         parent::setCustomClassAndTable("", "user_watchlist");
-        parent::insert()->value("user_id", $this->id)->value("post_id", $postID)->execute();
+        parent::insert()->value("user_id", $this->id)->value("post_id", $postID)->executeInsert();
         $postAdded = Post::find(["id" => $postID]);
 
         // Send a notification to the owner of the post
@@ -112,6 +112,49 @@ class User extends Model {
                 return true;
         }
         return false;
+    }
+
+    public function isLiked($postID)
+    {
+        $likes = $this->likes();
+        foreach ($likes as $post) {
+            if ($postID == $post->id)
+                return true;
+        }
+        return false;
+    }
+
+    public function likePost($postID)
+    {
+        parent::setCustomClassAndTable("", "post_likes");
+        parent::insert()->value("user_id", $this->id)->value("post_id", $postID)->executeInsert();
+        $postLiked = Post::find(["id" => $postID]);
+
+        // notification
+        $notif = new Notification();
+        $notif->user_id_to = $postLiked->user()->id;
+        $notif->user_id_from = $this->id;
+        $notif->type = Notification::LIKE_TO_USER_POST;
+        $notif->link = "/posts/view.php?post_id=$postLiked->id";
+        $notif->save();
+    }
+
+    public function unLikePost($postID)
+    {
+        parent::setCustomClassAndTable("", "post_likes");
+        parent::delete()->value("user_id", $this->id)->value("post_id", $postID)->executeDelete();
+
+//        $post = Post::find(["id" => $postID]);
+//        // Del notification
+//        parent::setCustomClassAndTable("", "user_notifications");
+//        parent::delete()->value("user_id_from", $this->id)->value("user_id_to", $post->user()->id)->value("type", Notification::LIKE_TO_USER_POST)->value("link", "/posts/view.php?post_id=$postId")->executeDelete();
+    }
+
+    public function unWatchPost($postID)
+    {
+        parent::setCustomClassAndTable("", "user_watchlist");
+        parent::delete()->value("user_id", $this->id)->value("post_id", $postID)->executeDelete();
+
     }
 
     // Relationships
@@ -154,4 +197,23 @@ class User extends Model {
         usort($posts, array("Post", "compareTo"));
         return $posts;
     }
+
+    /**
+     * Get all posts on users watchlist
+     *
+     * @return Post[]
+     * */
+    public function likes()
+    {
+        $posts = array();
+        parent::setCustomClassAndTable("", "post_likes");
+        $likesEntry = parent::findAllByKey(["user_id" => $this->id]);
+        foreach ($likesEntry as $entry)
+        {
+            array_push($posts, Post::find(["id" => $entry->post_id]));
+        }
+        return $posts;
+    }
+
+
 }

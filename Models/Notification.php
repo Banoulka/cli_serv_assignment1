@@ -34,15 +34,21 @@ class Notification extends Model implements Comparable
             "user_id_from",
             "user_id_to",
             "type",
-            "read",
+            "isRead",
             "link",
             ]
         );
     }
 
+    /**
+     *
+     * @param $keyValueArr
+     * @return Notification
+     */
     public static function find($keyValueArr)
     {
-        // TODO: Implement find() method.
+        self::setClassAndTable();
+        return parent::findOneByKey($keyValueArr);
     }
 
     public function save()
@@ -55,7 +61,15 @@ class Notification extends Model implements Comparable
 
     public function isRead(): bool
     {
-        return $this->read;
+        return $this->isRead;
+    }
+
+    public function setRead()
+    {
+        $this->isRead = true;
+        parent::updateModel([
+            "id" => $this->id,
+        ]);
     }
 
     /**

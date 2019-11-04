@@ -129,13 +129,19 @@ class Post extends Model implements Comparable
         foreach ($tagsArr as $tag) {
             $tagID = Tag::find(["title" => $tag])->id;
             self::setCustomClassAndTable("Tag", "post_tags");
-            parent::insert()->value("post_id", $this->id)->value("tag_id", $tagID)->execute();
+            parent::insert()->value("post_id", $this->id)->value("tag_id", $tagID)->executeInsert();
         }
     }
 
     public function watchCount()
     {
         parent::setCustomClassAndTable("", "user_watchlist");
+        return count(parent::findAllByKey(["post_id" => $this->id]));
+    }
+
+    public function likesCount()
+    {
+        parent::setCustomClassAndTable("", "post_likes");
         return count(parent::findAllByKey(["post_id" => $this->id]));
     }
 

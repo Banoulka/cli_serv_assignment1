@@ -1,5 +1,7 @@
 <?php
 
+require_once "../Models/lib/NotifHelper.php";
+
 session_start();
 spl_autoload_register(function ($className) {
     require_once "../Models/lib/" . $className . ".php";
@@ -19,9 +21,25 @@ if (isset($_GET["post_id"])) {
     if ($view->post && Authentication::isLoggedOn())
         $view->owner = Authentication::User()->id == $view->post->user()->id;
 
+    $postID = $_GET["post_id"];
     if (isset($_POST["watchlistAdd"])) {
-        Authentication::User()->addToWatchList($_GET["post_id"]);
+        Authentication::User()->addToWatchList($postID);
+        Route::redirect("view.php?post_id=$postID");
+    } else if (isset($_POST["watchlistRemove"])) {
+        Authentication::User()->unWatchPost($postID);
+        Route::redirect("view.php?post_id=$postID");
     }
+
+    if (isset($_POST["likeAdd"])) {
+        Authentication::User()->likePost($postID);
+        Route::redirect("view.php?post_id=$postID");
+
+    } else if (isset($_POST["likeRemove"])) {
+        Authentication::User()->unLikePost($postID);
+        Route::redirect("view.php?post_id=$postID");
+    }
+
+
 
     require_once "../views/posts/view.phtml";
 } else {

@@ -6,18 +6,18 @@
     <div class="watchlist-sidebar-body-container">
         <?php foreach ($view->userWatchlist as $post) : ?>
             <?php if ($post instanceof Post) : ?>
-                <a href="<?php echo "http://" . $_SERVER["HTTP_HOST"]; ?>/posts/view.php?post_id=<?php echo $post->id; ?>" class="watchlist-link">
+                <a href="<?php echo "http://" . $_SERVER["HTTP_HOST"]; ?>/posts/view.php?post_id=<?php echo $post->id; ?>&" class="watchlist-link">
                     <div class="watchlist-sidebar-item">
                         <div class="watchlist-sidebar-item-body">
                             <h4><?php echo $post->title; ?></h4>
                             <div class="watchlist-sidebar-item-detail-container">
                                 <p class="watchlist-item-author"><?php echo $post->user()->name(); ?></p>
-                                <span class="icon-count"><i class="far fa-thumbs-up"></i>34</span>
+                                <span class="icon-count"><i class="far fa-thumbs-up"></i><?php echo $post->likesCount(); ?></span>
                                 <span class="icon-count"><i class="fas fa-eye"></i><?php echo $post->watchCount(); ?></span>
                                 <span class="icon-count"><i class="far fa-comment-dots"></i>3</span>
                             </div>
                         </div>
-                        <div class="watchlist-sidebar-item-colour watchlist-item-beta"></div>
+                        <div class="watchlist-sidebar-item-colour watchlist-item-<?php echo $post->type_stage; ?>"></div>
                     </div>
                 </a>
             <?php endif; endforeach; ?>
