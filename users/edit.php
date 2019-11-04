@@ -21,9 +21,10 @@ if (isset($_POST["submit"])) {
     $oldEmail = $user->email;
     $user->email = htmlentities($_POST["email"]);
     $user->bio = htmlentities($_POST["bio"]);
+    $user->display_pic = null;
 
     // If there is a file to upload, process it
-    if (count($_FILES) > 0) {
+    if (!empty($_FILES["display_pic"][0])) {
         $imageFileType =  strtolower(pathinfo($_FILES["display_pic"]["name"], PATHINFO_EXTENSION ));
 
         $targetDir = "../uploads/profile_pictures/";

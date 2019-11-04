@@ -35,11 +35,10 @@ if (isset($_POST["submit"])) {
     $validation->name("type_stage")->value($post->type_stage)->required();
     $validation->name("tags")->value(count($tags))->length(0, 4);
 
-    if (count($_FILES) > 0 ) {
+    if ($_FILES["cover_image"]["name"] != "") {
+        $file = true;
         $imageFileType =  strtolower(pathinfo($_FILES["cover_image"]["name"], PATHINFO_EXTENSION ));
         $targetDir = "../uploads/post_covers/";
-        $postFileName = "post-$post->id.$imageFileType";
-        $post->cover_image = $postFileName;
     }
 
     if (!$validation->isSuccess()) {
@@ -52,11 +51,12 @@ if (isset($_POST["submit"])) {
         $post->addTags($tags);
 
         // Process files
-        if (!is_null($post->cover_image)) {
-
+        if ($file) {
+            $postFileName = "post-$post->id.$imageFileType";
+            $post->cover_image = $postFileName;
             $targetFile = $targetDir . $postFileName;
             //TODO: file checks
-
+            $post->save();
             move_uploaded_file($_FILES["cover_image"]["tmp_name"], $targetFile);
         }
 

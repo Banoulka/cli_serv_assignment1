@@ -91,7 +91,7 @@ class User extends Model {
     public function addToWatchList($postID)
     {
         // Insert the watchlist row
-        parent::setCustomClassAndTable("Post", "user_watchlist");
+        parent::setCustomClassAndTable("", "user_watchlist");
         parent::insert()->value("user_id", $this->id)->value("post_id", $postID)->execute();
         $postAdded = Post::find(["id" => $postID]);
 
@@ -151,6 +151,7 @@ class User extends Model {
         foreach ($watchListEntries as $entry) {
             array_push($posts, Post::find(["id" => $entry->post_id]));
         }
+        usort($posts, array("Post", "compareTo"));
         return $posts;
     }
 }

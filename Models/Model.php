@@ -90,8 +90,10 @@ abstract class Model {
         }
         $stmt = self::db()->prepare($sql);
         $stmt->execute();
+
         if(!is_null($stmt->errorInfo()[2]))
             var_dump($stmt->errorInfo());
+
         if (self::$className == "") {
             $stmt->setFetchMode(PDO::FETCH_OBJ);
         } else {
@@ -244,6 +246,8 @@ abstract class Model {
         self::$className = $className;
         self::$tableName = $tableName;
     }
+
+    // Custom query builder thing
 
     protected function insert()
     {

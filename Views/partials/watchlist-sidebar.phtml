@@ -6,7 +6,7 @@
     <div class="watchlist-sidebar-body-container">
         <?php foreach ($view->userWatchlist as $post) : ?>
             <?php if ($post instanceof Post) : ?>
-                <a href="<?php echo $_SERVER["DOCUMENT_ROOT"]; ?>/posts/view.php?post_id=<?php echo $post->id; ?>" class="watchlist-link">
+                <a href="<?php echo "http://" . $_SERVER["HTTP_HOST"]; ?>/posts/view.php?post_id=<?php echo $post->id; ?>" class="watchlist-link">
                     <div class="watchlist-sidebar-item">
                         <div class="watchlist-sidebar-item-body">
                             <h4><?php echo $post->title; ?></h4>

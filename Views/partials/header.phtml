@@ -47,7 +47,7 @@
                 <div class="user d-inline">
                     <div class="text-center">
                         <a href="../users/profile.php?tab=details" class="m-0 username text-body <?php Helpers::echoActive($view->page, "profile") ?>" data-toggle="tooltip" data-placement="bottom" title="Profile">
-                            <?php echo isset(Authentication::User()->display_name) ?
+                            <?php echo Authentication::User()->display_name != "" ?
                                 Authentication::User()->display_name : Authentication::User()->first_name;?>
                         </a>
                     </div>

@@ -2,6 +2,7 @@
 
 require_once "Models/Post.php";
 require_once "Models/User.php";
+require_once "Models/lib/NotifHelper.php";
 
 session_start();
 spl_autoload_register(

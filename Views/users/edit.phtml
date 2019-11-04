@@ -24,7 +24,7 @@
                                 <input type="text" name="last_name" class="form-control edit-prof" value="<?php echo $user->last_name ?>" placeholder="<?php echo $user->last_name; ?>">
                             </div>
                             <p class="aka">aka</p>
-                            <input type="text" name="display_name" class="form-control edit-prof" style="font-size: 1.4rem" value="<?php echo isset($user->display_name) ? $user->display_name : "" ?>" placeholder="<?php echo isset($user->display_name) ? $user->display_name : "No display name set" ?>">
+                            <input type="text" name="display_name" class="form-control edit-prof" style="font-size: 1.4rem" value="<?php echo $user->display_name != "" ? $user->display_name : "" ?>" placeholder="<?php echo $user->display_name != "" ? $user->display_name : "No display name set" ?>">
 
                             <label for="email" class="user-label">Email:</label>
                             <input type="email" id="email" name="email" class="form-control edit-prof" style="font-size: 1rem;" value="<?php echo $user->email ?>" placeholder="<?php echo $user->email ?>">
@@ -34,7 +34,7 @@
                             <p>*********</p>
 
                             <label for="bio" class="user-label mt-0">Bio:</label>
-                            <textarea id="bio" name="bio" class="form-control edit-prof" style="font-size: 1rem;" placeholder="<?php echo isset($user->bio) ? "" : "No bio set" ?>"><?php echo isset($user->bio) ? $user->bio : ""?></textarea>
+                            <textarea id="bio" name="bio" class="form-control edit-prof" style="font-size: 1rem;" placeholder="<?php echo $user->bio != "" ? "" : "No bio set" ?>"><?php echo $user->bio != "" ? $user->bio : ""?></textarea>
 
                             <img src="../uploads/profile_pictures/<?php echo $user->display_pic; ?>" class="profile-pic edit" alt="Profile Picture">
                             <div class="custom-file">

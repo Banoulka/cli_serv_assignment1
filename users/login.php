@@ -12,6 +12,14 @@ if (Authentication::isLoggedOn() ) {
 $view = new stdClass();
 $view->title = "Login - uGame";
 $view->page = "login";
+$currentURL = "http://" . $_SERVER["HTTP_HOST"] . $_SERVER["PHP_SELF"];
+
+if ($_SERVER["HTTP_REFERER"] != $currentURL) {
+    $cameFrom = $_SERVER["HTTP_REFERER"];
+    Session::setSession("referer", $cameFrom);
+} else {
+    $cameFrom = Session::getSession("referer");
+}
 
 if (isset($_POST["submit"])) {
     $email = htmlentities($_POST["email"]);
@@ -23,8 +31,9 @@ if (isset($_POST["submit"])) {
     ];
 
     if (Authentication::validateAndLogonUser($email, $password)) {
-        // If logon redirct to page1
-        Route::redirect("../games.php");
+        // If logon redirct to referer
+        Session::removeSession("referer");
+        Route::redirect($cameFrom);
     } else {
         $view->errors = Authentication::$err;
     }

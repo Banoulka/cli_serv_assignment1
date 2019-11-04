@@ -11,7 +11,15 @@ require_once "../auth.php";
 $view = new stdClass();
 $view->title = "Logout - uGame";
 $view->page = "logout";
+$currentURL = "http://" . $_SERVER["HTTP_HOST"] . $_SERVER["PHP_SELF"];
+
+if ($_SERVER["HTTP_REFERER"] != $currentURL) {
+    $cameFrom = $_SERVER["HTTP_REFERER"];
+    Session::setSession("referer", $cameFrom);
+} else {
+    $cameFrom = Session::getSession("referer");
+}
 
 Authentication::logout();
 
-Route::redirect("login.php");
+Route::redirect($cameFrom);

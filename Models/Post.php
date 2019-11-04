@@ -99,9 +99,17 @@ class Post extends Model implements Comparable
     public function save()
     {
         self::setClassAndTable();
-        $now = new DateTime();
-        $this->time = $now->getTimestamp();
-        parent::saveModel();
+
+        $foundPost = Post::find(["id" => isset($this->id) ? $this->id : "-1"] );
+        if ($foundPost) {
+            parent::updateModel(
+                ["id" => $this->id],
+            );
+        } else {
+            $now = new DateTime();
+            $this->time = $now->getTimestamp();
+            parent::saveModel();
+        }
     }
 
     /**
