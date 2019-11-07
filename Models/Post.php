@@ -128,7 +128,9 @@ class Post extends Model implements Comparable
 
     public function addTags($tagsArr)
     {
-        $this->id = self::getLastID();
+        if (!isset($this->id)) {
+            $this->id = self::getLastID();
+        }
         foreach ($tagsArr as $tag) {
             $tagID = Tag::find(["title" => $tag])->id;
             self::setCustomClassAndTable("Tag", "post_tags");
@@ -150,14 +152,60 @@ class Post extends Model implements Comparable
 
     /**
      * @param $getReq
-     * @return void
+     * @return Post[]
      */
     public static function searchPosts($getReq)
     {
-//        $sql = "SELECT * from posts WHERE ";
-//        $sql .=
-        var_dump($getReq);
+        $sql = "SELECT * from posts WHERE ";
+        $searchString = explode(" ", $getReq["search"]);
+        if (!empty($searchString[0])) {
+            foreach ($searchString as $word) {
+                $sql .= "title LIKE '%$word%'";
+                if ($word != end($searchString)) {
+                    $sql .= " OR ";
+                }
+            }
+            $sql .= " OR ";
+            foreach ($searchString as $word) {
+                $sql .= "description LIKE '%$word%'";
+                if ($word != end($searchString)) {
+                    $sql .= " OR ";
+                }
+            }
 
+            $sql .= " AND ";
+        }
+        $sql .= " (";
+        foreach ($getReq["filters"] as $filter) {
+            $sql .= "type_stage LIKE '%$filter%'";
+            if ($filter != end($getReq["filters"])) {
+                $sql .= " OR ";
+            }
+        }
+        $sql .= ");";
+
+        Post::setCustomClassAndTable("Post", "posts");
+        $posts = parent::query($sql);
+        $tagsToSearch = $getReq["tags"];
+        // Tags
+        for ($i = 0; $i < count($posts)-1; $i++) {
+            $post = $posts[$i];
+            if ($post instanceof Post) {
+                $tags = $post->tags();
+                $tagFound = false;
+                foreach ($tags as $tag) {
+                    if (in_array(strtolower($tag->title), $tagsToSearch)) {
+                        $tagFound = true;
+                        break;
+                    }
+                }
+                if (!$tagFound) {
+                    unset($posts[$i]);
+                    $posts = array_values($posts);
+                }
+            }
+        }
+        return $posts;
     }
 
     // Relationships ============================

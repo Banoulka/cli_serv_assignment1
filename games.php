@@ -18,7 +18,7 @@ $view->posts = Post::all();
 $view->userWatchlist = Authentication::isLoggedOn() ? Authentication::User()->watchlist() : [];
 
 $dataReader = new DataReader();
-//$dataReader->randomiseFollowers();
+//$dataReader->randomisePostTags();
 //echo "completed";
 
 require_once "Views/games.phtml";

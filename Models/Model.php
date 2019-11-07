@@ -306,6 +306,21 @@ abstract class Model {
         $this->execute();
     }
 
+    protected static function query($sql)
+    {
+        $stmt = self::db()->prepare($sql);
+        if (self::$className == "") {
+            $stmt->setFetchMode(PDO::FETCH_OBJ);
+        } else {
+            $stmt->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, self::$className);
+        }
+        $stmt->execute();
+        if(!is_null($stmt->errorInfo()[2]))
+            var_dump($stmt->errorInfo());
+
+        return $stmt->fetchAll();
+    }
+
     private function execute()
     {
         self::db()->query($this->sql);
