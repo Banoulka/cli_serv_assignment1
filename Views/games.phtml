@@ -14,10 +14,10 @@
                         <div class="rows d-flex">
                             <div class="row">
                                 <div class="col-5">
-                                    <img src="../../uploads/post_covers/<?php echo Authentication::isLoggedOn() ? $post->cover_image : "cover-hidden.jpg" ?>" alt="" class="game-cover">
+                                    <img src="<?php echo Authentication::isLoggedOn() ? $post->cover_image : "cover-hidden.jpg" ?>" alt="" class="game-cover">
                                 </div>
-                                <div class="col">
-                                    <h3 class="post-title"><?php echo $post->title; ?></h3>
+                                <div class="col-7 min">
+                                    <h3 class="post-title"><?php echo substr($post->title, 0, 33); ?></h3>
                                     <p class="author"><?php echo $post->user()->name(); ?></p>
                                     <p class="content"><?php echo $post->description; ?></p>
                                     <div class="tags">

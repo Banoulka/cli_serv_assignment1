@@ -29,6 +29,9 @@ class User extends Model {
     }
 
     // Get all users
+    /**
+     * @return User[]
+     * */
     public static function all()
     {
         self::setClassAndTable();
@@ -82,7 +85,9 @@ class User extends Model {
 
             // Encrypt the password
             $this->password = password_hash($this->password, PASSWORD_DEFAULT);
-
+            if (isset($this->display_pic)) {
+                $this->display_pic = "/uploads/profile_pictures/" . $this->display_pic;
+            }
             parent::saveModel();
             return true;
         }
@@ -124,6 +129,13 @@ class User extends Model {
         return false;
     }
 
+    public function isFollower(User $user)
+    {
+        $followers = $user->followers();
+        $me = User::find(["id" => $this->id]);
+        return in_array($me, $followers, FALSE);
+    }
+
     public function likePost($postID)
     {
         parent::setCustomClassAndTable("", "post_likes");
@@ -154,8 +166,28 @@ class User extends Model {
     {
         parent::setCustomClassAndTable("", "user_watchlist");
         parent::delete()->value("user_id", $this->id)->value("post_id", $postID)->executeDelete();
-
     }
+
+    public function followUser(User $user)
+    {
+        parent::setCustomClassAndTable("User", "user_follows");
+        parent::insert()->value("user_id_to", $user->id)->value("user_id_from", $this->id)->executeInsert();
+        // Notification
+        $notif = new Notification();
+        $notif->user_id_to = $user->id;
+        $notif->user_id_from = $this->id;
+        $notif->type = Notification::FOLLOW_TO_USER;
+        $notif->link = "/users/view.php?id=$this->id";
+        $notif->save();
+    }
+
+    public function unFollowUser(User $user)
+    {
+        parent::setCustomClassAndTable("User", "user_follows");
+        parent::delete()->value("user_id_to", $user->id)->value("user_id_from", $this->id)->executeDelete();
+    }
+
+
 
     // Relationships
 
@@ -215,5 +247,21 @@ class User extends Model {
         return $posts;
     }
 
+   /**
+    * Get all posts on users watchlist
+    *
+    * @return User[]
+    * */
+    public function followers()
+    {
+        $followers = array();
+        parent::setCustomClassAndTable("", "user_follows");
+        $followerIDs = parent::findAllByKey(["user_id_to" => $this->id]);
+        foreach ($followerIDs as $entry)
+        {
+            array_push($followers, User::find(["id" => $entry->user_id_from]));
+        }
+        return $followers;
+    }
 
 }

@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="col-md-4 d-flex flex-column justify-content-center">
-                <img src="../../uploads/post_covers/<?php echo Authentication::isLoggedOn() ? $post->cover_image : "cover-hidden.jpg" ?>" alt="Game Artwork" class="artwork">
+                <img src="<?php echo Authentication::isLoggedOn() ? $post->cover_image : "cover-hidden.jpg" ?>" alt="Game Artwork" class="artwork">
                 <div class="like-watch-buttons">
                     <?php if (Authentication::isLoggedOn()) : ?>
                     <form action="<?php echo $_SERVER["PHP_SELF"]; ?>?post_id=<?php echo $post->id ?>" method="post">
@@ -46,9 +46,9 @@
                         <?php if (Authentication::User() == $view->owner) : ?>
                             <div class="post-btn disabled"><i class="fas fa-thumbs-up"></i></div>
                         <?php elseif (Authentication::User()->isLiked($post->id)) : ?>
-                            <button type="submit" name="likeAdd" class="post-btn like">Like<i class="ml-3 fas fa-thumbs-up"></i></button>
-                        <?php else : ?>
                             <button type="submit" name="likeRemove" class="post-btn like reverse"><i class="fas fa-thumbs-down"></i></button>
+                        <?php else : ?>
+                            <button type="submit" name="likeAdd" class="post-btn like">Like<i class="ml-3 fas fa-thumbs-up"></i></button>
                         <?php endif; ?>
                     </form>
 
@@ -66,7 +66,7 @@
                     <?php if (Authentication::isLoggedOn()) : ?>
                     <div class="comment-box row p-2 m-0 mr-auto">
                         <div class="col-2 d-flex align-items-center justify-content-center pr-0">
-                            <img src="/uploads/profile_pictures/<?php echo Authentication::User()->display_pic; ?>" alt="" class="form-profile">
+                            <img src="<?php echo Authentication::User()->display_pic; ?>" alt="" class="form-profile">
                         </div>
                         <div class="col-10 d-flex align-items-center pl-0">
                             <form action="#" class="comment-area pl-4">
@@ -88,7 +88,7 @@
                             </div>
                         </div>
                         <div class="col-3 d-flex align-items-center justify-content-center pr-0">
-                            <img src="/uploads/profile_pictures/<?php echo Authentication::User()->display_pic; ?>" alt="" class="form-profile">
+                            <img src="<?php echo Authentication::User()->display_pic; ?>" alt="" class="form-profile">
                         </div>
                     </div>
                     <input type="submit" name="submit" value="Announce" class="dprim-btn dprim-btn-filled mr-0 mt-2">

@@ -1,7 +1,7 @@
 <?php require("partials/header.phtml"); ?>
 
 <div class="container section px-0">
-    <form action="formtest.php" method="GET" class="search-form row">
+    <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="GET" class="search-form row">
         <aside class="collapse-sidebar">
             <div id="dismiss-sidebar"><i class="far fa-times-circle"></i></div>
             <div class="collapse-sidebar-header">

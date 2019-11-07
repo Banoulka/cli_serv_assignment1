@@ -28,7 +28,7 @@
                 <?php foreach ($userNotifs as $notif) : ?>
                     <a href="<?php echo $notif->link; ?>&notif_id=<?php echo $notif->id ?>" class="notification-link">
                         <div class="notification d-flex flex-row align-items-center <?php echo $notif->isRead() ? "" : "notification-unread"; ?>">
-                            <img src="/uploads/profile_pictures/<?php echo $notif->userFrom()->display_pic; ?>" class="notif-profile-pic" alt="">
+                            <img src="<?php echo $notif->userFrom()->display_pic; ?>" class="notif-profile-pic" alt="">
                             <p><span class="notif-profile-name"><?php echo $notif->userFrom()->name(); ?></span> <?php echo $notif->getMessage(); ?></p>
                             <div class="time-icon">
                                 <i class="<?php echo $notif->getIconClass(); ?>"></i>

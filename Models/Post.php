@@ -108,6 +108,9 @@ class Post extends Model implements Comparable
         } else {
             $now = new DateTime();
             $this->time = $now->getTimestamp();
+            if (isset($this->cover_image)) {
+                $this->cover_image = "/uploads/profile_pictures/" . $this->cover_image;
+            }
             parent::saveModel();
         }
     }
@@ -143,6 +146,18 @@ class Post extends Model implements Comparable
     {
         parent::setCustomClassAndTable("", "post_likes");
         return count(parent::findAllByKey(["post_id" => $this->id]));
+    }
+
+    /**
+     * @param $getReq
+     * @return void
+     */
+    public static function searchPosts($getReq)
+    {
+//        $sql = "SELECT * from posts WHERE ";
+//        $sql .=
+        var_dump($getReq);
+
     }
 
     // Relationships ============================

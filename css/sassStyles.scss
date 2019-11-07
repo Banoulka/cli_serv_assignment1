@@ -126,14 +126,20 @@ $light-grey-border: 1px solid #CBCBCB;
     }
 
     .game-cover {
-      width: 100%;
+      max-width: 95%;
+      width: 300px;
       height: auto;
+      max-height: 300px;
       border-radius: 8px;
     }
 
     .col {
       padding-left: 0;
       padding-right: 30px;
+    }
+
+    .min {
+      min-height: 200px;
     }
 
     .post-title {
@@ -827,48 +833,114 @@ $light-grey-border: 1px solid #CBCBCB;
   background-color: white;
   border-radius: 10px;
   padding: 2em;
+}
 
-  .edit-prof {
-    padding-left: 0.2em;
-    font-size: 2rem;
-    border: 1px solid rgba(211, 211, 211, 1);
-    border-radius: 5px;
-  }
+.edit-prof {
+  padding-left: 0.2em;
+  font-size: 2rem;
+  border: 1px solid rgba(211, 211, 211, 1);
+  border-radius: 5px;
+}
 
-  .profile-menu {
-    font-size: 2rem;
-  }
+.profile-menu {
+  font-size: 2rem;
+}
 
-  .profile-name {
-    font-weight: 600;
-    letter-spacing: 1px;
-  }
+.profile-name {
+  font-weight: 600;
+  letter-spacing: 1px;
+}
 
-  .aka {
-    color: lightgray;
-    margin: 0;
-  }
+.aka {
+  color: lightgray;
+  margin: 0;
+}
 
-  .user-label {
-    color: $light-grey-text !important;
-    font-weight: 300;
-    margin-top: 30px;
-  }
+.user-label {
+  color: $light-grey-text !important;
+  font-weight: 300;
+  margin-top: 30px;
+}
 
-  .profile-pic {
-    height: auto;
-    max-height: 350px;
-    width: 100%;
-    border-radius: 6px;
-    margin: 20px 0;
+.profile-pic {
+  height: auto;
+  max-height: 350px;
+  width: 100%;
+  border-radius: 6px;
+  margin: 20px 0;
 
-    &.edit {
-      width: 250px;
-    }
+  &.edit {
+    width: 250px;
   }
 }
 
 .notification-link {
   color: inherit !important;
   text-decoration: none !important;
+}
+
+.follow-message {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  button {
+    width: 80%;
+    margin: 0 auto;
+  }
+}
+
+.followers {
+  .header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    text-align: center;
+    padding: 0.4em;
+    border-radius: 8px 8px 0 0;
+    background-color: $dark-blue-text;
+    color: white;
+
+    * {
+      margin: 0;
+    }
+  }
+
+  .body {
+    min-height: 300px;
+    background-color: #e3e3e3;
+    border-radius: 0 0 8px 8px;
+
+    a {
+      text-decoration: none;
+    }
+
+    .follower {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 0.6em;
+      background-color: white;
+      transition: 0.2s all ease-in-out;
+      text-decoration: none;
+      margin-top: 0.8em;
+
+      .name {
+        color: $dark-blue-text;
+        display: inline-block;
+      }
+
+      .pic {
+        margin-left: auto;
+        height: 60px;
+        width: auto;
+      }
+
+      &:hover {
+        background-color: #dbdbf2;
+      }
+    }
+  }
 }

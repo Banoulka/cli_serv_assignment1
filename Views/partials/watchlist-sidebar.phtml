@@ -9,7 +9,7 @@
                 <a href="<?php echo "http://" . $_SERVER["HTTP_HOST"]; ?>/posts/view.php?post_id=<?php echo $post->id; ?>&" class="watchlist-link">
                     <div class="watchlist-sidebar-item">
                         <div class="watchlist-sidebar-item-body">
-                            <h4><?php echo $post->title; ?></h4>
+                            <h4 class="watchlist-title"><?php echo substr($post->title, 0, 28); ?></h4>
                             <div class="watchlist-sidebar-item-detail-container">
                                 <p class="watchlist-item-author"><?php echo $post->user()->name(); ?></p>
                                 <span class="icon-count"><i class="far fa-thumbs-up"></i><?php echo $post->likesCount(); ?></span>

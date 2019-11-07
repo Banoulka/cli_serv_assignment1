@@ -17,5 +17,9 @@ $view->title = "Games - uGame";
 $view->posts = Post::all();
 $view->userWatchlist = Authentication::isLoggedOn() ? Authentication::User()->watchlist() : [];
 
+$dataReader = new DataReader();
+//$dataReader->randomiseFollowers();
+//echo "completed";
+
 require_once "Views/games.phtml";
 

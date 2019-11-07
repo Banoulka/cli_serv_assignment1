@@ -36,7 +36,7 @@
                             <label for="bio" class="user-label mt-0">Bio:</label>
                             <textarea id="bio" name="bio" class="form-control edit-prof" style="font-size: 1rem;" placeholder="<?php echo $user->bio != "" ? "" : "No bio set" ?>"><?php echo $user->bio != "" ? $user->bio : ""?></textarea>
 
-                            <img src="../uploads/profile_pictures/<?php echo $user->display_pic; ?>" class="profile-pic edit" alt="Profile Picture">
+                            <img src="<?php echo $user->display_pic; ?>" class="profile-pic edit" alt="Profile Picture">
                             <div class="custom-file">
                                 <input type="file" name="display_pic" class="custom-file-input" id="custom-file" accept="image/*">
                                 <label for="custom-file" class="custom-file-label">Choose file</label>

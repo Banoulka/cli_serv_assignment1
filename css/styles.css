@@ -1067,6 +1067,12 @@ footer .footer-addon a:hover {
     min-height: 200px;
 }
 
+.watchlist-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .watchlist-sidebar-item-body {
     padding: 5px 0 0 10px;
     height: inherit;

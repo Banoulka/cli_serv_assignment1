@@ -308,8 +308,6 @@ abstract class Model {
 
     private function execute()
     {
-        var_dump($this->sql);
-//        die();
         self::db()->query($this->sql);
 
         unset($this->values);
