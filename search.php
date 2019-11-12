@@ -19,10 +19,21 @@ if (isset($_COOKIE["searchParams"])) {
 
 if (isset($_GET["submit"])) {
     // Search post
+    $view->page = 1;
     $posts = Post::searchPosts($_GET);
     setcookie("searchParams", serialize($_GET));
     $view->searches = $_GET;
-    var_dump($posts);
+
+    // Do sorting
+    if ($_GET["sort-by"] == "likes") {
+        usort($posts, array("Post", "compareToLikes"));
+    } else if ($_GET["sort-by"] == "watches") {
+        usort($posts, array("Post", "compareToWatches"));
+    } else if ($_GET["sort-by"] == "newest") {
+        usort($posts, array("Post", "compareTo"));
+    }
+
+    $view->posts = $posts;
 }
 
 

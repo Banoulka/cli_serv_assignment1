@@ -42,7 +42,7 @@ if (isset($_POST["submit"])) {
     }
 
     if (!$validation->isSuccess()) {
-        var_dump($validation->getErrors());
+//        var_dump($validation->getErrors());
         $view->errors = $validation->getErrors();
         $view->post = $post;
     } else {

@@ -80,15 +80,45 @@ class Post extends Model implements Comparable
     public static function compareTo(Comparable $self, Comparable $other)
     {
         if ($other instanceof Post) {
-            if ($self->time == $other->time ) {
-                return 0;
-            } else {
-                return $self->time < $other->time ? 1 : -1;
-            }
+            return $self->time < $other->time ? 1 : -1;
         } else {
             throw new Exception("Cannot compare objects of different types");
         }
     }
+
+    /**
+     *
+     * @param Comparable $self
+     * @param Comparable $other
+     * @return bool
+     * @throws Exception
+     */
+    public static function compareToLikes(Comparable $self, Comparable $other)
+    {
+        if ($other instanceof  Post) {
+            return $self->likesCount() < $other->likesCount() ? 1 : -1;
+        } else {
+            throw new Exception("Cannot compare objects of different types");
+        }
+    }
+
+    /**
+     *
+     * @param Comparable $self
+     * @param Comparable $other
+     * @return bool
+     * @throws Exception
+     */
+    public static function compareToWatches(Comparable $self, Comparable $other)
+    {
+        if ($other instanceof  Post) {
+            return $self->watchCount() < $other->watchCount() ? 1 : -1;
+        } else {
+            throw new Exception("Cannot compare objects of different types");
+        }
+    }
+
+
 
     /**
      * Save the Post
@@ -182,7 +212,7 @@ class Post extends Model implements Comparable
                 $sql .= " OR ";
             }
         }
-        $sql .= ");";
+        $sql .= ") ORDER BY title";
 
         Post::setCustomClassAndTable("Post", "posts");
         $posts = parent::query($sql);

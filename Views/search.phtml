@@ -84,6 +84,43 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="posts">
+                        <?php if (isset($view->posts)) : foreach ($view->posts as $post) : ?>
+                            <?php if ($post instanceof Post) : ?>
+                                <a href="../posts/view.php?post_id=<?php echo $post->id ?>" class="post-reg">
+                                    <div class="rows d-flex">
+                                        <div class="row">
+                                            <div class="col-5">
+                                                <img src="<?php echo Authentication::isLoggedOn() ? $post->cover_image : "cover-hidden.jpg" ?>" alt="" class="game-cover">
+                                            </div>
+                                            <div class="col-7 min">
+                                                <h3 class="post-title"><?php echo substr($post->title, 0, 33); ?></h3>
+                                                <p class="author"><?php echo $post->user()->name(); ?></p>
+                                                <p class="content"><?php echo $post->description; ?></p>
+                                                <div class="tags">
+                                                    <?php foreach ($post->tags() as $tag) : ?>
+                                                        <p class="tag"><?php echo $tag->title; ?></p>
+                                                    <?php endforeach; ?>
+                                                </div>
+                                            </div>
+                                            <div class="row extras">
+                                                <span class="likes"><i class="far fa-thumbs-up"></i><?php echo $post->likesCount(); ?></span>
+                                                <span class="watches"><i class="fas fa-eye"></i><?php echo $post->watchCount(); ?></span>
+                                                <span class="comments"><i class="far fa-comment-dots"></i>52</span>
+                                                <span class="ml-3"><?php echo $post->getTimeSince(); ?></span>
+                                            </div>
+                                        </div>
+                                        <div class="post-colour"><span class="<?php echo $post->type_stage; ?>"></span></div>
+                                    </div>
+                                </a>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="d-none px-xl-0 col-lg-2 d-lg-block ml-5 collapsable-tags">
             <div class="row" id="tag-row-main">
