@@ -4,6 +4,9 @@ require_once "Model.php";
 require_once "Post.php";
 require_once "Notification.php";
 
+/**
+ * @property int id
+ * */
 class User extends Model {
 
     // Set the class and table of the model

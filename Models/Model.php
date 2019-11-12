@@ -228,6 +228,19 @@ abstract class Model {
         return $completed;
     }
 
+    protected function deleteModel($id)
+    {
+        $tableName = self::$tableName;
+        $sql = "DELETE FROM $tableName WHERE id = $id";
+        $stmt = self::db()->prepare($sql);
+        $completed = $stmt->execute();
+
+        if(!is_null($stmt->errorInfo()[2]))
+            var_dump($stmt->errorInfo());
+        
+        return $complete;
+    }
+
     private function getAttributes()
     {
         // Get array of data from the current model

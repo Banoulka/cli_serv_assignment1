@@ -4,7 +4,12 @@ require_once "Model.php";
 require_once "User.php";
 require_once "Tag.php";
 require_once "Comparable.php";
+require_once "Comment.php";
 
+/**
+ * @property int time
+ * @property int id
+ */
 class Post extends Model implements Comparable
 {
 
@@ -180,6 +185,12 @@ class Post extends Model implements Comparable
         return count(parent::findAllByKey(["post_id" => $this->id]));
     }
 
+    public function commentCount()
+    {
+        parent::setCustomClassAndTable("Comment", "post_comments");
+        return count(parent::findAllByKey(["post_id" => $this->id]));
+    }
+
     /**
      * @param $getReq
      * @return Post[]
@@ -255,7 +266,7 @@ class Post extends Model implements Comparable
      *
      * @return Tag[]
      * */
-    public function tags(): array
+    public function tags()
     {
         parent::setCustomClassAndTable("Tag", "post_tags");
         // Get all tags relating to the selected post from the pivot table
@@ -267,5 +278,18 @@ class Post extends Model implements Comparable
             array_push($tags, $tag);
         }
         return $tags;
+    }
+
+
+    /**
+     *
+     * @return Comment[]
+     * */
+    public function comments()
+    {
+        parent::setCustomClassAndTable("Comment", "post_comments");
+        $comments = parent::findAllByKey(["post_id" => $this->id]);
+        usort($comments, array("Comment", "compareTo"));
+        return $comments;
     }
 }

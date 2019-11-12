@@ -29,7 +29,7 @@
                                 <div class="row extras">
                                     <span class="likes"><i class="far fa-thumbs-up"></i><?php echo $post->likesCount(); ?></span>
                                     <span class="watches"><i class="fas fa-eye"></i><?php echo $post->watchCount(); ?></span>
-                                    <span class="comments"><i class="far fa-comment-dots"></i>52</span>
+                                    <span class="comments"><i class="far fa-comment-dots"></i><?php echo $post->commentCount(); ?></span>
                                     <span class="ml-3"><?php echo $post->getTimeSince(); ?></span>
                                 </div>
                             </div>

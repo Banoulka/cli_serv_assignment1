@@ -12,7 +12,7 @@ $view = new stdClass();
 $view->title = "ProfileName - uGame";
 $view->page = "viewProfile";
 
-if(isset($_GET["id"])) {
+if (isset($_GET["id"])) {
     // Find the post associated with the id in the url
     $view->user = User::find(["id" => $_GET["id"]]);
 

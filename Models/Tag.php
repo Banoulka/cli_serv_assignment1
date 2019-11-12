@@ -42,7 +42,7 @@ class Tag extends Model {
      *
      * @return Tag
      */
-    public static function find($keyValueArr)
+    public static function find($keyValueArr): Tag
     {
         self::setClassAndTable();
         return parent::findOneByKey($keyValueArr);
@@ -61,5 +61,6 @@ class Tag extends Model {
     }
 
     // Relationships =============================
+
 
 }

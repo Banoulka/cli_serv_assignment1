@@ -8,10 +8,12 @@ spl_autoload_register(function ($className) {
 });
 
 require_once "../Models/Post.php";
+require_once "../Models/Comment.php";
 
 $view = new stdClass();
 $view->title = "View Post - uGame";
 $view->page = "view-post";
+
 
 if (isset($_GET["post_id"])) {
     // Find the post associated with the id in the url
@@ -37,6 +39,15 @@ if (isset($_GET["post_id"])) {
     } else if (isset($_POST["likeRemove"])) {
         Authentication::User()->unLikePost($postID);
         Route::redirect("view.php?post_id=$postID");
+    } else if (isset($_POST["commentBody"])) {
+        $comment = new Comment();
+        $comment->post_id = $postID;
+        $comment->user_id = Authentication::User()->id;
+        $comment->body = htmlentities($_POST["commentBody"]);
+        $comment->save();
+        Route::redirect("view.php?post_id=$postID#comments");
+    } else if (isset($_POST["commentDelete"])) {
+
     }
 
 

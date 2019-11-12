@@ -6,6 +6,9 @@ $(document).ready(function(){
     setupOverlayNav();
     setupTagCheckButtons();
     setMinifiedForm();
+    setCommentForm();
+
+    $("#comment").autoResize();
 });
 
 function setupCharLimiters() {
@@ -263,3 +266,25 @@ function setMinifiedForm () {
         $("#minified-form").submit();
     });
 }
+
+function setCommentForm() {
+    let commentForm = document.getElementById("commentForm");
+
+    document.getElementById("comment").addEventListener("focusin", () => {
+        commentForm.addEventListener("keydown", focusin);
+    });
+
+    document.getElementById("comment").addEventListener("focusout", () => {
+        commentForm.removeEventListener("keydown", focusin);
+    });
+
+    function focusin(event) {
+        // window.alert(event.key);
+        if (event.key === "Enter") {
+            event.preventDefault();
+            commentForm.submit();
+        }
+    }
+}
+
+
