@@ -28,9 +28,9 @@ class Comment extends Model implements Comparable
     /**
      * Get all from table
      *
-     * @return Comment[]
+     * @return self[]
      * */
-    protected static function all()
+    public static function all()
     {
         return parent::getAllByTableName();
     }
@@ -40,9 +40,9 @@ class Comment extends Model implements Comparable
      *
      * @param $keyValueArr array
      *
-     * @return mixed
+     * @return self
      */
-    protected static function find($keyValueArr)
+    public static function find($keyValueArr)
     {
         self::setClassAndTable();
         return parent::findOneByKey($keyValueArr);

@@ -47,7 +47,9 @@ if (isset($_GET["post_id"])) {
         $comment->save();
         Route::redirect("view.php?post_id=$postID#comments");
     } else if (isset($_POST["commentDelete"])) {
-
+        $comment = Comment::find(["id" => $_GET["comment_id"]]);
+        $comment->destroy();
+        Route::redirect("view.php?post_id=$postID#comments");
     }
 
 

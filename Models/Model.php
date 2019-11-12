@@ -128,7 +128,7 @@ abstract class Model {
     /**
      * Get all from table
      *
-     * @return array
+     * @return self[]
      * */
     protected abstract static function all();
 
@@ -137,7 +137,7 @@ abstract class Model {
      *
      * @param $keyValueArr array
      *
-     * @return mixed
+     * @return self
      */
     protected abstract static function find($keyValueArr);
 
