@@ -17,4 +17,14 @@ $view->page = "profile";
 $view->tab = isset($_GET["tab"]) ? $_GET["tab"] : "details";
 
 Authentication::refresh();
+
+if (isset($_POST["postDelete"])) {
+    $post = Post::find(["id" => $_GET["post_id"]]);
+    if ($post) {
+        $post->destroy();
+    } else {
+        Route::redirect("profile.php?tab=posts");
+    }
+}
+
 require_once "../Views/users/profile.phtml";

@@ -2,6 +2,7 @@
 
 require_once "Model.php";
 require_once "User.php";
+require_once "Notification.php";
 require_once "Tag.php";
 require_once "Comparable.php";
 
@@ -62,7 +63,9 @@ class Comment extends Model implements Comparable
     public function destroy()
     {
         self::setClassAndTable();
-        parent::deleteModel($this->id);
+        parent::deleteModel(["id" => $this->id]);
+
+        parent::delete()->value("user_id_from", $this->user_id)->value("type", Notification::COMMENT_TO_USER_POST)->value("link", "/posts/view.php?post_id=$this->post_id")->executeDelete();
     }
 
     /**
@@ -76,6 +79,17 @@ class Comment extends Model implements Comparable
         $now = new DateTime();
         $this->timestamp = $now->getTimestamp();
         parent::saveModel();
+
+        // Send notification to user
+        $notification = new Notification();
+        $notification->user_id_to = Post::find(["id" => $this->post_id])->user()->id;
+        $notification->user_id_from = $this->user_id;
+        $notification->type = Notification::COMMENT_TO_USER_POST;
+        $notification->link = "/posts/view.php?post_id=$this->post_id";
+        // Only save is the commenter is not the same
+        if ($notification->user_id_from != $notification->user_id_to) {
+            $notification->save();
+        }
     }
 
     public function isOwner(User $user)

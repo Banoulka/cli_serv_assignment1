@@ -269,20 +269,22 @@ function setMinifiedForm () {
 
 function setCommentForm() {
     let commentForm = document.getElementById("commentForm");
+    if (commentForm != null) {
 
-    document.getElementById("comment").addEventListener("focusin", () => {
-        commentForm.addEventListener("keydown", focusin);
-    });
+        document.getElementById("comment").addEventListener("focusin", () => {
+            commentForm.addEventListener("keydown", focusin);
+        });
 
-    document.getElementById("comment").addEventListener("focusout", () => {
-        commentForm.removeEventListener("keydown", focusin);
-    });
+        document.getElementById("comment").addEventListener("focusout", () => {
+            commentForm.removeEventListener("keydown", focusin);
+        });
 
-    function focusin(event) {
-        // window.alert(event.key);
-        if (event.key === "Enter") {
-            event.preventDefault();
-            commentForm.submit();
+        function focusin(event) {
+            // window.alert(event.key);
+            if (event.key === "Enter") {
+                event.preventDefault();
+                commentForm.submit();
+            }
         }
     }
 }

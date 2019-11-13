@@ -123,7 +123,23 @@ class Post extends Model implements Comparable
         }
     }
 
+    public function destroy()
+    {
+        self::setCustomClassAndTable("", "post_likes");
+        parent::deleteModel(["post_id" => $this->id]);
 
+        self::setCustomClassAndTable("", "post_comments");
+        parent::deleteModel(["post_id" => $this->id]);
+
+        self::setCustomClassAndTable("", "post_tags");
+        parent::deleteModel(["post_id" => $this->id]);
+
+        self::setCustomClassAndTable("", "user_watchlist");
+        parent::deleteModel(["post_id" => $this->id]);
+
+        self::setClassAndTable();
+        parent::deleteModel(["id" => $this->id]);
+    }
 
     /**
      * Save the Post

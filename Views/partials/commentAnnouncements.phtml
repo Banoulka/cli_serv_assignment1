@@ -26,19 +26,19 @@
                 </div>
                 <div class="col-9">
                     <div class="commentinfo">
-                        <h3 class="comment-user"><?php echo $comment->user()->name();?></h3>
+                        <a href="../../users/view.php?id=<?php echo $comment->user()->id; ?>" class="comment-user"><?php echo $comment->user()->name();?></a>
                         <p class="comment-body"><?php echo $comment->body; ?></p>
                         <div class="extra">
                             <?php if (Authentication::isLoggedOn()) : ?>
                                 <button class="dprim-btn dprim-btn-filled reply">Reply</button>
                             <?php endif; ?>
                             <span class="likes"><i class="far fa-thumbs-up ml-3"></i><?php echo $comment->likesCount(); ?></span>
-                            <?php if ($comment->isOwner(Authentication::User())) : ?>
-                                <form class="ml-auto" method="post" action="<?php echo $_SERVER["PHP_SELF"]; ?>?post_id=<?php echo $post->id ?>&comment_id=<?php echo $comment->id; ?>">
+                            <span class="time-info ml-auto"><?php echo Helpers::getTimeSinceMin($comment->timestamp); ?></span>
+                            <?php if (Authentication::isLoggedOn() && $comment->isOwner(Authentication::User())) : ?>
+                                <form class="ml-3" method="post" action="<?php echo $_SERVER["PHP_SELF"]; ?>?post_id=<?php echo $post->id ?>&comment_id=<?php echo $comment->id; ?>">
                                     <button type="submit" name="commentDelete" class="btn btn-outline-danger btn-sm">delete</button>
                                 </form>
                             <?php endif; ?>
-                            <span class="time-info ml-3"><?php echo Helpers::getTimeSinceMin($comment->timestamp); ?></span>
                         </div>
                     </div>
                 </div>

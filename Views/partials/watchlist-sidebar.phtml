@@ -14,7 +14,7 @@
                                 <p class="watchlist-item-author"><?php echo $post->user()->name(); ?></p>
                                 <span class="icon-count"><i class="far fa-thumbs-up"></i><?php echo $post->likesCount(); ?></span>
                                 <span class="icon-count"><i class="fas fa-eye"></i><?php echo $post->watchCount(); ?></span>
-                                <span class="icon-count"><i class="far fa-comment-dots"></i>3</span>
+                                <span class="icon-count"><i class="far fa-comment-dots"></i><?php echo $post->commentCount(); ?></span>
                             </div>
                         </div>
                         <div class="watchlist-sidebar-item-colour watchlist-item-<?php echo $post->type_stage; ?>"></div>

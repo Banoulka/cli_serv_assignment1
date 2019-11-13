@@ -5,6 +5,14 @@ require_once "User.php";
 require_once "Tag.php";
 require_once "Comparable.php";
 
+/**
+ *
+ * @property int user_id_to
+ * @property int user_id_from
+ * @property int type
+ * @property boolean isRead
+ * @property string link
+ * */
 class Notification extends Model implements Comparable
 {
 

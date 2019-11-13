@@ -1,0 +1,23 @@
+<div class="col-12 profile-posts">
+    <h3 class="profile-name mb-3">Posts</h3>
+
+    <?php foreach (Authentication::User()->posts() as $post) : ?>
+    <div class="prof-post row">
+        <div class="col-8">
+            <a href="../../posts/view.php?post_id=<?php echo $post->id; ?>">
+                <h6><?php echo $post->title; ?></h6>
+                <div class="extras">
+                    <span class="icon-count"><i class="far fa-thumbs-up"></i><?php echo $post->likesCount(); ?></span>
+                    <span class="icon-count"><i class="fas fa-eye"></i><?php echo $post->watchCount(); ?></span>
+                    <span class="icon-count"><i class="far fa-comment-dots"></i><?php echo $post->commentCount(); ?></span>
+                </div>
+            </a>
+        </div>
+        <div class="col-2 d-flex flex-column justify-content-center">
+            <form action="<?php echo $_SERVER["PHP_SELF"]; ?>?tab=posts&post_id=<?php echo $post->id; ?>" method="post">
+                <button type="submit" name="postDelete" class="btn btn-danger btn-sm">Delete</button>
+            </form>
+        </div>
+    </div>
+    <?php endforeach; ?>
+</div>

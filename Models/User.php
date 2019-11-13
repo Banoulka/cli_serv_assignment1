@@ -180,7 +180,7 @@ class User extends Model {
         $notif->user_id_to = $user->id;
         $notif->user_id_from = $this->id;
         $notif->type = Notification::FOLLOW_TO_USER;
-        $notif->link = "/users/view.php?id=$this->id";
+        $notif->link = "/users/view.php?id=$notif->user_id_from";
         $notif->save();
     }
 
@@ -199,8 +199,9 @@ class User extends Model {
      *
      * @return Post[]
      * */
-    public function posts(): array
+    public function posts()
     {
+        parent::setCustomClassAndTable("Post", "posts");
         return Post::findAllByKey(["user_id" => $this->id]);
     }
 

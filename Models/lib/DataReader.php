@@ -144,5 +144,22 @@ class DataReader
             $post->addTags($chosenTags);
         }
     }
+
+    public function randomisePostComments ()
+    {
+        $posts = Post::all();
+        $users = User::all();
+
+        foreach ($posts as $post) {
+            $noComments = rand(0, $post->likesCount());
+            for ($i = 0; $i < $noComments; $i++) {
+                $comment = new Comment();
+                $comment->post_id = $post->id;
+                $comment->user_id = $users[rand(0, count($users)-1)]->id;
+                $comment->body = "Quisque tincidunt turpis mi. Maecenas pulvinar, sapien nec cursus posuere, ipsum nulla finibus nisi, et vulputate nulla enim quis nulla. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum iaculis magna odio, sed lacinia orci congue a.";
+                $comment->save();
+            }
+        }
+    }
 }
 

@@ -228,17 +228,23 @@ abstract class Model {
         return $completed;
     }
 
-    protected function deleteModel($id)
+    protected function deleteModel($whereKeyValArr)
     {
         $tableName = self::$tableName;
-        $sql = "DELETE FROM $tableName WHERE id = $id";
+        $sql = "DELETE FROM $tableName WHERE ";
+        $keys = array_keys($whereKeyValArr);
+        $lastKey = end($keys);
+        foreach ($whereKeyValArr as $key => $value ) {
+            $sql .= "$key = $value";
+            if ($key != $lastKey) {
+                $sql .= ", ";
+            }
+        }
         $stmt = self::db()->prepare($sql);
-        $completed = $stmt->execute();
+        $stmt->execute();
 
         if(!is_null($stmt->errorInfo()[2]))
             var_dump($stmt->errorInfo());
-        
-        return $complete;
     }
 
     private function getAttributes()

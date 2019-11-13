@@ -12,7 +12,7 @@
             <div class="profile-menu">
                 <a href="<?php echo $profilePage; ?>details" class="menu-item <?php Helpers::echoActive($view->tab, "details"); ?>">Details</a>
                 <a href="<?php echo $profilePage; ?>messages" class="menu-item <?php Helpers::echoActive($view->tab, "messages");?>">Messages &amp; Followers</a>
-                <a href="#" class="menu-item">Posts</a>
+                <a href="<?php echo $profilePage; ?>posts" class="menu-item <?php Helpers::echoActive($view->tab, "posts");?>">Posts</a>
                 <a href="#" class="menu-item">Watchlist</a>
                 <a href="#" class="menu-item">Settings</a>
             </div>
@@ -23,6 +23,7 @@
                     <?php switch ($view->tab) :
                         case "details" : include_once "profile-tabs/details.phtml"; break;
                         case "messages" : include_once "profile-tabs/messages.phtml"; break;
+                        case "posts" : include_once "profile-tabs/posts.phtml"; break;
                         default: include_once "profile-tabs/details.phtml";
                     endswitch; ?>
                 </div>
