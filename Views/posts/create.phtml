@@ -3,7 +3,7 @@
 <div class="container section">
     <h1 class="title">Create new post</h1>
     <p class="subtext mb-5">Fields marked in * are optional</p>
-    <form class="new-post" action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST" enctype="multipart/form-data">
+    <form class="new-post" action="<?= $_SERVER["PHP_SELF"]; ?>" method="POST" enctype="multipart/form-data">
         <div class="row justify-content-around">
             <div class="col-md-7">
                 <div class="form-group row align-items-center justify-content-between">
@@ -12,7 +12,7 @@
                         <input class="form-control" type="text" name="title" id="title" placeholder="What do you want your game to be called?" autocomplete="off" value="<?php if (isset($view->post)) echo $view->post->title; ?>">
                         <p class="chars text-right m-0 pt-1">Character Limit: <span id="title-chars">19</span> Chars</p>
                         <?php if (isset($view->errors)) foreach ($view->errors["title"] as $error) : ?>
-                            <p class="text-danger small"><?php echo $error; ?></p>
+                            <p class="text-danger small"><?= $error; ?></p>
                         <?php endforeach; ?>
                     </div>
                 </div>
@@ -23,7 +23,7 @@
                         <textarea class="form-control" name="desc" id="description" placeholder="Enter a short description about your game"><?php if (isset($view->post)) echo $view->post->description; ?></textarea>
                         <p class="chars text-right m-0 pt-1">Character Limit: <span id="description-chars">220</span> Chars</p>
                         <?php if (isset($view->errors)) foreach ($view->errors["description"] as $error) : ?>
-                            <p class="text-danger small"><?php echo $error; ?></p>
+                            <p class="text-danger small"><?= $error; ?></p>
                         <?php endforeach; ?>
                     </div>
                 </div>
@@ -34,7 +34,7 @@
                         <textarea class="form-control" name="body" id="content" placeholder="This will be the main paragraph for your game post"><?php if (isset($view->post)) echo $view->post->body; ?></textarea>
                         <p class="chars text-right m-0 pt-1">Character Limit: <span id="content-chars">1500</span> Chars</p>
                         <?php if (isset($view->errors)) foreach ($view->errors["body"] as $error) : ?>
-                            <p class="text-danger small"><?php echo $error; ?></p>
+                            <p class="text-danger small"><?= $error; ?></p>
                         <?php endforeach; ?>
                     </div>
                 </div>
@@ -57,15 +57,15 @@
                         <select class="custom-select" id="tags">
                             <option selected class="default-tag">Select a tag</option>
                             <?php foreach($view->tags as $tag) : ?>
-                                <option value="<?php echo $tag->title;?>"><?php echo $tag->title;?></option>
+                                <option value="<?= $tag->title;?>"><?= $tag->title;?></option>
                             <?php endforeach; ?>
                         </select>
                         <?php if (isset($view->errors)) foreach ($view->errors["tags"] as $error) : ?>
-                            <p class="text-danger small"><?php echo $error; ?></p>
+                            <p class="text-danger small"><?= $error; ?></p>
                         <?php endforeach; ?>
                         <div>
                         <?php foreach($view->tags as $tag) : ?>
-                            <input type="checkbox" name="tags[]" class="hidden" id="<?php echo $tag->title; ?>" value="<?php echo $tag->title; ?>">
+                            <input type="checkbox" name="tags[]" class="hidden" id="<?= $tag->title; ?>" value="<?= $tag->title; ?>">
                         <?php endforeach; ?>
                         </div>
                         <p class="chars text-right m-0 pt-1" id="tag-limit-p">Tag Limit: <span id="tag-limits">4</span> tags</p>

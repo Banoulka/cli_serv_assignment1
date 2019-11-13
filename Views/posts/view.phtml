@@ -5,36 +5,36 @@
     <div class="post">
         <div class="row text-center">
             <div class="col-12">
-                <h3 class="game-state <?php echo $post->type_stage; ?>"></h3>
+                <h3 class="game-state <?= $post->type_stage; ?>"></h3>
             </div>
         </div>
         <div class="row">
             <div class="col-md-8">
-                <h1 class="game-title"><?php echo $post->title ?></h1>
-                <a href="../../users/view.php?id=<?php echo $post->user()->id; ?>">
-                    <p class="game-author"><?php echo $post->user()->name(); ?></p>
+                <h1 class="game-title"><?= $post->title ?></h1>
+                <a href="../../users/view.php?id=<?= $post->user()->id; ?>">
+                    <p class="game-author"><?= $post->user()->name(); ?></p>
                 </a>
-                <p class="game-desc"><?php echo $post->description ?></p>
+                <p class="game-desc"><?= $post->description ?></p>
                 <div class="game-body">
-                    <p><?php echo $post->body; ?></p>
+                    <p><?= $post->body; ?></p>
                 </div>
                 <div class="game-extras">
                     <?php foreach($post->tags() as $tag ) : ?>
-                        <span class="game-tag"><?php echo $tag->title; ?></span>
+                        <span class="game-tag"><?= $tag->title; ?></span>
                     <?php endforeach; ?>
-                    <span class="game-date">Created <?php echo date("jS \of F Y H:i", $post->time); ?></span>
+                    <span class="game-date">Created <?= date("jS \of F Y H:i", $post->time); ?></span>
                 </div>
                 <div class="game-stats">
-                    <p class="game-likes"><i class="far fa-thumbs-up"></i><span class="number"><?php echo $post->likesCount(); ?></span>Like this</p>
-                    <p><i class="fas fa-eye"></i><span class="number"><?php echo $post->watchCount(); ?></span>Watch this</p>
-                    <p><i class="far fa-comment-dots"></i><span class="number"><?php echo $post->commentCount(); ?></span>Comments</p>
+                    <p class="game-likes"><i class="far fa-thumbs-up"></i><span class="number"><?= $post->likesCount(); ?></span>Like this</p>
+                    <p><i class="fas fa-eye"></i><span class="number"><?= $post->watchCount(); ?></span>Watch this</p>
+                    <p><i class="far fa-comment-dots"></i><span class="number"><?= $post->commentCount(); ?></span>Comments</p>
                 </div>
             </div>
             <div class="col-md-4 d-flex flex-column justify-content-center">
-                <img src="<?php echo Authentication::isLoggedOn() ? $post->cover_image : "cover-hidden.jpg" ?>" alt="Game Artwork" class="artwork">
+                <img src="<?= Authentication::isLoggedOn() ? $post->cover_image : "../../uploads/post_covers/cover-hidden.jpg" ?>" alt="Game Artwork" class="artwork">
                 <div class="like-watch-buttons">
                     <?php if (Authentication::isLoggedOn()) : ?>
-                    <form action="<?php echo $_SERVER["PHP_SELF"]; ?>?post_id=<?php echo $post->id ?>" method="post">
+                    <form action="<?= $_SERVER["PHP_SELF"]; ?>?post_id=<?= $post->id ?>" method="post">
                         <?php if (Authentication::User() == $view->owner) : ?>
                             <div class="post-btn disabled"><i class="fas fa-eye"></i></div>
                         <?php elseif (Authentication::User()->isOnWatchList($post->id)) : ?>

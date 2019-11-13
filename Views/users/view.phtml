@@ -5,12 +5,12 @@
     <?php if($user && $user instanceof User) : ?>
     <div class="row">
         <div class="col-8">
-            <h3 class="title"><?php echo $user->name(); ?></h3>
+            <h3 class="title"><?= $user->name(); ?></h3>
             <div class="row mt-3">
                 <div class="col-4">
-                    <img class="profile-pic mt-0" src="<?php echo $user->display_pic ?>" alt="Profile Picture">
+                    <img class="profile-pic mt-0" src="<?= $user->display_pic ?>" alt="Profile Picture">
                     <?php if (Authentication::isLoggedOn()) : ?>
-                    <form action="<?php echo $_SERVER["PHP_SELF"]; ?>?id=<?php echo $user->id; ?>" method="post" class="follow-message">
+                    <form action="<?= $_SERVER["PHP_SELF"]; ?>?id=<?= $user->id; ?>" method="post" class="follow-message">
                         <?php if (Authentication::User()->id == $user->id) : ?>
                         <?php elseif (Authentication::User()->isFollower($user)) : ?>
                             <button type="submit" name="userUnfollow" class="btn btn-danger">Unfollow</button>
@@ -26,13 +26,13 @@
                 </div>
                 <div class="col-8">
                     <p class="aka">aka</p>
-                    <h4 class="mb-4"><?php echo $user->display_name != "" ? $user->display_name : "No display name set"?></h4>
+                    <h4 class="mb-4"><?= $user->display_name != "" ? $user->display_name : "No display name set"?></h4>
 
                     <h6 class="user-label mt-2">Email:</h6>
-                    <p><?php echo $user->email; ?></p>
+                    <p><?= $user->email; ?></p>
 
                     <h6 class="user-label mt-3">Bio:</h6>
-                    <p><?php echo $user->bio != "" ? $user->bio : "No bio set"; ?></p>
+                    <p><?= $user->bio != "" ? $user->bio : "No bio set"; ?></p>
                 </div>
             </div>
         </div>
@@ -40,14 +40,14 @@
             <div class="followers">
                 <?php $followers = $user->followers(); ?>
                 <div class="header">
-                    <h4>Followers &dash; <?php echo count($followers); ?></h4>
+                    <h4>Followers &dash; <?= count($followers); ?></h4>
                 </div>
                 <div class="body">
                     <?php foreach ($followers as $follower) : ?>
-                    <a href="view.php?id=<?php echo $follower->id; ?>">
+                    <a href="view.php?id=<?= $follower->id; ?>">
                         <div class="follower">
-                            <h5 class="name"><?php echo $follower->name(); ?></h5>
-                            <img class="pic" src="<?php echo $follower->display_pic; ?>" alt="">
+                            <h5 class="name"><?= $follower->name(); ?></h5>
+                            <img class="pic" src="<?= $follower->display_pic; ?>" alt="">
                         </div>
                     </a>
                     <?php endforeach; ?>

@@ -33,6 +33,7 @@ class Comment extends Model implements Comparable
      * */
     public static function all()
     {
+        self::setClassAndTable();
         return parent::getAllByTableName();
     }
 
@@ -99,7 +100,8 @@ class Comment extends Model implements Comparable
 
     public function likesCount()
     {
-        return 20;
+        parent::setCustomClassAndTable("", "comment_likes");
+        return count(parent::findAllByKey(["comment_id" => $this->id]));
     }
 
     /**
@@ -116,6 +118,7 @@ class Comment extends Model implements Comparable
         if ($other instanceof Comment) {
             return $self->timestamp < $other->timestamp ? 1 : -1;
         }
+        return 0;
     }
 
     // Relationships ================================

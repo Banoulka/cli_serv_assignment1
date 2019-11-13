@@ -10,9 +10,9 @@
                 <h1>Your Profile:</h1>
             </div>
             <div class="profile-menu">
-                <a href="<?php echo $profilePage; ?>details" class="menu-item <?php Helpers::echoActive($view->tab, "details"); ?>">Details</a>
-                <a href="<?php echo $profilePage; ?>messages" class="menu-item <?php Helpers::echoActive($view->tab, "messages");?>">Messages &amp; Followers</a>
-                <a href="<?php echo $profilePage; ?>posts" class="menu-item <?php Helpers::echoActive($view->tab, "posts");?>">Posts</a>
+                <a href="<?= $profilePage; ?>details" class="menu-item <?php Helpers::echoActive($view->tab, "details"); ?>">Details</a>
+                <a href="<?= $profilePage; ?>messages" class="menu-item <?php Helpers::echoActive($view->tab, "messages");?>">Messages &amp; Followers</a>
+                <a href="<?= $profilePage; ?>posts" class="menu-item <?php Helpers::echoActive($view->tab, "posts");?>">Posts</a>
                 <a href="#" class="menu-item">Watchlist</a>
                 <a href="#" class="menu-item">Settings</a>
             </div>

@@ -4,10 +4,10 @@
         <?php if (Authentication::isLoggedOn()) : ?>
             <div class="comment-box row p-2 m-0 mr-auto">
                 <div class="col-2 d-flex align-items-center justify-content-center pr-0">
-                    <img src="<?php echo Authentication::User()->display_pic; ?>" alt="" class="form-profile">
+                    <img src="<?= Authentication::User()->display_pic; ?>" alt="" class="form-profile">
                 </div>
                 <div class="col-10 d-flex align-items-center pl-0">
-                    <form action="<?php echo $_SERVER["PHP_SELF"]; ?>?post_id=<?php echo $post->id; ?>" class="comment-area pl-4" id="commentForm" method="post">
+                    <form action="<?= $_SERVER["PHP_SELF"]; ?>?post_id=<?= $post->id; ?>" class="comment-area pl-4" id="commentForm" method="post">
                         <textarea class="form-control text-area d-flex" name="commentBody" id="comment" rows="1" placeholder="Leave a comment:"></textarea>
                         <input type="submit" name="commentAdd" class="hidden" id="commentAdd">
                     </form>
@@ -21,21 +21,21 @@
             <div class="row">
                 <div class="col-3">
                     <div class="image">
-                        <img src="<?php echo $comment->user()->display_pic; ?>" alt="" class="comment-pic">
+                        <img src="<?= $comment->user()->display_pic; ?>" alt="" class="comment-pic">
                     </div>
                 </div>
                 <div class="col-9">
                     <div class="commentinfo">
-                        <a href="../../users/view.php?id=<?php echo $comment->user()->id; ?>" class="comment-user"><?php echo $comment->user()->name();?></a>
-                        <p class="comment-body"><?php echo $comment->body; ?></p>
+                        <a href="../../users/view.php?id=<?= $comment->user()->id; ?>" class="comment-user"><?= $comment->user()->name();?></a>
+                        <p class="comment-body"><?= $comment->body; ?></p>
                         <div class="extra">
                             <?php if (Authentication::isLoggedOn()) : ?>
                                 <button class="dprim-btn dprim-btn-filled reply">Reply</button>
                             <?php endif; ?>
-                            <span class="likes"><i class="far fa-thumbs-up ml-3"></i><?php echo $comment->likesCount(); ?></span>
-                            <span class="time-info ml-auto"><?php echo Helpers::getTimeSinceMin($comment->timestamp); ?></span>
+                            <span class="likes"><i class="far fa-thumbs-up ml-3"></i><?= $comment->likesCount(); ?></span>
+                            <span class="time-info ml-auto"><?= Helpers::getTimeSinceMin($comment->timestamp); ?></span>
                             <?php if (Authentication::isLoggedOn() && $comment->isOwner(Authentication::User())) : ?>
-                                <form class="ml-3" method="post" action="<?php echo $_SERVER["PHP_SELF"]; ?>?post_id=<?php echo $post->id ?>&comment_id=<?php echo $comment->id; ?>">
+                                <form class="ml-3" method="post" action="<?= $_SERVER["PHP_SELF"]; ?>?post_id=<?= $post->id ?>&comment_id=<?= $comment->id; ?>">
                                     <button type="submit" name="commentDelete" class="btn btn-outline-danger btn-sm">delete</button>
                                 </form>
                             <?php endif; ?>
@@ -57,10 +57,10 @@
                         </div>
                     </div>
                     <div class="col-3 d-flex align-items-center justify-content-center pr-0">
-                        <img src="<?php echo Authentication::User()->display_pic; ?>" alt="" class="form-profile">
+                        <img src="<?= Authentication::User()->display_pic; ?>" alt="" class="form-profile">
                     </div>
                 </div>
-                <input type="submit" name="submit" value="Announce" class="dprim-btn dprim-btn-filled mr-0 mt-2">
+                <input type="submit" name="announcementAdd" value="Announce" class="dprim-btn dprim-btn-filled mr-0 mt-2">
             </form>
         <?php endif; ?>
     </div>

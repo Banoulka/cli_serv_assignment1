@@ -219,14 +219,7 @@ class Post extends Model implements Comparable
             foreach ($searchString as $word) {
                 $sql .= "title LIKE '%$word%'";
                 if ($word != end($searchString)) {
-                    $sql .= " OR ";
-                }
-            }
-            $sql .= " OR ";
-            foreach ($searchString as $word) {
-                $sql .= "description LIKE '%$word%'";
-                if ($word != end($searchString)) {
-                    $sql .= " OR ";
+                    $sql .= " AND ";
                 }
             }
 
@@ -307,5 +300,12 @@ class Post extends Model implements Comparable
         $comments = parent::findAllByKey(["post_id" => $this->id]);
         usort($comments, array("Comment", "compareTo"));
         return $comments;
+    }
+
+    public function announcements()
+    {
+        parent::setCustomClassAndTable("", "post_announcements");
+        $announcements = parent::findAllByKey(["post_id" => $this->id]);
+        return $announcements;
     }
 }

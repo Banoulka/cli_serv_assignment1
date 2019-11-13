@@ -2,6 +2,10 @@
 
 require_once "Database.php";
 
+/**
+ * @property array values
+ * @property string sql
+ */
 abstract class Model {
 
     // Model database handler and error array

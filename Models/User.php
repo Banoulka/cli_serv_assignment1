@@ -5,7 +5,15 @@ require_once "Post.php";
 require_once "Notification.php";
 
 /**
+ * @property string first_name
+ * @property string last_name
+ * @property string display_name
+ * @property string display_pic
+ * @property string email
+ * @property string bio
+ * @property string password
  * @property int id
+ *
  * */
 class User extends Model {
 
