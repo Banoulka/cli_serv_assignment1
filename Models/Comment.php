@@ -114,7 +114,7 @@ class Comment extends Model implements Comparable
      */
     public static function compareTo(Comparable $self, Comparable $other)
     {
-        return $self->timestamp <=> $other->timestamp;
+        return $other->timestamp <=> $self->timestamp;
     }
 
     // Relationships ================================
