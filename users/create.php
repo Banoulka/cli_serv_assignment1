@@ -15,7 +15,6 @@ $view = new stdClass();
 $view->title = "Sign Up - uGame";
 $view->page = "signup";
 
-
 if (isset($_POST["submit"])) {
 
     $view->formData = [
@@ -30,6 +29,7 @@ if (isset($_POST["submit"])) {
     $validation->name("Password")->value($view->formData["password"])->required()->length(3, 50);
     $validation->name("First Name")->value($view->formData["first_name"])->required()->length(0, 30);
     $validation->name("Last Name")->value($view->formData["last_name"])->required()->length(0, 30);
+    $validation->name("Password Confirmation")->value($view->formData["confirm_password"])->required()->length(0, 30)->equal($view->formData["password"]);
 
     if (!$validation->isSuccess()) {
         // Send errors back to the signup page
@@ -38,8 +38,6 @@ if (isset($_POST["submit"])) {
         $user = User::findByEmail($view->formData["email"]);
         if($user) {
             $view->errors = ["This user already exists"];
-        } else if (htmlentities($_POST["password"] != htmlentities($_POST["confirm_password"]))) {
-            $view->errors = ["Passwords do not match"];
         } else {
             // if user does not exist
             $user = new User();
@@ -51,6 +49,7 @@ if (isset($_POST["submit"])) {
 
             // Login user
             Authentication::validateAndLogonUser($user->email, $_POST["password"]);
+            Authentication::refresh();
             Route::redirect("/games.php");
         }
     }

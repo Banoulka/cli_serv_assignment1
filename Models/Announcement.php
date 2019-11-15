@@ -34,10 +34,7 @@ class Announcement extends Model implements Comparable
      */
     public static function compareTo(Comparable $self, Comparable $other)
     {
-        if ($self instanceof Announcement) {
-            return $self->timestamp < $other->timestamp ? 1 : -1;
-        }
-        return 0;
+        return $other->timestamp <=> $self->timestamp;
     }
 
     /**

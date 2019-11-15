@@ -95,7 +95,7 @@ class Validation
     public function equal($value): self
     {
         if ($this->value != $value) {
-            $this->addError("Field %s must equal $value");
+            $this->addError("Field %s must equal");
         }
         return $this;
     }

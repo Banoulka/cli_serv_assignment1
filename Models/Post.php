@@ -342,6 +342,7 @@ class Post extends Model implements Comparable
     {
         parent::setCustomClassAndTable("Announcement", "post_announcements");
         $announcements = parent::findAllByKey(["post_id" => $this->id]);
+        usort($announcements, array("Announcement", "compareTo"));
         return $announcements;
     }
 }

@@ -17,7 +17,9 @@
                         <?php else : ?>
                             <button type="submit" name="userFollow" class="btn dprim-btn-filled">Follow</button>
                         <?php endif; ?>
-                        <a href="#" class="d-block mx-4 mt-3 btn dprim-btn-outline">Message</a>
+                        <?php if (Authentication::User()->id != $user->id) : ?>
+                            <a href="#" class="d-block mx-4 mt-3 btn dprim-btn-outline">Message</a>
+                        <?php endif; ?>
                     </form>
                     <?php else : ?>
                         <button class="btn disabled">Sign in to follow</button>
