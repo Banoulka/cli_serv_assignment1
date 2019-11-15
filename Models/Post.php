@@ -7,8 +7,13 @@ require_once "Comparable.php";
 require_once "Comment.php";
 
 /**
- * @property int time
- * @property int id
+ * @property-read int time
+ * @property-read int id
+ * @property int user_id
+ * @property string title
+ * @property string body
+ * @property string cover_image
+ *
  */
 class Post extends Model implements Comparable
 {
@@ -163,6 +168,18 @@ class Post extends Model implements Comparable
                 $this->cover_image = "/uploads/profile_pictures/" . $this->cover_image;
             }
             parent::saveModel();
+            $this->id = parent::getLastID();
+
+            // Send notification to followers
+            $followers = $this->user()->followers();
+            foreach ($followers as $user) {
+                $notif = new Notification();
+                $notif->user_id_from = $this->user()->id;
+                $notif->user_id_to = $user->id;
+                $notif->type = Notification::UPLOAD_BY_FOLLOWED;
+                $notif->link = "/posts/view.php?post_id=$this->id";
+                $notif->save();
+            }
         }
     }
 
@@ -302,9 +319,28 @@ class Post extends Model implements Comparable
         return $comments;
     }
 
+    /**
+     *
+     * @return User[]
+     * */
+    public function watchers()
+    {
+        parent::setCustomClassAndTable("User", "user_watchlist");
+        $userWatch = parent::findAllByKey(["post_id" => $this->id]);
+        $users = [];
+        foreach ($userWatch as $item) {
+            array_push($users, User::find(["id" => $item->user_id]));
+        }
+        return $users;
+    }
+
+    /**
+     *
+     * @return Announcement[]
+     * */
     public function announcements()
     {
-        parent::setCustomClassAndTable("", "post_announcements");
+        parent::setCustomClassAndTable("Announcement", "post_announcements");
         $announcements = parent::findAllByKey(["post_id" => $this->id]);
         return $announcements;
     }

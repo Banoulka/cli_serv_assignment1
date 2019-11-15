@@ -12,7 +12,7 @@ require_once "Notification.php";
  * @property string email
  * @property string bio
  * @property string password
- * @property int id
+ * @property-read int id
  *
  * */
 class User extends Model {

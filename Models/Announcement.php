@@ -8,13 +8,20 @@ require_once "Comparable.php";
 
 /**
  *
- * @property int id
+ * @property-read  int id
  * @property int post_id
  * @property string body
- * @property int timestamp
+ * @property-read int timestamp
  * */
 class Announcement extends Model implements Comparable
 {
+
+    public function __construct()
+    {
+        parent::__construct([
+            "body"
+        ]);
+    }
 
     /**
      * Custom compare to function
@@ -79,5 +86,20 @@ class Announcement extends Model implements Comparable
         $this->timestamp = $now->getTimestamp();
         self::setClassAndTable();
         parent::saveModel();
+
+        $this->id = parent::getLastID();
+
+        // Send notification to watchers
+        $post = Post::find(["id" => $this->post_id]);
+        $owner = $post->user();
+        $watchers = $post->watchers();
+        foreach ($watchers as $user) {
+            $notif = new Notification();
+            $notif->user_id_from = $owner->id;
+            $notif->user_id_to = $user->id;
+            $notif->type = Notification::WATCHLIST_UPDATE;
+            $notif->link = "/posts/view.php?post_id=$post->id";
+            $notif->save();
+        }
     }
 }

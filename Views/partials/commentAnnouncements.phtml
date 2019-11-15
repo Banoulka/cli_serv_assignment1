@@ -15,27 +15,27 @@
             </div>
         <?php endif; ?>
 
-        <?php foreach ($post->comments() as $comment) : ?>
-        <?php if ($comment instanceof Comment) : ?>
+        <?php foreach ($post->comments() as $announcement) : ?>
+        <?php if ($announcement instanceof Comment) : ?>
             <div class="comment">
             <div class="row">
                 <div class="col-3">
                     <div class="image">
-                        <img src="<?= $comment->user()->display_pic; ?>" alt="" class="comment-pic">
+                        <img src="<?= $announcement->user()->display_pic; ?>" alt="" class="comment-pic">
                     </div>
                 </div>
                 <div class="col-9">
                     <div class="commentinfo">
-                        <a href="../../users/view.php?id=<?= $comment->user()->id; ?>" class="comment-user"><?= $comment->user()->name();?></a>
-                        <p class="comment-body"><?= $comment->body; ?></p>
+                        <a href="../../users/view.php?id=<?= $announcement->user()->id; ?>" class="comment-user"><?= $announcement->user()->name();?></a>
+                        <p class="comment-body"><?= $announcement->body; ?></p>
                         <div class="extra">
                             <?php if (Authentication::isLoggedOn()) : ?>
                                 <button class="dprim-btn dprim-btn-filled reply">Reply</button>
                             <?php endif; ?>
-                            <span class="likes"><i class="far fa-thumbs-up ml-3"></i><?= $comment->likesCount(); ?></span>
-                            <span class="time-info ml-auto"><?= Helpers::getTimeSinceMin($comment->timestamp); ?></span>
-                            <?php if (Authentication::isLoggedOn() && $comment->isOwner(Authentication::User())) : ?>
-                                <form class="ml-3" method="post" action="<?= $_SERVER["PHP_SELF"]; ?>?post_id=<?= $post->id ?>&comment_id=<?= $comment->id; ?>">
+                            <span class="likes"><i class="far fa-thumbs-up ml-3"></i><?= $announcement->likesCount(); ?></span>
+                            <span class="time-info ml-auto"><?= Helpers::getTimeSinceMin($announcement->timestamp); ?></span>
+                            <?php if (Authentication::isLoggedOn() && $announcement->isOwner(Authentication::User())) : ?>
+                                <form class="ml-3" method="post" action="<?= $_SERVER["PHP_SELF"]; ?>?post_id=<?= $post->id ?>&comment_id=<?= $announcement->id; ?>">
                                     <button type="submit" name="commentDelete" class="btn btn-outline-danger btn-sm">delete</button>
                                 </form>
                             <?php endif; ?>
@@ -49,11 +49,11 @@
     <div class="col-md-6 text-right">
         <h3>Announcements</h3>
         <?php if(Authentication::isLoggedOn() && $view->owner) : ?>
-            <form action="#" method="POST">
+            <form action="<?= $_SERVER["PHP_SELF"] ?>?post_id=<?= $post->id; ?>" method="POST">
                 <div class="announcement-box row p-2 m-0 ml-auto">
                     <div class="col-9 d-flex align-items-center pl-0">
-                        <div action="#" class="comment-area pl-4">
-                            <textarea class="form-control text-area d-flex" name="announcment" id="announce" rows="1" placeholder="Write Announcement..."></textarea>
+                        <div class="comment-area pl-4">
+                            <textarea class="form-control text-area d-flex" name="announcement" id="announce" rows="1" placeholder="Write Announcement..."></textarea>
                         </div>
                     </div>
                     <div class="col-3 d-flex align-items-center justify-content-center pr-0">
@@ -63,5 +63,31 @@
                 <input type="submit" name="announcementAdd" value="Announce" class="dprim-btn dprim-btn-filled mr-0 mt-2">
             </form>
         <?php endif; ?>
+
+        <?php foreach ($post->announcements() as $announcement) : ?>
+            <?php if ($announcement instanceof Announcement) : ?>
+                <div class="comment">
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="image">
+                                <img src="<?= $post->user()->display_pic; ?>" alt="" class="comment-pic">
+                            </div>
+                        </div>
+                        <div class="col-9">
+                            <div class="commentinfo">
+                                <p class="comment-body"><?= $announcement->body; ?></p>
+                                <div class="extra">
+                                    <span class="time-info ml-auto"><?= Helpers::getTimeSinceMin($announcement->timestamp); ?></span>
+                                    <?php if (Authentication::isLoggedOn() && $view->owner) : ?>
+                                        <form class="ml-3" method="post" action="<?= $_SERVER["PHP_SELF"]; ?>?post_id=<?= $post->id ?>&announcement_id=<?= $announcement->id; ?>">
+                                            <button type="submit" name="announcementDelete" class="btn btn-outline-danger btn-sm">delete</button>
+                                        </form>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endif; endforeach; ?>
     </div>
 </div>

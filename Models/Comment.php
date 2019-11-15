@@ -7,8 +7,8 @@ require_once "Tag.php";
 require_once "Comparable.php";
 
 /**
- * @property int id
- * @property int timestamp
+ * @property-read int id
+ * @property-read int timestamp
  * @property int user_id
  * @property int post_id
  * @property string body
@@ -111,14 +111,10 @@ class Comment extends Model implements Comparable
      * @param Comparable $other other object
      *
      * @return int Int -1, 0 or 1 Depending on result of comparison
-     * @throws Exception
      */
     public static function compareTo(Comparable $self, Comparable $other)
     {
-        if ($other instanceof Comment) {
-            return $self->timestamp < $other->timestamp ? 1 : -1;
-        }
-        return 0;
+        return $self->timestamp <=> $other->timestamp;
     }
 
     // Relationships ================================

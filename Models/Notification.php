@@ -7,6 +7,7 @@ require_once "Comparable.php";
 
 /**
  *
+ * @property-read int id
  * @property int user_id_to
  * @property int user_id_from
  * @property int type

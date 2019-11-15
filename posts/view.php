@@ -9,6 +9,7 @@ spl_autoload_register(function ($className) {
 
 require_once "../Models/Post.php";
 require_once "../Models/Comment.php";
+require_once "../Models/Announcement.php";
 
 $view = new stdClass();
 $view->title = "View Post - uGame";
@@ -24,21 +25,23 @@ if (isset($_GET["post_id"])) {
         $view->owner = Authentication::User()->id == $view->post->user()->id;
 
     $postID = $_GET["post_id"];
+
     if (isset($_POST["watchlistAdd"])) {
         Authentication::User()->addToWatchList($postID);
         Route::redirect("view.php?post_id=$postID");
+
     } else if (isset($_POST["watchlistRemove"])) {
         Authentication::User()->unWatchPost($postID);
         Route::redirect("view.php?post_id=$postID");
-    }
 
-    if (isset($_POST["likeAdd"])) {
+    } else if (isset($_POST["likeAdd"])) {
         Authentication::User()->likePost($postID);
         Route::redirect("view.php?post_id=$postID");
 
     } else if (isset($_POST["likeRemove"])) {
         Authentication::User()->unLikePost($postID);
         Route::redirect("view.php?post_id=$postID");
+
     } else if (isset($_POST["commentBody"])) {
         $comment = new Comment();
         $comment->post_id = $postID;
@@ -46,13 +49,20 @@ if (isset($_GET["post_id"])) {
         $comment->body = htmlentities($_POST["commentBody"]);
         $comment->save();
         Route::redirect("view.php?post_id=$postID#comments");
+
     } else if (isset($_POST["commentDelete"])) {
         $comment = Comment::find(["id" => $_GET["comment_id"]]);
         $comment->destroy();
         Route::redirect("view.php?post_id=$postID#comments");
+
+    } else if (isset($_POST["announcementAdd"])) {
+        $announce = new Announcement();
+        $announce->post_id = $postID;
+        $announce->body = htmlentities($_POST["announcement"]);
+        $announce->save();
+        Route::redirect("view.php?post_id=$postID#comments");
+
     }
-
-
 
     require_once "../views/posts/view.phtml";
 } else {
