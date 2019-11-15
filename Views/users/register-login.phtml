@@ -20,21 +20,33 @@
             <div class="form-group row">
                 <div class="col-6">
                     <label for="inputFirstname">First name</label>
-                    <input type="text" name="first_name" class="form-control" id="inputFirstname" placeholder="John" required value="<?php if(isset($view->formData)) echo $view->formData["first_name"]; ?>">
+                    <input type="text" name="first_name" class="form-control <?= $view->formErrors["First Name"] ? "is-invalid" : "is-valid" ?>" id="inputFirstname" placeholder="John" value="<?php if(isset($view->formData)) echo $view->formData["first_name"]; ?>">
+                    <?php if (isset($view->formErrors["First Name"])) foreach ($view->formErrors["First Name"] as $err) : ?>
+                        <span class="ml-1 small text-danger"><?= $err ?></span>
+                    <?php endforeach; ?>
                 </div>
                 <div class="col-6">
                     <label for="inputSurname">Surname</label>
-                    <input type="text" name="last_name" class="form-control" id="inputSurname" placeholder="Smith" required value="<?php if(isset($view->formData)) echo $view->formData["last_name"]; ?>">
+                    <input type="text" name="last_name" class="form-control <?= $view->formErrors["Last Name"] ? "is-invalid" : "is-valid" ?>" id="inputSurname" placeholder="Smith" value="<?php if(isset($view->formData)) echo $view->formData["last_name"]; ?>">
+                    <?php if (isset($view->formErrors["Last Name"])) foreach ($view->formErrors["Last Name"] as $err) : ?>
+                        <span class="ml-1 small text-danger"><?= $err ?></span>
+                    <?php endforeach; ?>
                 </div>
             </div>
             <div class="form-group">
                 <label for="inputEmail">Email address</label>
-                <input type="email" name="email" class="form-control" id="inputEmail" placeholder="jsmith0600@gmail.com" required value="<?php if(isset($view->formData)) echo $view->formData["email"]; ?>">
+                <input type="text" name="email" class="form-control <?= $view->formErrors["Email"] ? "is-invalid" : "is-valid" ?>" id="inputEmail" placeholder="jsmith0600@gmail.com" value="<?php if(isset($view->formData)) echo $view->formData["email"]; ?>">
                 <small class="form-text text-muted text-left">We'll never share your email with anyone else.</small>
+                <?php if (isset($view->formErrors["Email"])) foreach ($view->formErrors["Email"] as $err) : ?>
+                    <span class="ml-1 small text-danger"><?= $err ?></span>
+                <?php endforeach; ?>
             </div>
             <div class="form-group">
-                <label for="inputConfirm_Password">Password</label>
-                <input type="password" name="password" class="form-control" id="inputConfirm_Password" placeholder="Password" required value="<?php if(isset($view->formData)) echo $view->formData["password"]; ?>">
+                <label for="input_Password">Password</label>
+                <input type="password" name="password" class="form-control <?= $view->formErrors["Password"] ? "is-invalid" : "is-valid" ?>" id="input_Password" placeholder="Password" required value="<?php if(isset($view->formData)) echo $view->formData["password"]; ?>">
+                <?php if (isset($view->formErrors["Password"])) foreach ($view->formErrors["Password"] as $err) : ?>
+                    <span class="ml-1 small text-danger"><?= $err ?></span>
+                <?php endforeach; ?>
             </div>
             <div class="form-group">
                 <label for="inputConfirm_Password">Confirm Password</label>
