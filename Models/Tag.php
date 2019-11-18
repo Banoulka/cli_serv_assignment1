@@ -4,6 +4,11 @@ require_once "Model.php";
 require_once "User.php";
 require_once "Comparable.php";
 
+/**
+ * Class Tag
+ *
+ * @property string title
+ */
 class Tag extends Model {
 
     // Set the class and table of the model

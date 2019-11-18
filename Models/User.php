@@ -50,6 +50,11 @@ class User extends Model {
     }
 
     // Find user by id
+
+    /**
+     * @param array $keyValueArr
+     * @return User
+     */
     public static function find($keyValueArr)
     {
         self::setClassAndTable();
@@ -198,7 +203,19 @@ class User extends Model {
         parent::delete()->value("user_id_to", $user->id)->value("user_id_from", $this->id)->executeDelete();
     }
 
+    public function messageUser(User $user, string $message)
+    {
+        $now = new DateTime();
+        // Send a message to the user
+        self::setCustomClassAndTable("", "user_messages");
+        parent::insert()
+            ->value("user_id_from", $this->id)
+            ->value("user_id_to", $user->id)
+            ->value("body", $message)
+            ->value("timestamp", $now->getTimestamp())
+            ->executeInsert();
 
+    }
 
     // Relationships
 

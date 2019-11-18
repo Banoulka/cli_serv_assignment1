@@ -1044,6 +1044,51 @@ $light-grey-border: 1px solid #CBCBCB;
     }
 
   }
+}
 
+.message-button.active {
+  background-color: white;
+  color: $light-blue-button-hover !important;
+  border: 1px solid $light-blue-button-hover;
 
+  &:after {
+    content: ">";
+    width: 20px;
+    padding: 0.2em;
+    font-size: 1rem;
+    font-weight: 600;
+    color: $dark-blue-text;
+    border-radius: 200px;
+    height: 50px;
+    //background-color: $light-grey-text;
+    position: relative;
+    left: 65px;
+  }
+}
+
+#message-box {
+  padding: 1.2rem;
+  position: relative;
+  top: -70px;
+  left: 220px;
+  min-width: 340px;
+  visibility: hidden;
+
+  &.active {
+    visibility: visible;
+  }
+
+  .title {
+    padding-bottom: 0.3em;
+    font-size: 1.1rem;
+    border-bottom: 1px dashed $dark-blue-text;
+  }
+
+  .msg-box {
+    width: 100%;
+    margin-top: 1em;
+    min-height: 60px;
+    max-height: 140px;
+    font-size: 0.8rem;
+  }
 }

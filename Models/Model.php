@@ -88,13 +88,16 @@ abstract class Model {
         $sql = "SELECT * FROM $tableName WHERE ";
         foreach ($keyValueArr as $k => $v) {
             if ($v == end($keyValueArr))
-                $sql .= $k . " = '" . $v . "'";
+                $sql .= $k . " = :" . $k;
             else
-                $sql .= $k . " = '" . $v . "' AND ";
+                $sql .= $k . " = :" . $k . " AND ";
         }
         $stmt = self::db()->prepare($sql);
+        // TODO: Bind parameters
+        foreach ($keyValueArr as $k => $v) {
+            $stmt->bindParam(":$k", $v);
+        }
         $stmt->execute();
-
         if(!is_null($stmt->errorInfo()[2]))
             var_dump($stmt->errorInfo());
 
@@ -307,12 +310,14 @@ abstract class Model {
         }
         $this->sql .= ") VALUES (";
         foreach ($this->values as $colName => $value) {
-            $this->sql .= "$value";
+            if (is_string($value))
+                $this->sql .= " '$value'";
+            else
+                $this->sql .= " $value";
             if ($colName != $lastElementKey)
                 $this->sql .= ", ";
         }
         $this->sql .= ");";
-
         $this->execute();
     }
 

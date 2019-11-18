@@ -10,17 +10,30 @@
                 <div class="col-4">
                     <img class="profile-pic mt-0" src="<?= $user->display_pic ?>" alt="Profile Picture">
                     <?php if (Authentication::isLoggedOn()) : ?>
-                    <form action="<?= $_SERVER["PHP_SELF"]; ?>?id=<?= $user->id; ?>" method="post" class="follow-message">
+                    <div class="follow-message">
+                        <form action="<?= $_SERVER["PHP_SELF"]; ?>?id=<?= $user->id; ?>" method="post" class="follow-message">
                         <?php if (Authentication::User()->id == $user->id) : ?>
                         <?php elseif (Authentication::User()->isFollower($user)) : ?>
                             <button type="submit" name="userUnfollow" class="btn btn-danger">Unfollow</button>
                         <?php else : ?>
                             <button type="submit" name="userFollow" class="btn dprim-btn-filled">Follow</button>
                         <?php endif; ?>
+                        </form>
+
                         <?php if (Authentication::User()->id != $user->id) : ?>
-                            <a href="#" class="d-block mx-4 mt-3 btn dprim-btn-outline">Message</a>
+                            <button id="messageButton" type="button" class="d-block mx-4 mt-3 btn dprim-btn-outline message-button">Message</button>
+                            <div id="message-box" class="popover message-box">
+                                <h6 class="title">Leave a message!</h6>
+                                <form action="/messages/create.php" method="post">
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <textarea class="msg-box form-control" name="message" placeholder="Enter Message..."></textarea>
+                                        <input type="text" class="hidden" name="user_id" value="<?= $user->id ?>" readonly>
+                                        <button type="submit" class="btn mt-3 btn-sm btn-success">Send</button>
+                                    </div>
+                                </form>
+                            </div>
+                    </div>
                         <?php endif; ?>
-                    </form>
                     <?php else : ?>
                         <button class="btn disabled">Sign in to follow</button>
                         <button class="btn disabled">Sign in to message</button>

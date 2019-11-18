@@ -1,3 +1,5 @@
+// import $ from "jquery";
+
 $(document).ready(function(){
 
     setupNotificationEvents();
@@ -9,6 +11,19 @@ $(document).ready(function(){
     setCommentForm();
 
     $("#comment").autoResize();
+
+    $("#messageButton").click(() => {
+        let messageBox = $("#message-box");
+        let messageButton = $("#messageButton");
+        // console.log(messageBox);
+        if (messageBox.hasClass("active")) {
+            messageBox.removeClass("active");
+            messageButton.removeClass("active");
+        } else {
+            messageBox.addClass("active");
+            messageButton.addClass("active");
+        }
+    });
 });
 
 function setupCharLimiters() {
