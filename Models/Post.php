@@ -165,9 +165,6 @@ class Post extends Model implements Comparable
         } else {
             $now = new DateTime();
             $this->time = $now->getTimestamp();
-            if (isset($this->cover_image)) {
-                $this->cover_image = "/uploads/profile_pictures/" . $this->cover_image;
-            }
             parent::saveModel();
             $this->id = parent::getLastID();
 

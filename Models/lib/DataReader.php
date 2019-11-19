@@ -131,6 +131,10 @@ class DataReader
 
     public function randomisePostTags ()
     {
+        // Purge tags
+        $sql = "DELETE FROM post_tags";
+        Database::getInstance()->getdbConnection()->query($sql);
+
         $posts = Post::all();
         $tags = Tag::all();
         foreach ($posts as $post) {
@@ -139,14 +143,16 @@ class DataReader
                 // Add post tag
                 $chosenTags[$i] = $tags[rand(0, count($tags)-1)]->title;
             }
-//            var_dump($post);
-//            var_dump($chosenTags);
             $post->addTags($chosenTags);
         }
     }
 
     public function randomisePostComments ()
     {
+        // Purge comments
+        $sql = "DELETE FROM post_comments";
+        Database::getInstance()->getdbConnection()->query($sql);
+
         $posts = Post::all();
         $users = User::all();
 

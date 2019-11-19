@@ -33,14 +33,13 @@ if (isset($_GET["submit"])) {
         usort($posts, array("Post", "compareTo"));
     }
 
-//    $view->posts = $posts;
-    $view->paginationView = new Pagination("search.php", 10);
-    $view->paginationView->setRecords($posts);
-    $view->page = 1;
-
     if (isset($_GET["page"]) && $_GET["page"] <= $view->paginationView->totalPages()) {
         $view->page = $_GET["page"];
     }
+
+    $view->paginationView = new Pagination("search.php", 10);
+    $view->paginationView->setRecords($posts);
+    $view->page = 1;
 
     // Get the posts with the records
     $view->posts = $view->paginationView->getRecords($view->page);

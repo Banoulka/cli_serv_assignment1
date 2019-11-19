@@ -53,7 +53,7 @@ if (isset($_POST["submit"])) {
         // Process files
         if ($file) {
             $postFileName = "post-$post->id.$imageFileType";
-            $post->cover_image = $postFileName;
+            $post->cover_image = "/uploads/post_covers/" .$postFileName;
             $targetFile = $targetDir . $postFileName;
             //TODO: file checks
             $post->save();
