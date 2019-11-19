@@ -14,10 +14,19 @@ spl_autoload_register(
 $view = new stdClass();
 $view->page = "games";
 $view->title = "Games - uGame";
-$view->posts = Post::all();
 $view->userWatchlist = Authentication::isLoggedOn() ? Authentication::User()->watchlist() : [];
 
-$dataReader = new DataReader();
+// Setup pagination
+$view->paginationView = new Pagination("games.php", 10);
+$view->paginationView->setRecords(Post::all());
+$view->page = 1;
+
+if (isset($_GET["page"]) && $_GET["page"] <= $view->paginationView->totalPages()) {
+    $view->page = $_GET["page"];
+}
+
+// Get the posts with the records
+$view->posts = $view->paginationView->getRecords($view->page);
 
 require_once "Views/games.phtml";
 

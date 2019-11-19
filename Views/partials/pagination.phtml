@@ -1,0 +1,87 @@
+<?php
+if (isset($view->paginationView)) :
+    $pagination = $view->paginationView;
+    $pageNumber = $view->page;
+
+    if ($pagination instanceof Pagination) :
+?>
+
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        <li class="page-item <?= $view->page != 1 ?: "disabled" ?>">
+            <a class="page-link" href="<?= $pagination->view() ?>?page=<?= $view->page - 1 ?>" tabindex="1">&laquo; Previous</a>
+        </li>
+        <?php
+            // If the total pages are higher than 10
+            // Start worrying about the pagination ...'s
+            if ($pagination->totalPages() > 10) {
+                // If the current page is higher than 5 and more than 5 before the end
+                // Start displaying ...'s before, loading 5 pages and ...'s after
+                if ($view->page > 6) { ?>
+                    <li class="page-item">
+                        <a class="page-link" href="<?= $pagination->view() ?>?page=<?= 1 ?>" tabindex="1">1</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" tabindex="1">...</a>
+                    </li>
+                    <?php for ($i = $view->page-4; $i < $view->page; $i++) : ?>
+                        <li class="page-item">
+                            <a class="page-link" href="<?= $pagination->view() ?>?page=<?= $i ?>" tabindex="1"><?= $i?></a>
+                        </li>
+                    <?php endfor; ?>
+                    <li class="page-item active">
+                        <a class="page-link" href="<?= $pagination->view() ?>?page=<?= $view->page ?>" tabindex="1"><?= $view->page ?></a>
+                    </li>
+                <?php
+                    if ($view->page >= $pagination->totalPages()-6) { ?>
+                        <?php for ($i = $view->page+1; $i < $pagination->totalPages()+1; $i++) : ?>
+                            <li class="page-item">
+                                <a class="page-link" href="<?= $pagination->view() ?>?page=<?= $i ?>" tabindex="1"><?= $i?></a>
+                            </li>
+                        <?php endfor; ?>
+                <?php
+                    } else { ?>
+                        <?php for ($i = $view->page+1; $i < $view->page+5; $i++) : ?>
+                            <li class="page-item">
+                                <a class="page-link" href="<?= $pagination->view() ?>?page=<?= $i ?>" tabindex="1"><?= $i?></a>
+                            </li>
+                        <?php endfor; ?>
+                        <li class="page-item">
+                            <a class="page-link" tabindex="1">...</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="<?= $pagination->view() ?>?page=<?= $pagination->totalPages() ?>" tabindex="1"><?= $pagination->totalPages() ?></a>
+                        </li>
+                <?php
+                    }
+                } else { ?>
+                    <?php for ($i = 1; $i < $view->page; $i++) : ?>
+                        <li class="page-item">
+                            <a class="page-link" href="<?= $pagination->view() ?>?page=<?= $i ?>" tabindex="1"><?= $i?></a>
+                        </li>
+                    <?php endfor; ?>
+                    <li class="page-item active">
+                        <a class="page-link" href="<?= $view->page ?>?page=<?= $view->page ?>" tabindex="1"><?= $view->page ?></a>
+                    </li>
+                    <?php for ($i = $view->page+1; $i < $view->page + 6; $i++) : ?>
+                        <li class="page-item">
+                            <a class="page-link" href="<?= $pagination->view() ?>?page=<?= $i ?>" tabindex="1"><?= $i?></a>
+                        </li>
+                    <?php endfor; ?>
+                    <li class="page-item">
+                        <a class="page-link" tabindex="1">...</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="<?= $pagination->view() ?>?page=<?= $pagination->totalPages() ?>" tabindex="1"><?= $pagination->totalPages() ?></a>
+                    </li>
+                <?php
+                }
+            }
+        ?>
+        <li class="page-item <?= $view->page != $pagination->totalPages() ?: "disabled" ?>">
+            <a class="page-link" href="<?= $pagination->view() ?>?page=<?= $view->page + 1 ?>" tabindex="2">Next &raquo;</a>
+        </li>
+    </ul>
+</nav>
+
+<?php endif; endif; ?>

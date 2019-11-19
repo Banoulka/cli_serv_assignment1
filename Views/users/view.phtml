@@ -54,7 +54,7 @@
             </div>
             <div class="row mt-4">
                 <div class="col-12">
-                    <h4 class="title mb-4 pb-2" style="border-bottom: 1px solid #1a407a">Recent Posts</h4>
+                    <h3 class="title mt-4 mb-4 pb-2" style="border-bottom: 1px solid #1a407a; font-size: 1.7rem; font-weight: 400;">Recent Posts</h3>
                     <?php foreach ($view->recentPosts as $post) : if ($post instanceof Post) : ?>
                     <a href="/posts/view.php?post_id=<?= $post->id ?>" class="recent-post">
                         <h4 class="mb-1"><?= $post->title ?></h4>
