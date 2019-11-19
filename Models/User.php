@@ -214,7 +214,7 @@ class User extends Model {
             ->value("body", $message)
             ->value("timestamp", $now->getTimestamp())
             ->executeInsert();
-
+        FlashMessager::addMessage("Successfully messaged " . $user->name(), "primary", ["> $message"]);
     }
 
     // Relationships
@@ -227,7 +227,22 @@ class User extends Model {
     public function posts()
     {
         parent::setCustomClassAndTable("Post", "posts");
-        return Post::findAllByKey(["user_id" => $this->id]);
+        $posts = Post::findAllByKey(["user_id" => $this->id]);
+        usort($posts, array("Post", "compareTo"));
+        return $posts;
+    }
+
+    /**
+     * @return Post[]
+     */
+    public function recentPosts()
+    {
+        parent::setCustomClassAndTable("Post", "posts");
+        $sql = "SELECT * FROM posts 
+                WHERE user_id = $this->id
+                ORDER BY time DESC
+                LIMIT 6";
+        return parent::query($sql);
     }
 
     /**

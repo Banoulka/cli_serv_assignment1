@@ -21,7 +21,7 @@
                         </form>
 
                         <?php if (Authentication::User()->id != $user->id) : ?>
-                            <button id="messageButton" type="button" class="d-block mx-4 mt-3 btn dprim-btn-outline message-button">Message</button>
+                            <button id="messageButton" type="button" class="d-block mt-3 btn dprim-btn-outline message-button">Message</button>
                             <div id="message-box" class="popover message-box">
                                 <h6 class="title">Leave a message!</h6>
                                 <form action="/messages/create.php" method="post">
@@ -32,8 +32,10 @@
                                     </div>
                                 </form>
                             </div>
-                    </div>
+                        <?php else : ?>
+                            <a href="/users/edit.php" class="btn btn-success">Edit Profile<i class="fas fa-user-edit ml-2" aria-hidden="true"></i></a>
                         <?php endif; ?>
+                    </div>
                     <?php else : ?>
                         <button class="btn disabled">Sign in to follow</button>
                         <button class="btn disabled">Sign in to message</button>
@@ -50,12 +52,29 @@
                     <p><?= $user->bio != "" ? $user->bio : "No bio set"; ?></p>
                 </div>
             </div>
+            <div class="row mt-4">
+                <div class="col-12">
+                    <h4 class="title mb-4 pb-2" style="border-bottom: 1px solid #1a407a">Recent Posts</h4>
+                    <?php foreach ($view->recentPosts as $post) : if ($post instanceof Post) : ?>
+                    <a href="/posts/view.php?post_id=<?= $post->id ?>" class="recent-post">
+                        <h4 class="mb-1"><?= $post->title ?></h4>
+                        <p class="mb-5"><?= $post->description ?></p>
+                        <div class="extra d-flex flex-row">
+                            <span class="likes"><i class="far fa-thumbs-up mr-1"></i><?= $post->likesCount() ?></span>
+                            <span class="watches ml-3"><i class="far fa-eye mr-1"></i><?= $post->watchCount() ?></span>
+                            <span class="comments ml-3"><i class="far fa-comment-dots mr-1"></i><?= $post->commentCount() ?></span>
+                            <span class="ml-auto time">Created <?= date("jS \of F Y H:i", $post->time); ?></span>
+                        </div>
+                    </a>
+                    <?php endif; endforeach;?>
+                </div>
+            </div>
         </div>
         <div class="col-4">
             <div class="followers">
                 <?php $followers = $user->followers(); ?>
                 <div class="header">
-                    <h4>Followers &dash; <?= count($followers); ?></h4>
+                    <h4><?= count($followers); ?> Followers</h4>
                 </div>
                 <div class="body">
                     <?php foreach ($followers as $follower) : ?>

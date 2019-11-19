@@ -12,6 +12,7 @@ require_once "Comment.php";
  * @property int user_id
  * @property string title
  * @property string body
+ * @property string description
  * @property string cover_image
  *
  */

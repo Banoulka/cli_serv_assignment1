@@ -1068,9 +1068,9 @@ $light-grey-border: 1px solid #CBCBCB;
 
 #message-box {
   padding: 1.2rem;
-  position: relative;
-  top: -70px;
-  left: 220px;
+  position: absolute;
+  top: 225px;
+  left: 240px;
   min-width: 340px;
   visibility: hidden;
 
@@ -1090,5 +1090,36 @@ $light-grey-border: 1px solid #CBCBCB;
     min-height: 60px;
     max-height: 140px;
     font-size: 0.8rem;
+  }
+}
+
+.recent-post {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 1em 2em;
+  border-radius: 12px;
+  margin-bottom: 2em;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: 0.2s background-color ease-in-out;
+
+  &:hover {
+    text-decoration: none;
+    color: inherit;
+    background-color: rgba(3, 106, 255, 0.1);
+  }
+
+  * {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  p {
+    color: $light-grey-text;
+  }
+
+  .time {
+    color: $light-blue-text;
+    font-weight: 300;
   }
 }

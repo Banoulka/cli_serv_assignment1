@@ -67,3 +67,17 @@
         </div>
     </div>
 </nav>
+
+<?php if ($message = FlashMessager::getMessage()) : ?>
+<div class="alert alert-<?= $message->colour; ?> alert-dismissable fade show d-flex flex-row align-items-center justify-content-between" role="alert">
+    <div class="ml-5">
+        <h4><?= $message->body; ?></h4>
+        <?php foreach ($message->extra as $extra) : ?>
+            <p><?= $extra; ?></p>
+        <?php endforeach; ?>
+    </div>
+    <button role="button" class="close ml-auto mr-5" data-dismiss="alert" aria-label="close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<?php endif; ?>
