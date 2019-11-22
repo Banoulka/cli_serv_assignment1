@@ -1,6 +1,12 @@
-<div class="col-8">
-    <h3 class="profile-name">Messages</h3>
-</div>
+<h3 class="profile-name mb-3">Messages</h3>
+
 <div class="col-4">
-    <h3 class="profile-name">Followers</h3>
+
+</div>
+<div class="col-8">
+    <?php foreach (Authentication::User()->usersWithMessages() as $userWithMessage) : ?>
+        <?php foreach ($userWithMessage->messages as $message) : ?>
+            <h5>From <?= $userWithMessage->name() ?> - <span class="small"><?= $message->body ?></span></h5>
+        <?php endforeach; ?>
+    <?php endforeach; ?>
 </div>

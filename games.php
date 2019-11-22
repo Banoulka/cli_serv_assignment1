@@ -34,6 +34,7 @@ $dataThing = new DataReader();
 //$dataThing->randomisePostTags();
 //$dataThing->randomizePostTime();
 //$dataThing->randomiseFollowers();
+//$dataThing->randomisePostWatches();
 //echo "finished";
 //die();
 

@@ -139,7 +139,7 @@ class DataReader
         $tags = Tag::all();
         foreach ($posts as $post) {
             $chosenTags = [];
-            for ($i = 0; $i < rand(0, 5); $i++) {
+            for ($i = 0; $i < rand(2, 5); $i++) {
                 // Add post tag
                 $chosenTags[$i] = $tags[rand(0, count($tags)-1)]->title;
             }

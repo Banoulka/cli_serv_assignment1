@@ -308,4 +308,32 @@ class User extends Model {
         return $followers;
     }
 
+    /**
+     * @return User[]
+     */
+    public function usersWithMessages()
+    {
+        parent::setCustomClassAndTable("", "user_messages");
+        $messages = parent::findAllByKey(["user_id_to" => $this->id]);
+        $usersWithMessages = array();
+        foreach ($messages as $message) {
+
+            $userFrom = User::find(["id" => $message->user_id_from]);
+            unset($message->user_from->password);
+
+            if (array_key_exists($userFrom->email, $usersWithMessages)) {
+                $user = $usersWithMessages[$userFrom->email];
+                if (array_key_exists("messages", $user)) {
+                    array_push($user->messages, $message);
+                } else {
+                    $user->messsages = array($message);
+                }
+            } else {
+                $userFrom->messages = array($message);
+                $usersWithMessages[$userFrom->email] = $userFrom;
+            }
+        }
+        return $usersWithMessages;
+    }
+
 }
