@@ -9,8 +9,9 @@ spl_autoload_register(function ($className) {
 require_once "../auth.php";
 
 $view = new stdClass();
-$view->title = "ProfileName - uGame";
+$view->title = Authentication::User()->name() . " - uGame";
 $view->page = "profile";
+$view->tab= "details";
 
 if (isset($_POST["submit"])) {
 

@@ -6,16 +6,7 @@
 <div class="container section">
     <div class="row">
         <div class="col-md-4">
-            <div class="profile-header">
-                <h1>Your Profile:</h1>
-            </div>
-            <div class="profile-menu">
-                <a href="<?= $profilePage; ?>details" class="menu-item <?php Helpers::echoActive($view->tab, "details"); ?>">Details</a>
-                <a href="<?= $profilePage; ?>messages" class="menu-item <?php Helpers::echoActive($view->tab, "messages");?>">Messages</a>
-                <a href="<?= $profilePage; ?>posts" class="menu-item <?php Helpers::echoActive($view->tab, "posts");?>">Posts</a>
-                <a href="#" class="menu-item">Watchlist</a>
-                <a href="#" class="menu-item">Settings</a>
-            </div>
+            <?php include_once "profile-tabs/profile-menu.phtml"?>
         </div>
         <div class="col-md-8">
             <div class="menu-display">

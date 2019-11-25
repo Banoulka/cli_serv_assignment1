@@ -23,7 +23,7 @@
                         <?php if (Authentication::User()->id != $user->id) : ?>
                             <button id="messageButton" type="button" class="d-block mt-3 btn dprim-btn-outline message-button">Message</button>
                             <div id="message-box" class="popover message-box">
-                                <h6 class="title">Leave a message!</h6>
+                                <h6 class="title">Send a message!</h6>
                                 <form action="/messages/create.php" method="post">
                                     <div class="d-flex flex-column justify-content-center">
                                         <textarea class="msg-box form-control" name="message" placeholder="Enter Message..."></textarea>

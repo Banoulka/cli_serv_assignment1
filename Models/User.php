@@ -217,6 +217,40 @@ class User extends Model {
         FlashMessager::addMessage("Successfully messaged " . $user->name(), "primary", ["> $message"]);
     }
 
+    public function destroy()
+    {
+        // Delete posts
+        foreach (self::posts() as $post) {
+            $post->destroy();
+        }
+
+        // Delete followers and following
+        parent::setCustomClassAndTable("", "user_follows");
+        parent::delete()->value("user_id_from", $this->id)->executeDelete();
+        parent::delete()->value("user_id_to", $this->id)->executeDelete();
+
+        // Delete comments
+        parent::setCustomClassAndTable("", "post_comments");
+        parent::delete()->value("user_id", $this->id)->executeDelete();
+
+        // Delete likes
+        parent::setCustomClassAndTable("", "post_likes");
+        parent::delete()->value("user_id", $this->id)->executeDelete();
+
+        // Delete user notifications
+        parent::setCustomClassAndTable("", "user_notifications");
+        parent::delete()->value("user_id_from", $this->id)->executeDelete();
+        parent::delete()->value("user_id_to", $this->id)->executeDelete();
+
+        // Delete watchlist
+        parent::setCustomClassAndTable("", "user_watchlist");
+        parent::delete()->value("user_id", $this->id)->executeDelete();
+
+        // Delete the user
+        self::setClassAndTable();
+        parent::deleteModel(["id" => $this->id]);
+    }
+
     // Relationships
 
     /**

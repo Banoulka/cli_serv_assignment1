@@ -1,18 +1,11 @@
 <?php require(__DIR__ . "/../partials/header.phtml"); ?>
-<?php $user = Authentication::User(); ?>
+<?php $user = Authentication::User();
+    $profilePage = "../../users/profile.php?tab=";
+?>
 <div class="container section">
     <div class="row">
         <div class="col-md-4">
-            <div class="profile-header">
-                <h1>Your Profile:</h1>
-            </div>
-            <div class="profile-menu">
-                <a href="#" class="menu-item active">Details</a>
-                <a href="#" class="menu-item">Messages &amp; Followers</a>
-                <a href="#" class="menu-item">Posts</a>
-                <a href="#" class="menu-item">Watchlist</a>
-                <a href="#" class="menu-item">Settings</a>
-            </div>
+            <?php include_once "profile-tabs/profile-menu.phtml"?>
         </div>
         <div class="col-md-8">
             <div class="menu-display">
@@ -45,6 +38,7 @@
                             <div class="d-flex flex-row align-items-center">
                                 <input type="submit" name="submit" class="btn btn-primary mt-4 mr-2" value="Save">
                                 <a href="profile.php" class="btn btn-outline-danger mt-4 mx-2">Cancel</a>
+                                <button type="button" id="modalDelete" class="btn btn-danger mt-4 ml-auto" >Delete Profile <i class="fas ml-1 fa-exclamation-triangle"></i></button>
                             </div>
                         </form>
                     </div>
@@ -54,4 +48,35 @@
     </div>
 </div>
 
+<div class="modal fade" tabindex="-1" role="dialog" id="deleteProfileModal" style="border: 15px solid rgba(255,39,35,0.7);">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Deleting Profile - <?= $user->name(); ?></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="m-0">Are you sure you want to delete your profile?</p>
+                <p class="m-0">All data associated will be removed.</p>
+                <p class="text-danger small mt-2">&gt; This action cannot be reversed.</p>
+            </div>
+            <div class="modal-footer">
+                <form action="delete.php" method="post" id="deleteForm">
+                    <input type="hidden" name="auth-token" readonly value="<?= password_hash($user->id, PASSWORD_DEFAULT) ?>">
+                </form>
+                <button type="button" class="btn btn-danger mr-auto" onclick="document.getElementById('deleteForm').submit()">Yes I am sure</button>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php require(__DIR__ . "/../partials/footer.phtml") ?>
+
+<script>
+    document.getElementById("modalDelete").addEventListener("click", (e) => {
+       $("#deleteProfileModal").modal("show");
+    });
+</script>

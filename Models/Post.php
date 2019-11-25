@@ -131,18 +131,27 @@ class Post extends Model implements Comparable
 
     public function destroy()
     {
+        // Delete likes
         self::setCustomClassAndTable("", "post_likes");
         parent::deleteModel(["post_id" => $this->id]);
 
+        // Delete comments
         self::setCustomClassAndTable("", "post_comments");
         parent::deleteModel(["post_id" => $this->id]);
 
+        // Delete tags
         self::setCustomClassAndTable("", "post_tags");
         parent::deleteModel(["post_id" => $this->id]);
 
+        // Delete post off of user watchlist
         self::setCustomClassAndTable("", "user_watchlist");
         parent::deleteModel(["post_id" => $this->id]);
 
+        // Delete announcements
+        self::setCustomClassAndTable("", "post_announcements");
+        parent::deleteModel(["post_id" => $this->id]);
+
+        // Delete self
         self::setClassAndTable();
         parent::deleteModel(["id" => $this->id]);
     }
