@@ -75,6 +75,22 @@ abstract class Model {
         return $stmt->fetchAll();
     }
 
+    protected static function random($rows)
+    {
+        $tableName = self::$tableName;
+        $sql = "SELECT * FROM $tableName ORDER BY RAND() LIMIT $rows";
+        $stmt = self::db()->prepare($sql);
+        $stmt->execute();
+
+        $stmt->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, self::$className);
+        $result = $stmt->fetchAll();
+
+        if ($stmt->errorInfo()[2] != "") {
+            var_dump($stmt->errorInfo());
+        }
+        return $rows <= 1 ? $result[0] : $result;
+    }
+
     /**
      * This is a reusable method that allows a sub class of model to find a specific
      * row with a key value pair.
@@ -181,7 +197,7 @@ abstract class Model {
         }
         $sql .= ") VALUES (";
         foreach ($dataAttributes as $key => $value) {
-            $sql .= "'" . $value . "'";
+            $sql .= '"' . $value . '"';
             if ($value != end($dataAttributes))
                 $sql .= ", ";
         }

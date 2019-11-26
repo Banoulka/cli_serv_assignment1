@@ -213,6 +213,16 @@ class Post extends Model implements Comparable
         }
     }
 
+    /**
+     * @param $rows
+     * @return Post[]|Post
+     */
+    public static function random($rows)
+    {
+        self::setClassAndTable();
+        return parent::random($rows);
+    }
+
     public function watchCount()
     {
         parent::setCustomClassAndTable("", "user_watchlist");

@@ -7,6 +7,8 @@ spl_autoload_register(function ($className) {
     require_once "../Models/lib/" . $className . ".php";
 });
 
-APIMiddleware::userDataRequest();
-
+for ($i = 0; $i < 10; $i++) {
+    echo "============== FOR LOOP $i ================" . "<br/>";
+    APIMiddleware::postDataRequest();
+}
 echo "Completed!";

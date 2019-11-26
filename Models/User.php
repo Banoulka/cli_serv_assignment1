@@ -68,6 +68,16 @@ class User extends Model {
         ]);
     }
 
+    /**
+     * @param $rows
+     * @return User[]|User
+     */
+    public static function random($rows)
+    {
+        self::setClassAndTable();
+        return parent::random($rows);
+    }
+
     public function name() {
         return $this->first_name . " " . $this->last_name;
     }
@@ -101,9 +111,6 @@ class User extends Model {
 
             // Encrypt the password
             $this->password = password_hash($this->password, PASSWORD_DEFAULT);
-            if (isset($this->display_pic)) {
-                $this->display_pic = "/uploads/profile_pictures/" . $this->display_pic;
-            }
             parent::saveModel();
             return true;
         }
@@ -137,10 +144,10 @@ class User extends Model {
 
     public function isLiked($postID)
     {
-        $likes = $this->likes();
-        foreach ($likes as $post) {
-            if ($postID == $post->id)
-                return true;
+        self::setCustomClassAndTable("", "post_likes");
+        var_dump($row);
+        if ($row) {
+            return true;
         }
         return false;
     }

@@ -34,7 +34,7 @@ if (isset($_POST["submit"])) {
         //TODO: file checks
 
         move_uploaded_file($_FILES["display_pic"]["tmp_name"], $targetFile);
-        $user->display_pic = $userFileName;
+        $user->display_pic = "/uploads/profile_pictures/" . $userFileName;
     }
 
     $logout = false;

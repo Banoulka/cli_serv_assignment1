@@ -11,13 +11,18 @@ spl_autoload_register(
     }
 );
 
+$dataReader = new DataReader();
+$dataReader->randomisePostLikesBetterAlgorithim(1);
+die();
+
+
 $view = new stdClass();
 $view->page = "games";
 $view->title = "Games - uGame";
 $view->userWatchlist = Authentication::isLoggedOn() ? Authentication::User()->watchlist() : [];
 
 // Setup pagination
-$view->paginationView = new Pagination("games.php", 10);
+$view->paginationView = new Pagination("games.php", 50);
 $view->paginationView->setRecords(Post::all());
 $view->page = 1;
 

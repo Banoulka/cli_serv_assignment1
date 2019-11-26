@@ -63,7 +63,6 @@ class DataReader
             $newTime = rand(1262055681, $now->getTimestamp());
             $post->time = $newTime;
             $post->save();
-
         }
     }
 
@@ -89,19 +88,35 @@ class DataReader
         }
     }
 
+    public function randomisePostLikesBetterAlgorithim(int $number)
+    {
+        $likeCount = 0;
+        for ($i = 0; $i < $number; $i++) {
+
+            $post = Post::random(1);
+            $randomUsers = User::random(rand(200, 1000));
+
+            foreach ($randomUsers as $user) {
+                if (!$user->isLiked($post->id)) {
+                    $user->likePost($post->id);
+                    $likeCount++;
+                }
+            }
+
+        }
+        echo "Successfully liked $number posts and liked $likeCount times";
+    }
+
     public function randomisePostWatches()
     {
         $posts = Post::all();
+        $users = User::all();
 
         foreach ($posts as $post) {
-            // Randomise likes
-            $users = User::all();
-            for ($i = 0; $i < rand(0, 80); $i++) {
+            // Randomise watches
+            for ($i = 0; $i < rand(0, 2000); $i++) {
                 $index = rand(0, count($users)-1);
                 $chosenUser = $users[$index];
-
-                unset($users[$index]);
-                $users = array_values($users);
 
                 if (!$chosenUser->isOnWatchList($post->id)){
                     $chosenUser->addToWatchList($post->id);
@@ -127,6 +142,20 @@ class DataReader
                 $availableUsers = array_values($availableUsers);
             }
         }
+    }
+
+    public function randomiseFollowersBetterAlgorithm(int $number) {
+        $followCount = 0;
+        for ($i = 0; $i < $number; $i++) {
+//            841 - 44268
+            $randomUserOne = User::find(["id" => rand(841, 44268)]);
+            $randomUserTwo = User::find(["id" => rand(841, 44268)]);
+            if ($randomUserOne && $randomUserTwo && !$randomUserOne->isFollower($randomUserTwo)) {
+                $randomUserTwo->followUser($randomUserOne);
+                $followCount++;
+            }
+        }
+        echo "Successfully followed -> $followCount <br/>";
     }
 
     public function randomisePostTags ()
