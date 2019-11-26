@@ -87,9 +87,7 @@ class Notification extends Model implements Comparable
      * @return void
      */
     public static function all()
-    {
-        // TODO: Implement all() method.
-    }
+    {}
 
     /**
      * Function to return the time since posted to a human readable

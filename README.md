@@ -1,1 +1,55 @@
-<h1>Client Server Assignment</h1>
+Client Server System
+===
+
+## Todo List:
+
+-[ ] Better Query System
+    -[ ] Extra Class
+    -[ ] Sort By
+    -[ ] Follower Filter
+    -[ ] Table Indexes
+-[ ] Finish Query Builder
+    -[ ] Order By
+    -[x] Count
+-[ ] Random Post Data
+    -[ ] Random Times
+    -[x] Random Likes
+    -[ ] Random Comments
+-[ ] Random Messages
+-[ ] SQL Post Sorting (replace php)
+-[ ] Files (PC, DP)
+    -[ ] Check Size
+    -[ ] Compress
+-[ ] Capatcha System
+-[ ] Dynamic Sidebar
+-[ ] Profile Tabs
+    -[ ] Messages
+    -[ ] Watchlist
+    -[ ] Settings
+-[ ] Posts
+    -[ ] Edit Post
+    -[ ] Delete Post
+    -[ ] Owner Can Delete Any Comment
+    -[ ] Announcement Deletion
+    -[ ] Extras Count Query Update
+-[ ] Notifications
+    -[ ] Notification Delete (?)
+    -[ ] Read All Button
+-[ ] Search Page
+    -[ ] Search Bar Links To Search Page
+    -[ ] Search Page Pagination
+    -[ ] Add Tags To Search(?)
+    -[ ] Search Author
+    -[ ] Sort By Comments
+    -[ ] Sort By Relevance
+    -[ ] Follower Filter  
+-[ ] Give Page 3 a home
+-[ ] Minified View
+-[ ] Games Page
+    -[x] Latest
+    -[ ] Most Liked
+    -[ ] Followed Users
+-[ ] Notification Setting Button
+-[ ] Optimise Fetch
+    -[ ] Limit Data Fetched ?
+    -[ ] Better Pagination

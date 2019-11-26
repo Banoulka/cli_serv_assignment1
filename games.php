@@ -33,15 +33,5 @@ if (isset($_GET["page"]) && $_GET["page"] <= $view->paginationView->totalPages()
 // Get the posts with the records
 $view->posts = $view->paginationView->getRecords($view->page);
 
-$dataThing = new DataReader();
-//$dataThing->randomisePostLikes();
-//$dataThing->randomisePostComments();
-//$dataThing->randomisePostTags();
-//$dataThing->randomizePostTime();
-//$dataThing->randomiseFollowers();
-//$dataThing->randomisePostWatches();
-//echo "finished";
-//die();
-
 require_once "Views/games.phtml";
 

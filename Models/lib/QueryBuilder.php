@@ -7,9 +7,11 @@ class QueryBuilder
     private static $instance = null;
 
     private $className, $tableName, $keyValueArr;
-    private $fetchAll, $orderby;
+    private $fetchAll, $orderby, $cention;
     private $stmt;
     private $sql;
+
+    private const ORDER_ASC = "ASC", ORDER_DESC = "DESC";
 
     public function __construct()
     {
@@ -75,6 +77,10 @@ class QueryBuilder
             }
         }
 
+        if (!is_null($this->orderby)) {
+
+        }
+
         $stmt = self::db()->prepare($sql);
         return $stmt;
     }
@@ -106,6 +112,9 @@ class QueryBuilder
         return $stmt;
     }
 
+    /**
+     * @return PDOStatement
+     */
     private function prepareCount()
     {
         $tableName = $this->tableName;
@@ -145,8 +154,20 @@ class QueryBuilder
     }
 
 
-    public function orderby(){}
-    public function getAll(){}
+    public function orderby($colName, $cention = self::ORDER_ASC)
+    {
+        $this->orderby = $colName;
+        $this->cention = $cention;
+        return $this;
+    }
+    public function getAll()
+    {
+        $stmt = $this->prepareSelect();
+        $this->execute($stmt);
+
+        $result = $stmt->fetchAll();
+        return $result;
+    }
     public function first()
     {
         // Prepare the query

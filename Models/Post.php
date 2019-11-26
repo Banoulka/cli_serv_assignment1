@@ -97,6 +97,13 @@ class Post extends Model implements Comparable
         }
     }
 
+    public static function allByTime()
+    {
+        QueryBuilder::getInstance()
+            ->table("posts")
+            ->orderby("time");
+    }
+
     /**
      *
      * @param Comparable $self
@@ -252,6 +259,7 @@ class Post extends Model implements Comparable
      */
     public static function searchPosts($getReq)
     {
+        //TODO:: replace with a better search query, indexes etc
         $sql = "SELECT * from posts WHERE ";
         $searchString = explode(" ", $getReq["search"]);
         if (!empty($searchString[0])) {
