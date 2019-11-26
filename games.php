@@ -12,7 +12,7 @@ spl_autoload_register(
 );
 
 $dataReader = new DataReader();
-$dataReader->randomisePostLikesBetterAlgorithim(1);
+$dataReader->randomisePostLikesBetterAlgorithim(100);
 die();
 
 

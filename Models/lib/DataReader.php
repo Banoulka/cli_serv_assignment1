@@ -97,10 +97,8 @@ class DataReader
             $randomUsers = User::random(rand(200, 1000));
 
             foreach ($randomUsers as $user) {
-                if (!$user->isLiked($post->id)) {
-                    $user->likePost($post->id);
-                    $likeCount++;
-                }
+                $user->likePost($post->id);
+                $likeCount++;
             }
 
         }

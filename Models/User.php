@@ -144,12 +144,13 @@ class User extends Model {
 
     public function isLiked($postID)
     {
-        self::setCustomClassAndTable("", "post_likes");
-        var_dump($row);
-        if ($row) {
-            return true;
-        }
-        return false;
+        $result = QueryBuilder::getInstance()
+            ->table('post_likes')
+            ->where('post_id', 6)
+            ->where('user_id', 41)
+            ->first();
+
+        return $result ? true : false;
     }
 
     public function isFollower(User $user)
@@ -161,17 +162,19 @@ class User extends Model {
 
     public function likePost($postID)
     {
-        parent::setCustomClassAndTable("", "post_likes");
-        parent::insert()->value("user_id", $this->id)->value("post_id", $postID)->executeInsert();
-        $postLiked = Post::find(["id" => $postID]);
+        if (!self::isLiked($postID)) {
+            parent::setCustomClassAndTable("", "post_likes");
+            parent::insert()->value("user_id", $this->id)->value("post_id", $postID)->executeInsert();
+            $postLiked = Post::find(["id" => $postID]);
 
-        // notification
-        $notif = new Notification();
-        $notif->user_id_to = $postLiked->user()->id;
-        $notif->user_id_from = $this->id;
-        $notif->type = Notification::LIKE_TO_USER_POST;
-        $notif->link = "/posts/view.php?post_id=$postLiked->id";
-        $notif->save();
+            // notification
+            $notif = new Notification();
+            $notif->user_id_to = $postLiked->user()->id;
+            $notif->user_id_from = $this->id;
+            $notif->type = Notification::LIKE_TO_USER_POST;
+            $notif->link = "/posts/view.php?post_id=$postLiked->id";
+            $notif->save();
+        }
     }
 
     public function unLikePost($postID)
