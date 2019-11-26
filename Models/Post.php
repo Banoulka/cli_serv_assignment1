@@ -231,8 +231,13 @@ class Post extends Model implements Comparable
 
     public function likesCount()
     {
-        parent::setCustomClassAndTable("", "post_likes");
-        return count(parent::findAllByKey(["post_id" => $this->id]));
+//        parent::setCustomClassAndTable("", "post_likes");
+//        return count(parent::findAllByKey(["post_id" => $this->id]));
+        $result = QueryBuilder::getInstance()
+            ->table("post_likes")
+            ->where("post_id", $this->id)
+            ->count();
+        return $result;
     }
 
     public function commentCount()
@@ -270,25 +275,25 @@ class Post extends Model implements Comparable
 
         Post::setCustomClassAndTable("Post", "posts");
         $posts = parent::query($sql);
-        $tagsToSearch = $getReq["tags"];
-        // Tags
-        for ($i = 0; $i < count($posts)-1; $i++) {
-            $post = $posts[$i];
-            if ($post instanceof Post) {
-                $tags = $post->tags();
-                $tagFound = false;
-                foreach ($tags as $tag) {
-                    if (in_array(strtolower($tag->title), $tagsToSearch)) {
-                        $tagFound = true;
-                        break;
-                    }
-                }
-                if (!$tagFound) {
-                    unset($posts[$i]);
-                    $posts = array_values($posts);
-                }
-            }
-        }
+//        $tagsToSearch = $getReq["tags"];
+//         Tags
+//        for ($i = 0; $i < count($posts)-1; $i++) {
+//            $post = $posts[$i];
+//            if ($post instanceof Post) {
+//                $tags = $post->tags();
+//                $tagFound = false;
+//                foreach ($tags as $tag) {
+//                    if (in_array(strtolower($tag->title), $tagsToSearch)) {
+//                        $tagFound = true;
+//                        break;
+//                    }
+//                }
+//                if (!$tagFound) {
+//                    unset($posts[$i]);
+//                    $posts = array_values($posts);
+//                }
+//            }
+//        }
         return $posts;
     }
 

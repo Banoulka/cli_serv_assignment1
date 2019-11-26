@@ -146,11 +146,11 @@ class User extends Model {
     {
         $result = QueryBuilder::getInstance()
             ->table('post_likes')
-            ->where('post_id', 6)
-            ->where('user_id', 41)
+            ->where('post_id', $postID)
+            ->where('user_id', $this->id)
             ->first();
 
-        return $result ? true : false;
+        return is_null($result) ? true : false;
     }
 
     public function isFollower(User $user)
@@ -165,6 +165,11 @@ class User extends Model {
         if (!self::isLiked($postID)) {
             parent::setCustomClassAndTable("", "post_likes");
             parent::insert()->value("user_id", $this->id)->value("post_id", $postID)->executeInsert();
+//            QueryBuilder::getInstance()->table("post_likes")->insert([
+//                "user_id" => $this->id,
+//                "post_id" => $postID
+//            ]);
+
             $postLiked = Post::find(["id" => $postID]);
 
             // notification

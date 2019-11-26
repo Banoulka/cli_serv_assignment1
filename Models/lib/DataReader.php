@@ -94,7 +94,8 @@ class DataReader
         for ($i = 0; $i < $number; $i++) {
 
             $post = Post::random(1);
-            $randomUsers = User::random(rand(200, 1000));
+//            $randomUsers = User::random(rand(200, 1000));
+            $randomUsers = User::random(500);
 
             foreach ($randomUsers as $user) {
                 $user->likePost($post->id);

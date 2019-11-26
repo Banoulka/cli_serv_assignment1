@@ -12,8 +12,8 @@ spl_autoload_register(
 );
 
 $dataReader = new DataReader();
-$dataReader->randomisePostLikesBetterAlgorithim(100);
-die();
+//$dataReader->randomisePostLikesBetterAlgorithim(10);
+//die();
 
 
 $view = new stdClass();

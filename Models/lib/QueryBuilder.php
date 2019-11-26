@@ -42,7 +42,10 @@ class QueryBuilder
     public function insert($keyValueArr)
     {
         $this->keyValueArr = $keyValueArr;
-        return $this;
+        $stmt = $this->prepareInsert();
+        $this->execute($stmt);
+
+        $this->resetData();
     }
     public function where($colName, $value)
     {
@@ -73,14 +76,65 @@ class QueryBuilder
         }
 
         $stmt = self::db()->prepare($sql);
-        $this->className ? $stmt->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, $this->className)
-            : $stmt->setFetchMode(PDO::FETCH_OBJ);
+        return $stmt;
+    }
 
+    /**
+     * @return PDOStatement
+     */
+    private function prepareInsert()
+    {
+        $tableName = $this->tableName;
+
+        $sql = "INSERT INTO $tableName (";
+
+        $keys = array_keys($this->keyValueArr);
+        $lastKey = end($keys);
+
+        foreach ($this->keyValueArr as $key => $value) {
+            $sql .= "$key";
+            $lastKey == $key ?: $sql .= ", ";
+        }
+        $sql .= ") VALUES (";
+        foreach ($this->keyValueArr as $key => $value) {
+            $sql .= is_numeric($value) ? "$value" : ('"' . $value . '"');
+            $lastKey == $key ?: $sql .= " ,";
+        }
+        $sql .= ");";
+
+        $stmt = self::db()->prepare($sql);
+        return $stmt;
+    }
+
+    private function prepareCount()
+    {
+        $tableName = $this->tableName;
+
+        $sql = "SELECT count(*) FROM $tableName";
+
+        $keys = array_keys($this->keyValueArr);
+        $lastKey = end($keys);
+
+        // Add wheres
+        if (!empty($this->keyValueArr)) {
+
+            $sql .= " WHERE";
+            foreach ($this->keyValueArr as $key => $value) {
+                $sql .= " $key = ";
+                $sql .= is_numeric($value) ? "$value" : ('"' . $value . '"');
+                $lastKey == $key ?: $sql .= " AND";
+            }
+
+        }
+
+        $stmt = self::db()->prepare($sql);
         return $stmt;
     }
 
     private function execute(PDOStatement $stmt)
     {
+        $this->className ? $stmt->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, $this->className)
+            : $stmt->setFetchMode(PDO::FETCH_OBJ);
         $stmt->execute();
 
         if($stmt->errorInfo()[2] != "") {
@@ -93,8 +147,7 @@ class QueryBuilder
 
     public function orderby(){}
     public function getAll(){}
-
-    public function first(): stdClass
+    public function first()
     {
         // Prepare the query
         $stmt = $this->prepareSelect();
@@ -103,6 +156,16 @@ class QueryBuilder
         $result = $stmt->fetch();
         return $result;
     }
+    public function count()
+    {
+        $stmt = $this->prepareCount();
+        $this->execute($stmt);
+
+        $stmt->setFetchMode(PDO::FETCH_NUM);
+        $result = $stmt->fetch();
+        return $result[0];
+    }
+
 
     private function resetData()
     {
