@@ -76,8 +76,13 @@ if (isset($view->paginationView)) :
                     </li>
                 <?php
                 }
-            }
-        ?>
+            } else { ?>
+                <?php for ($i = $view->page+1; $i < $pagination->totalPages()+1; $i++) : ?>
+                    <li class="page-item">
+                        <a class="page-link" href="<?= $pagination->view() ?>page=<?= $i ?>" tabindex="1"><?= $i?></a>
+                    </li>
+                <?php endfor; ?>
+            <?php } ?>
         <li class="page-item <?= $view->page != $pagination->totalPages() ?: "disabled" ?>">
             <a class="page-link" href="<?= $pagination->view() ?>page=<?= $view->page + 1 ?>" tabindex="2">Next &raquo;</a>
         </li>

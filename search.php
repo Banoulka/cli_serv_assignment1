@@ -25,15 +25,15 @@ if (isset($_GET["submit"])) {
     $view->searches = $_GET;
     $view->resultsCount = count($posts);
 
+    // Setup the pagination
+    $self = $_SERVER["REQUEST_URI"];
+    $view->paginationView = new Pagination("$self&", 10);
+    $view->paginationView->setRecords($posts);
+    $view->page = 1;
+
     if (isset($_GET["page"]) && $_GET["page"] <= $view->paginationView->totalPages()) {
         $view->page = $_GET["page"];
     }
-
-    // Setup the pagination
-    $self = $_SERVER["REQUEST_URI"];
-    $view->paginationView = new Pagination("$self&", 20);
-    $view->paginationView->setRecords($posts);
-    $view->page = 1;
 
     // Get the posts with the records
     $view->posts = $view->paginationView->getRecords($view->page);

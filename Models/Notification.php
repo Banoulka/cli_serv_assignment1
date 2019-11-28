@@ -13,6 +13,9 @@ require_once "Comparable.php";
  * @property int type
  * @property boolean isRead
  * @property string link
+ * @property User user_from
+ * @property int time
+ * @property User user_to
  * */
 class Notification extends Model implements Comparable
 {
@@ -28,6 +31,7 @@ class Notification extends Model implements Comparable
     const COMMENT_TO_USER_POST = "comment-to-user-post";
 
     // Set the class and table of the model
+
     protected static function setClassAndTable()
     {
         parent::$className = "Notification";
@@ -88,6 +92,22 @@ class Notification extends Model implements Comparable
      */
     public static function all()
     {}
+
+    public static function allWithDataByID($userIDTo)
+    {
+        $notifs = QueryBuilder::getInstance()->table("user_notifications")
+            ->fetchAs("Notification")->where("user_id_to", $userIDTo)
+            ->orderby("time", QueryBuilder::ORDER_DESC)->getAll();
+
+        foreach ($notifs as $notif) {
+
+            $notif->user_from = QueryBuilder::getInstance()->table("users")
+                ->fetchAs("User")->where("id", $notif->user_id_from)->first();
+
+            $notif->user_to = Authentication::User();
+        }
+        return $notifs;
+    }
 
     /**
      * Function to return the time since posted to a human readable
@@ -179,8 +199,7 @@ class Notification extends Model implements Comparable
      * */
     public function userTo(): User
     {
-        parent::setCustomClassAndTable("User", "users");
-        return parent::find(["id" => $this->user_id_to]);
+        return $this->user_to;
     }
 
     /**
@@ -191,7 +210,8 @@ class Notification extends Model implements Comparable
      * */
     public function userFrom(): User
     {
-        parent::setCustomClassAndTable("User", "users");
-        return parent::findOneByKey(["id" => $this->user_id_from]);
+//        parent::setCustomClassAndTable("User", "users");
+//        return parent::findOneByKey(["id" => $this->user_id_from]);
+        return $this->user_from;
     }
 }

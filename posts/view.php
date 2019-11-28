@@ -15,7 +15,6 @@ $view = new stdClass();
 $view->title = "View Post - uGame";
 $view->page = "view-post";
 
-
 if (isset($_GET["post_id"])) {
     // Find the post associated with the id in the url
     $view->post = Post::find(["id" => $_GET["post_id"]]);

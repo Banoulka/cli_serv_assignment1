@@ -53,3 +53,6 @@ Client Server System
 - [x] Optimise Fetch
     - [x] Limit Data Fetched ?
     - [x] Better Pagination
+ - [ ] Web Scraping Defense
+    - [ ] Random Generated ID's
+    - [ ] On the fly CSS 

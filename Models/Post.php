@@ -54,16 +54,21 @@ class Post extends Model
     /**
      * Find all by key
      *
+     * @param int $limit
      * @return Post[]
-     * */
-    public static function all()
+     */
+    public static function all($limit = -1)
     {
-        return QueryBuilder::getInstance()
+        $qb = QueryBuilder::getInstance()
             ->table("posts")
             ->orderby("time", QueryBuilder::ORDER_DESC)
-            ->fetchAs("Post")
-            ->limit(3000)
-            ->getAll();
+            ->fetchAs("Post");
+
+        if ($limit > 0) {
+            $qb->limit($limit);
+        }
+
+        return $qb->getAll();
     }
 
     public static function allByLikes() {
@@ -245,11 +250,10 @@ class Post extends Model
     {
 //        parent::setCustomClassAndTable("", "post_likes");
 //        return count(parent::findAllByKey(["post_id" => $this->id]));
-        $result = QueryBuilder::getInstance()
+        return QueryBuilder::getInstance()
             ->table("post_likes")
             ->where("post_id", $this->id)
             ->count();
-        return $result;
     }
 
     public function commentCount()
@@ -264,7 +268,6 @@ class Post extends Model
      */
     public static function searchPosts($getReq)
     {
-        //TODO:: replace with a better search query, indexes etc
         $filterSearch = false;
         $titleSearch = false;
 
@@ -282,42 +285,41 @@ class Post extends Model
 
         // Get the order by result
         $orderBy = $getReq["sort-by"];
+        $filters = $getReq["filters"];
         $sql = "";
+
+        $tableName = "";
+        if ($orderBy == "likes")
+            $tableName = "post_likes";
+        else if ($orderBy == "watches")
+            $tableName = "user_watchlist";
+        else if ($orderBy == "comments")
+            $tableName = "post_comments";
 
         // If the title is set
         if ($titleSearch) {
             // Perform filters and title search with subquery
             $titleSearch = $getReq["search"];
-            $filters = $getReq["filters"];
 
             // Add the title search
             // Order by title score
             // If order by likes & filter search
-            $tableName = "";
-            if ($orderBy == "likes") {
-                $tableName = "post_likes";
-            } else if ($orderBy == "watches") {
-                $tableName = "user_watchlist";
-            } else if ($orderBy == "comments") {
-                $tableName = "post_comments";
-            }
 
             if ($tableName != "") {
                 // Is not newest
-                $sql = "SELECT POSTS_NARROW.*, COUNT($tableName.post_id) as Something
-                    FROM (SELECT id, user_id, title, description, body, cover_image, time, type_stage FROM
-                    (SELECT posts.*, MATCH(title, description) AGAINST ('$titleSearch' IN NATURAL LANGUAGE MODE) as score
+                $sql = "SELECT posts.*, COUNT($tableName.user_id) as Something
+                        FROM (SELECT id, user_id, title, description, body, cover_image, time, type_stage FROM
+                    (SELECT posts.*, MATCH(title, description) AGAINST ('game' IN NATURAL LANGUAGE MODE) as score
                      FROM posts HAVING score > 1
-                     ORDER BY score DESC) AS POST_TITLES";
-                $sql .= " WHERE ";
+                     ORDER BY score DESC) AS POST_TITLES WHERE ";
+
+                // For each filter
                 foreach ($filters as $filter) {
-                    // For each filters
-                    $sql .= " type_stage = '$filter'";
-                    $filter == end($filters) ?: $sql .= " OR ";
+                    $sql .= " type_stage = '$filter' ";
+                    $filter == end($filters) ?: $sql .= "OR ";
                 }
-                $sql .= "ORDER BY time DESC) as POSTS_NARROW, $tableName
-                            WHERE $tableName.post_id = POSTS_NARROW.id
-                            GROUP BY post_id ORDER BY Something DESC ";
+                $sql .= "ORDER BY time DESC) as posts LEFT JOIN $tableName ON posts.id = $tableName.post_id GROUP BY posts.id ORDER BY Something DESC;";
+
             } else {
                 // Order by newest
                 $sql = "SELECT id, user_id, title, description, body, cover_image, time, type_stage FROM
@@ -326,25 +328,37 @@ class Post extends Model
                         ORDER BY score DESC) AS POST_TITLES";
                 $sql .= " WHERE ";
                 foreach ($filters as $filter) {
-                    $sql .= " type_stage = '$filter'";
-                    $filter == end($filters) ?: $sql .= " OR ";
+                    $sql .= " type_stage = '$filter' ";
+                    $filter == end($filters) ?: $sql .= "OR ";
                 }
                 $sql .= "ORDER BY time DESC;";
             }
 
         } else if (!$titleSearch) {
             // Perform just filter search
-            $filterSearch = $getReq["filters"];
-            $sql = "SELECT * FROM posts WHERE ";
-            foreach ($filterSearch as $filter) {
-                $sql .= "type_stage LIKE '$filter'";
-                $filter == end($filterSearch) ?: $sql .= "OR ";
+
+            if ($tableName != "") {
+                // Order by something
+                $sql = "SELECT posts.*, COUNT($tableName.user_id) as Something
+                        FROM (SELECT id, user_id, title, description, body, cover_image, time, type_stage FROM posts WHERE ";
+                foreach ($filters as $filter) {
+                    $sql .= " type_stage = '$filter' ";
+                    $filter == end($filters) ?: $sql .= "OR ";
+                }
+                $sql .= "ORDER BY time DESC) as posts LEFT JOIN $tableName ON posts.id = $tableName.post_id GROUP BY posts.id ORDER BY Something DESC;";
+            } else {
+                // Order by time
+                $sql = "SELECT * FROM posts WHERE ";
+                foreach ($filters as $filter) {
+                    $sql .= " type_stage = '$filter' ";
+                    $filter == end($filters) ?: $sql .= "OR ";
+                }
+                $sql .= "ORDER BY time DESC";
             }
+
         }
 
-        $results = self::db()->query($sql)->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Post");
-        return $results;
-
+        return self::db()->query($sql)->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Post");
     }
 
     // Relationships ============================

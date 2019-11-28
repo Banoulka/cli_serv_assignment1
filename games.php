@@ -23,7 +23,7 @@ $view->userWatchlist = Authentication::isLoggedOn() ? Authentication::User()->wa
 
 // Setup pagination
 $view->paginationView = new Pagination("games.php?", 50);
-$view->paginationView->setRecords(Post::all());
+$view->paginationView->setRecords(Post::all(2500));
 $view->page = 1;
 
 if (isset($_GET["page"]) && $_GET["page"] <= $view->paginationView->totalPages()) {

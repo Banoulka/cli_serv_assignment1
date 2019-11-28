@@ -140,7 +140,7 @@
                 <div class="tag-column">
                 <?php foreach($view->tags as $tag) : ?>
                     <div class="custom-control custom-checkbox">
-                        <input id="<?= $tag->title; ?>-tag" type="checkbox" name="tags[]" class="custom-control-input" value="<?= strtolower($tag->title); ?>" checked>
+                        <input id="<?= $tag->title; ?>-tag" type="checkbox" placeholder="tags[]" class="custom-control-input" value="<?= strtolower($tag->title); ?>" checked>
                         <label class="custom-control-label" for="<?= $tag->title; ?>-tag"><?= $tag->title; ?></label>
                     </div>
                 <?php endforeach; ?>

@@ -301,9 +301,9 @@ class User extends Model {
      * */
     public function notifications()
     {
-        parent::setCustomClassAndTable("Notification", "user_notifications");
-        // Get all notifications relating to the user
-        return parent::findAllByKey(["user_id_to" => $this->id]);
+        // TODO: add preloading
+        $notifs = Notification::allWithDataByID($this->id);
+        return $notifs;
     }
 
     /**
