@@ -4,9 +4,7 @@ Client Server System
 ## Todo List:
 
 - [x] Better Query System
-    - [ ] Extra Class
     - [x] Sort By
-    - [ ] Follower Filter
     - [x] Table Indexes
 - [x] Finish Query Builder
     - [x] Order By
@@ -37,7 +35,7 @@ Client Server System
     - [ ] Read All Button
 - [ ] Search Page
     - [ ] Search Bar Links To Search Page
-    - [ ] Search Page Pagination
+    - [x] Search Page Pagination
     - [ ] Add Tags To Search(?)
     - [ ] Search Author
     - [x] Sort By Comments

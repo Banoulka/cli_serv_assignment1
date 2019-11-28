@@ -309,7 +309,7 @@ class Post extends Model
                 // Is not newest
                 $sql = "SELECT posts.*, COUNT($tableName.user_id) as Something
                         FROM (SELECT id, user_id, title, description, body, cover_image, time, type_stage FROM
-                    (SELECT posts.*, MATCH(title, description) AGAINST ('game' IN NATURAL LANGUAGE MODE) as score
+                    (SELECT posts.*, MATCH(title, description) AGAINST ('$titleSearch' IN NATURAL LANGUAGE MODE) as score
                      FROM posts HAVING score > 1
                      ORDER BY score DESC) AS POST_TITLES WHERE ";
 
@@ -323,7 +323,7 @@ class Post extends Model
             } else {
                 // Order by newest
                 $sql = "SELECT id, user_id, title, description, body, cover_image, time, type_stage FROM
-                        (SELECT posts.*, MATCH(title, description) AGAINST ('empty' IN NATURAL LANGUAGE MODE) as score
+                        (SELECT posts.*, MATCH(title, description) AGAINST ('$titleSearch' IN NATURAL LANGUAGE MODE) as score
                         FROM posts HAVING score > 1
                         ORDER BY score DESC) AS POST_TITLES";
                 $sql .= " WHERE ";
