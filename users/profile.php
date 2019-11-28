@@ -13,7 +13,7 @@ require_once "../auth.php";
 
 $view = new stdClass();
 $view->title = Authentication::User()->name() . " - uGame";
-$view->page = "profile";
+$view->pageName = "profile";
 $view->tab = isset($_GET["tab"]) ? $_GET["tab"] : "details";
 
 Authentication::refresh();

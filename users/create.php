@@ -13,7 +13,7 @@ if (Authentication::isLoggedOn() ) {
 
 $view = new stdClass();
 $view->title = "Sign Up - uGame";
-$view->page = "signup";
+$view->pageName = "signup";
 
 if (isset($_POST["submit"])) {
 

@@ -1,7 +1,7 @@
 
 <!-- FOOTER -->
 <footer class="d-flex flex-column">
-    <?php if (Authentication::isLoggedOn() && $view->page != "index") : ?>
+    <?php if (Authentication::isLoggedOn() && $view->pageName != "index") : ?>
         <div class="chat-button-contain">
             <a class="chat-button" href="/users/profile.php?tab=messages"><span>Chat</span></a>
         </div>

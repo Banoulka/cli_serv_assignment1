@@ -10,7 +10,7 @@ require_once "../auth.php";
 
 $view = new stdClass();
 $view->title = "Logout - uGame";
-$view->page = "logout";
+$view->pageName = "logout";
 $currentURL = "http://" . $_SERVER["HTTP_HOST"] . $_SERVER["PHP_SELF"];
 
 if ($_SERVER["HTTP_REFERER"] != $currentURL) {

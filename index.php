@@ -9,6 +9,6 @@ spl_autoload_register(function ($className) {
 
 $view = new stdClass();
 $view->title = "uGame";
-$view->page = "index";
+$view->pageName = "index";
 
 require_once "Views/index.phtml";

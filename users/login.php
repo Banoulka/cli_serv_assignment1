@@ -11,7 +11,7 @@ if (Authentication::isLoggedOn() ) {
 
 $view = new stdClass();
 $view->title = "Login - uGame";
-$view->page = "login";
+$view->pageName = "login";
 $currentURL = "http://" . $_SERVER["HTTP_HOST"] . $_SERVER["PHP_SELF"];
 
 if ($_SERVER["HTTP_REFERER"] != $currentURL) {

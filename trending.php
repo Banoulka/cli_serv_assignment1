@@ -13,13 +13,18 @@ spl_autoload_register(
 
 
 $view = new stdClass();
-$view->pageName = "games";
-$view->title = "Games - uGame";
+$view->pageName = "trending";
+$view->title = "Trending - uGame";
 $view->userWatchlist = Authentication::isLoggedOn() ? Authentication::User()->watchlist() : [];
 
+$posts = Post::trending();
+var_dump($posts[0]->popularity());
+var_dump(end($posts)->popularity());
+die();
+
 // Setup pagination
-$view->paginationView = new Pagination("games.php?", 30);
-$view->paginationView->setRecords(Post::all(2000));
+$view->paginationView = new Pagination("trending.php?", 20);
+$view->paginationView->setRecords($posts);
 $view->page = 1;
 
 if (isset($_GET["page"]) && $_GET["page"] <= $view->paginationView->totalPages()) {
@@ -29,5 +34,5 @@ if (isset($_GET["page"]) && $_GET["page"] <= $view->paginationView->totalPages()
 // Get the posts with the records
 $view->posts = $view->paginationView->getRecords($view->page);
 
-require_once "Views/games.phtml";
+require_once "Views/trending.phtml";
 

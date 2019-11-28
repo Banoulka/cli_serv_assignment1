@@ -10,7 +10,7 @@ require_once "../Models/lib/NotifHelper.php";
 
 $view = new stdClass();
 //$view->title = "ProfileName - uGame";
-$view->page = "viewProfile";
+$view->pageName = "viewProfile";
 
 if (isset($_GET["id"])) {
     // Find the user associated with the id in the url

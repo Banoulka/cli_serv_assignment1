@@ -53,16 +53,16 @@ class DataReader
         fclose($userFile);
     }
 
-    public function randomizePostTime()
+    public function randomizePostTime($numberPosts = -1)
     {
-        $posts = Post::all();
+        $posts = Post::all($numberPosts);
         foreach ($posts as $post)
         {
             // Randomise time
             $now = new DateTime();
-            $newTime = rand(1262055681, $now->getTimestamp());
-            $post->time = $newTime;
-            $post->save();
+            $newTime = rand(666666666, $now->getTimestamp());
+            $sql = "UPDATE posts SET time = $newTime WHERE id = $post->id";
+            Database::getInstance()->getdbConnection()->query($sql);
         }
     }
 
@@ -90,29 +90,27 @@ class DataReader
 
     public function randomisePostLikesBetterAlgorithim(int $number)
     {
-        $likeCount = 0;
         for ($i = 0; $i < $number; $i++) {
-
             $post = Post::random(1);
-            $randomUsers = User::random(rand(200, 1000));
+            $randomUsers = User::random(rand(5, 30));
 
+            $sql = "";
             foreach ($randomUsers as $user) {
-                $user->likePost($post->id);
-                $likeCount++;
+                $sql .= "\nINSERT INTO post_likes VALUES ($user->id, $post->id); ";
             }
-
+            Database::getInstance()->getdbConnection()->exec($sql);
+            echo "Successfully liked post $post->id " . count($randomUsers) . " times <br/>";
         }
-        echo "Successfully liked $number posts and liked $likeCount times";
     }
 
-    public function randomisePostWatches()
+    public function randomisePostWatches($postNumber = -1)
     {
-        $posts = Post::all();
+        $posts = Post::all($postNumber);
         $users = User::all();
 
         foreach ($posts as $post) {
             // Randomise watches
-            for ($i = 0; $i < rand(0, 2000); $i++) {
+            for ($i = 0; $i < rand(0, 500); $i++) {
                 $index = rand(0, count($users)-1);
                 $chosenUser = $users[$index];
 
@@ -156,21 +154,29 @@ class DataReader
         echo "Successfully followed -> $followCount <br/>";
     }
 
-    public function randomisePostTags ()
+    public function randomisePostTags ($postNumber = -1)
     {
         // Purge tags
         $sql = "DELETE FROM post_tags";
         Database::getInstance()->getdbConnection()->query($sql);
 
-        $posts = Post::all();
-        $tags = Tag::all();
+        $posts = Post::all($postNumber);
         foreach ($posts as $post) {
+            $tags = Tag::all();
             $chosenTags = [];
+            // Random number of tags
             for ($i = 0; $i < rand(2, 5); $i++) {
                 // Add post tag
-                $chosenTags[$i] = $tags[rand(0, count($tags)-1)]->title;
+                $index = rand(0, count($tags)-1);
+                array_push($chosenTags, $tags[$index]->id);
+                array_splice($tags, $index, 1);
             }
-            $post->addTags($chosenTags);
+            // Prepare the sql statements
+            $sql = "";
+            foreach ($chosenTags as $tag) {
+                $sql .= "\nINSERT into post_tags VALUES ($post->id, $tag);";
+            }
+            Database::getInstance()->getdbConnection()->exec($sql);
         }
     }
 

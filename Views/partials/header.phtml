@@ -23,7 +23,7 @@
 </head>
 <body>
 
-<nav class="navbar <?php if(strcmp($view->page, "index")) echo "navbar-expand-lg" ?> navbar-light shadow mb-4">
+<nav class="navbar <?php if(strcmp($view->pageName, "index")) echo "navbar-expand-lg" ?> navbar-light shadow mb-4">
     <div class="container my-auto">
         <a class="navbar-brand mr-5" href="../index.php"><img src="../img/UGAMELOGO1.svg" alt="u-game logo"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle-Navigation">
@@ -32,9 +32,9 @@
 
         <div class="collapse navbar-collapse justify-content-between" id="navbarToggler" aria-expanded="false">
             <div class="navbar-nav my-sm-3">
-                <a href="../games.php" class="nav-item nav-link <?php Helpers::echoActive($view->page, "games") ?>">Games</a>
-                <a href="../search.php" class="nav-item nav-link <?php Helpers::echoActive($view->page, "search") ?>">Search</a>
-                <a href="#" class="nav-item nav-link <?php Helpers::echoActive($view->page, "page3") ?>">Page3</a>
+                <a href="../games.php" class="nav-item nav-link <?= $view->pageName != "games" ?: "active" ?>">Games</a>
+                <a href="../search.php" class="nav-item nav-link <?= $view->pageName != "search" ?: "active" ?>">Search</a>
+                <a href="../trending.php" class="nav-item nav-link <?= $view->pageName != "trending" ?: "active" ?>">Trending</a>
             </div>
             <div class="search">
                 <form action="" class="d-flex justify-content-center align-items-center">
@@ -46,12 +46,12 @@
                 <!-- USER LOGGED IN -->
                 <div class="user d-inline">
                     <div class="text-center">
-                        <a href="../users/profile.php?tab=details" class="m-0 username text-body <?php Helpers::echoActive($view->page, "profile") ?>" data-toggle="tooltip" data-placement="bottom" title="Profile">
+                        <a href="../users/profile.php?tab=details" class="m-0 username text-body <?php Helpers::echoActive($view->pageName, "profile") ?>" data-toggle="tooltip" data-placement="bottom" title="Profile">
                             <?= Authentication::User()->display_name != "" ?
                                 Authentication::User()->display_name : Authentication::User()->first_name;?>
                         </a>
                     </div>
-                    <a class="btn toolover <?php if($view->page == "create-post") echo "active"; ?>" href="../posts/create.php" data-toggle="tooltip" data-placement="bottom" title="Create New Post"><i class="fas fa-edit"></i></a>
+                    <a class="btn toolover <?php if($view->pageName == "create-post") echo "active"; ?>" href="../posts/create.php" data-toggle="tooltip" data-placement="bottom" title="Create New Post"><i class="fas fa-edit"></i></a>
                     <div class="notify-drop d-inline-block" data-placement="bottom" title="Notifications">
                         <?php require_once "notifications.phtml" ?>
                     </div>

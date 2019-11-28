@@ -361,6 +361,18 @@ class Post extends Model
         return self::db()->query($sql)->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Post");
     }
 
+    public function popularity() {
+        return $this->watchCount() + $this->likesCount() + $this->commentCount();
+    }
+
+    /**
+     * @return Post[]
+     */
+    public static function trending()
+    {
+        $sql = "SELECT * FROM posts ";
+    }
+
     // Relationships ============================
 
     /**

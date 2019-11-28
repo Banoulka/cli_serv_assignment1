@@ -9,9 +9,16 @@ spl_autoload_register(function ($className) {
 });
 
 $view = new stdClass();
-$view->page = "search";
+$view->pageName = "search";
 $view->title = "Search - uGame";
 $view->tags = Tag::all();
+
+$dataReader = new DataReader();
+//$dataReader->randomisePostLikesBetterAlgorithim(5);
+//$dataReader->randomizePostTime();
+//$dataReader->randomisePostWatches();
+//echo "<br/> completed";
+//die();
 
 if (isset($_COOKIE["searchParams"])) {
     $view->searches = unserialize($_COOKIE["searchParams"]);
@@ -26,14 +33,27 @@ if (isset($_GET["submit"])) {
     $view->resultsCount = count($posts);
 
     // Setup the pagination
-    $self = $_SERVER["REQUEST_URI"];
-    $view->paginationView = new Pagination("$self&", 10);
+    $view->paginationView = new Pagination("search.php?", 20);
     $view->paginationView->setRecords($posts);
     $view->page = 1;
 
     if (isset($_GET["page"]) && $_GET["page"] <= $view->paginationView->totalPages()) {
         $view->page = $_GET["page"];
     }
+
+    Session::setSession("search_pagination", serialize($view->paginationView));
+
+    // Get the posts with the records
+    $view->posts = $view->paginationView->getRecords($view->page);
+
+} else if (Session::isSet("search_pagination") && isset($_GET["page"])) {
+
+    $view->paginationView = unserialize(Session::getSession("search_pagination"));
+    if (isset($_GET["page"]) && $_GET["page"] <= $view->paginationView->totalPages()) {
+        $view->page = $_GET["page"];
+    }
+
+    Session::setSession("search_pagination", serialize($view->paginationView));
 
     // Get the posts with the records
     $view->posts = $view->paginationView->getRecords($view->page);

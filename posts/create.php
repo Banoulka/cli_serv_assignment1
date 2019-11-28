@@ -14,7 +14,7 @@ require_once "../auth.php";
 
 $view = new stdClass();
 $view->title = "Create New Post - uGame";
-$view->page = "create-post";
+$view->pageName = "create-post";
 $view->tags = Tag::all();
 
 if (isset($_POST["submit"])) {

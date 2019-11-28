@@ -10,8 +10,8 @@ require_once "../auth.php";
 
 $view = new stdClass();
 $view->title = Authentication::User()->name() . " - uGame";
-$view->page = "profile";
-$view->tab= "details";
+$view->pageName = "profile";
+$view->tab = "details";
 
 if (isset($_POST["submit"])) {
 

@@ -1,0 +1,52 @@
+<?php require_once "partials/header.phtml" ?>
+<div class="container section px-0">
+    <div class="row">
+        <div class="col-12 px-lg-0 px-xl-2 col-lg-8">
+            <h1 class="title">Trending Posts<i class="fas fa-caret-down ml-5"></i></h1>
+            <label class="minified-label">
+                <input type="checkbox" class="minified-input">
+                <span class="minified-checkbox"></span><span>Minified View?</span>
+            </label>
+            <div class="posts">
+                <?php foreach ($view->posts as $post) : ?>
+                    <?php if ($post instanceof Post) : ?>
+                    <a href="../posts/view.php?post_id=<?= $post->id ?>" class="post-reg">
+                        <div class="rows d-flex">
+                            <div class="row">
+                                <div class="col-5">
+                                    <img src="<?= Authentication::isLoggedOn() ? $post->cover_image : "../../uploads/post_covers/cover-hidden.jpg" ?>" alt="" class="game-cover">
+                                </div>
+                                <div class="col-7 min">
+                                    <h3 class="post-title"><?= substr($post->title, 0, 33); ?></h3>
+                                    <p class="author"><?= $post->user()->name(); ?></p>
+                                    <p class="content"><?= $post->description; ?></p>
+                                    <div class="tags">
+                                        <?php foreach ($post->tags() as $tag) : ?>
+                                            <p class="tag"><?= $tag->title; ?></p>
+                                        <?php endforeach; ?>
+                                    </div>
+                                </div>
+                                <div class="row extras">
+                                    <span class="likes"><i class="far fa-thumbs-up"></i><?= $post->likesCount(); ?></span>
+                                    <span class="watches"><i class="fas fa-eye"></i><?= $post->watchCount(); ?></span>
+                                    <span class="comments"><i class="far fa-comment-dots"></i><?= $post->commentCount(); ?></span>
+                                    <span class="ml-3"><?= $post->getTimeSince(); ?></span>
+                                </div>
+                            </div>
+                            <div class="post-colour"><span class="<?= $post->type_stage; ?>"></span></div>
+                        </div>
+                    </a>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </div>
+            <!-- Get the pagination -->
+            <?php require_once "partials/pagination.phtml" ?>
+        </div>
+        <div class="d-none px-lg-0 px-xl-2 col-lg-4 d-lg-block">
+            <!-- TODO: Add dynamic sidebar-->
+            <?php require("partials/watchlist-sidebar.phtml") ?>
+        </div>
+    </div>
+</div> <!-- Container end -->
+
+<?php require_once "partials/footer.phtml" ?>
