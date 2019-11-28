@@ -7,11 +7,11 @@ class QueryBuilder
     private static $instance = null;
 
     private $className, $tableName, $keyValueArr;
-    private $fetchAll, $orderby, $cention;
+    private $fetchAll, $orderby, $cention, $limit;
     private $stmt;
     private $sql;
 
-    private const ORDER_ASC = "ASC", ORDER_DESC = "DESC";
+    const ORDER_ASC = "ASC", ORDER_DESC = "DESC";
 
     public function __construct()
     {
@@ -54,6 +54,11 @@ class QueryBuilder
         $this->keyValueArr[$colName] = $value;
         return $this;
     }
+    public function limit($limitNumber)
+    {
+        $this->limit = $limitNumber;
+        return $this;
+    }
 
     /**
      * @return PDOStatement
@@ -78,11 +83,17 @@ class QueryBuilder
         }
 
         if (!is_null($this->orderby)) {
-
+            $orderBy = $this->orderby;
+            $cention = $this->cention;
+            $sql .= " ORDER BY $orderBy $cention";
         }
 
-        $stmt = self::db()->prepare($sql);
-        return $stmt;
+        if (!is_null($this->limit)) {
+            $sql .= " LIMIT $this->limit";
+        }
+//        var_dump($sql);
+//        die();
+        return self::db()->prepare($sql);
     }
 
     /**
@@ -197,6 +208,8 @@ class QueryBuilder
         $this->className = null;
         $this->orderby = null;
         $this->stmt = null;
+        $this->limit = null;
+        $this->cention;
     }
 
 

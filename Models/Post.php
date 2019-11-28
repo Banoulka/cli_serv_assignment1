@@ -16,7 +16,7 @@ require_once "Comment.php";
  * @property string cover_image
  *
  */
-class Post extends Model implements Comparable
+class Post extends Model
 {
 
     const TYPE_ALPHA = "alpha", TYPE_BETA = "beta", TYPE_RELEASED = "released", TYPE_CONCEPT = "concept";
@@ -58,12 +58,27 @@ class Post extends Model implements Comparable
      * */
     public static function all()
     {
-        self::setClassAndTable();
-        $postArr = parent::getAllByTableName();
-        // Sort by time
-        // TODO: implment other sort methods
-        usort($postArr, array("Post", "compareTo"));
-        return $postArr;
+        return QueryBuilder::getInstance()
+            ->table("posts")
+            ->orderby("time", QueryBuilder::ORDER_DESC)
+            ->fetchAs("Post")
+            ->limit(3000)
+            ->getAll();
+    }
+
+    public static function allByLikes() {
+        $sql = "SELECT count(post_likes.user_id) as \"Likes\", posts.*
+                FROM post_likes, posts
+                WHERE post_id = id
+                GROUP BY post_id
+                ORDER BY count(post_likes.user_id) DESC;
+                ";
+
+        $stmt = self::db()->prepare($sql);
+        $stmt->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Post");
+        $stmt->execute();
+
+        return $stmt->fetchAll();
     }
 
     /**
@@ -77,63 +92,6 @@ class Post extends Model implements Comparable
     {
         self::setClassAndTable();
         return parent::findOneByKey($keyValueArr);
-    }
-
-    /**
-     * Custom function to compare to using the post time as a reference
-     *
-     * @param Comparable $self  this object
-     * @param Comparable $other object to compare to
-     *
-     * @return int
-     * @throws Exception
-     */
-    public static function compareTo(Comparable $self, Comparable $other)
-    {
-        if ($other instanceof Post) {
-            return $self->time < $other->time ? 1 : -1;
-        } else {
-            throw new Exception("Cannot compare objects of different types");
-        }
-    }
-
-    public static function allByTime()
-    {
-        QueryBuilder::getInstance()
-            ->table("posts")
-            ->orderby("time");
-    }
-
-    /**
-     *
-     * @param Comparable $self
-     * @param Comparable $other
-     * @return bool
-     * @throws Exception
-     */
-    public static function compareToLikes(Comparable $self, Comparable $other)
-    {
-        if ($other instanceof  Post) {
-            return $self->likesCount() < $other->likesCount() ? 1 : -1;
-        } else {
-            throw new Exception("Cannot compare objects of different types");
-        }
-    }
-
-    /**
-     *
-     * @param Comparable $self
-     * @param Comparable $other
-     * @return bool
-     * @throws Exception
-     */
-    public static function compareToWatches(Comparable $self, Comparable $other)
-    {
-        if ($other instanceof  Post) {
-            return $self->watchCount() < $other->watchCount() ? 1 : -1;
-        } else {
-            throw new Exception("Cannot compare objects of different types");
-        }
     }
 
     public function destroy()
@@ -161,6 +119,53 @@ class Post extends Model implements Comparable
         // Delete self
         self::setClassAndTable();
         parent::deleteModel(["id" => $this->id]);
+    }
+
+    /**
+     *
+     * @param Comparable $self
+     * @param Comparable $other
+     * @return bool
+     * @throws Exception
+     */
+    public static function compareToLikes(Comparable $self, Comparable $other)
+    {
+        if ($other instanceof  Post) {
+            return $self->likesCount() < $other->likesCount() ? 1 : -1;
+        } else {
+            throw new Exception("Cannot compare objects of different types");
+        }
+    }
+    /**
+     *
+     * @param Comparable $self
+     * @param Comparable $other
+     * @return bool
+     * @throws Exception
+     */
+    public static function compareToWatches(Comparable $self, Comparable $other)
+    {
+        if ($other instanceof  Post) {
+            return $self->watchCount() < $other->watchCount() ? 1 : -1;
+        } else {
+            throw new Exception("Cannot compare objects of different types");
+        }
+    }
+
+    /**
+     *
+     * @param Comparable $self
+     * @param Comparable $other
+     * @return bool
+     * @throws Exception
+     */
+    public static function compareTo(Post $self, Post $other)
+    {
+        if ($other instanceof  Post) {
+            return $other->time <=> $self->time;
+        } else {
+            throw new Exception("Cannot compare objects of different types");
+        }
     }
 
     /**
@@ -260,49 +265,86 @@ class Post extends Model implements Comparable
     public static function searchPosts($getReq)
     {
         //TODO:: replace with a better search query, indexes etc
-        $sql = "SELECT * from posts WHERE ";
-        $searchString = explode(" ", $getReq["search"]);
-        if (!empty($searchString[0])) {
-            foreach ($searchString as $word) {
-                $sql .= "title LIKE '%$word%'";
-                if ($word != end($searchString)) {
-                    $sql .= " AND ";
+        $filterSearch = false;
+        $titleSearch = false;
+
+        if (!empty($getReq["search"]) ) $titleSearch = true;
+        if (isset($getReq["filters"]) && !empty($getReq["filters"]) ) $filterSearch = true;
+
+        // Add the filters back if their are none
+        if (!$filterSearch) {
+            $getReq["filters"] = array();
+            array_push($getReq["filters"], "alpha");
+            array_push($getReq["filters"], "beta");
+            array_push($getReq["filters"], "concept");
+            array_push($getReq["filters"], "released");
+        }
+
+        // Get the order by result
+        $orderBy = $getReq["sort-by"];
+        $sql = "";
+
+        // If the title is set
+        if ($titleSearch) {
+            // Perform filters and title search with subquery
+            $titleSearch = $getReq["search"];
+            $filters = $getReq["filters"];
+
+            // Add the title search
+            // Order by title score
+            // If order by likes & filter search
+            $tableName = "";
+            if ($orderBy == "likes") {
+                $tableName = "post_likes";
+            } else if ($orderBy == "watches") {
+                $tableName = "user_watchlist";
+            } else if ($orderBy == "comments") {
+                $tableName = "post_comments";
+            }
+
+            if ($tableName != "") {
+                // Is not newest
+                $sql = "SELECT POSTS_NARROW.*, COUNT($tableName.post_id) as Something
+                    FROM (SELECT id, user_id, title, description, body, cover_image, time, type_stage FROM
+                    (SELECT posts.*, MATCH(title, description) AGAINST ('$titleSearch' IN NATURAL LANGUAGE MODE) as score
+                     FROM posts HAVING score > 1
+                     ORDER BY score DESC) AS POST_TITLES";
+                $sql .= " WHERE ";
+                foreach ($filters as $filter) {
+                    // For each filters
+                    $sql .= " type_stage = '$filter'";
+                    $filter == end($filters) ?: $sql .= " OR ";
                 }
+                $sql .= "ORDER BY time DESC) as POSTS_NARROW, $tableName
+                            WHERE $tableName.post_id = POSTS_NARROW.id
+                            GROUP BY post_id ORDER BY Something DESC ";
+            } else {
+                // Order by newest
+                $sql = "SELECT id, user_id, title, description, body, cover_image, time, type_stage FROM
+                        (SELECT posts.*, MATCH(title, description) AGAINST ('empty' IN NATURAL LANGUAGE MODE) as score
+                        FROM posts HAVING score > 1
+                        ORDER BY score DESC) AS POST_TITLES";
+                $sql .= " WHERE ";
+                foreach ($filters as $filter) {
+                    $sql .= " type_stage = '$filter'";
+                    $filter == end($filters) ?: $sql .= " OR ";
+                }
+                $sql .= "ORDER BY time DESC;";
             }
 
-            $sql .= " AND ";
-        }
-        $sql .= " (";
-        foreach ($getReq["filters"] as $filter) {
-            $sql .= "type_stage LIKE '%$filter%'";
-            if ($filter != end($getReq["filters"])) {
-                $sql .= " OR ";
+        } else if (!$titleSearch) {
+            // Perform just filter search
+            $filterSearch = $getReq["filters"];
+            $sql = "SELECT * FROM posts WHERE ";
+            foreach ($filterSearch as $filter) {
+                $sql .= "type_stage LIKE '$filter'";
+                $filter == end($filterSearch) ?: $sql .= "OR ";
             }
         }
-        $sql .= ") ORDER BY title";
 
-        Post::setCustomClassAndTable("Post", "posts");
-        $posts = parent::query($sql);
-//        $tagsToSearch = $getReq["tags"];
-//         Tags
-//        for ($i = 0; $i < count($posts)-1; $i++) {
-//            $post = $posts[$i];
-//            if ($post instanceof Post) {
-//                $tags = $post->tags();
-//                $tagFound = false;
-//                foreach ($tags as $tag) {
-//                    if (in_array(strtolower($tag->title), $tagsToSearch)) {
-//                        $tagFound = true;
-//                        break;
-//                    }
-//                }
-//                if (!$tagFound) {
-//                    unset($posts[$i]);
-//                    $posts = array_values($posts);
-//                }
-//            }
-//        }
-        return $posts;
+        $results = self::db()->query($sql)->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Post");
+        return $results;
+
     }
 
     // Relationships ============================

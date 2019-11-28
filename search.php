@@ -23,21 +23,15 @@ if (isset($_GET["submit"])) {
     $posts = Post::searchPosts($_GET);
     setcookie("searchParams", serialize($_GET));
     $view->searches = $_GET;
-
-    // Do sorting
-    if ($_GET["sort-by"] == "likes") {
-        usort($posts, array("Post", "compareToLikes"));
-    } else if ($_GET["sort-by"] == "watches") {
-        usort($posts, array("Post", "compareToWatches"));
-    } else if ($_GET["sort-by"] == "newest") {
-        usort($posts, array("Post", "compareTo"));
-    }
+    $view->resultsCount = count($posts);
 
     if (isset($_GET["page"]) && $_GET["page"] <= $view->paginationView->totalPages()) {
         $view->page = $_GET["page"];
     }
 
-    $view->paginationView = new Pagination("search.php", 10);
+    // Setup the pagination
+    $self = $_SERVER["REQUEST_URI"];
+    $view->paginationView = new Pagination("$self&", 20);
     $view->paginationView->setRecords($posts);
     $view->page = 1;
 

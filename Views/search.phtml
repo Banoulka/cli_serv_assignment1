@@ -36,6 +36,9 @@
                     <div class="row">
                         <div class="col px-4">
                             <button type="submit" name="submit" class="dprim-btn dprim-btn-filled m-0">Search<i class="fas fa-search pl-2"></i></button>
+                            <?php if (isset($view->resultsCount)) : ?>
+                            <span class="text-info" style="margin-left: 15em"><?= $view->resultsCount?> results...</span>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -66,19 +69,19 @@
                     <h3 class="search-titles">Filters</h3>
                     <div class="column">
                         <div class="filter-option">
-                            <label id="followed-label">Followed<input type="checkbox" class="filter-by-checkbox" name="filters[]" value="followed" <?php if (isset($view->searches) && in_array("followed", $view->searches["filters"])) echo "checked" ?>></label>
+                            <label id="followed-label">Followed<input type="checkbox" class="filter-by-checkbox" value="followed" <?php if (isset($view->searches["filters"]) && in_array("followed", $view->searches["filters"])) echo "checked" ?>></label>
                         </div>
                         <div class="filter-option">
-                            <label id="alpha-label">Alpha<input type="checkbox" class="filter-by-checkbox" name="filters[]" value="alpha" <?php if (isset($view->searches) && in_array("alpha", $view->searches["filters"])) echo "checked" ?>></label>
+                            <label id="alpha-label">Alpha<input type="checkbox" class="filter-by-checkbox" name="filters[]" value="alpha" <?php if (isset($view->searches["filters"]) && in_array("alpha", $view->searches["filters"])) echo "checked" ?>></label>
                         </div>
                         <div class="filter-option">
-                            <label id="beta-label">Beta<input type="checkbox" class="filter-by-checkbox" name="filters[]" value="beta" <?php if (isset($view->searches) && in_array("beta", $view->searches["filters"])) echo "checked" ?>></label>
+                            <label id="beta-label">Beta<input type="checkbox" class="filter-by-checkbox" name="filters[]" value="beta" <?php if (isset($view->searches["filters"]) && in_array("beta", $view->searches["filters"])) echo "checked" ?>></label>
                         </div>
                         <div class="filter-option">
-                            <label id="concept-label">Concept<input type="checkbox" class="filter-by-checkbox" name="filters[]" value="concept" <?php if (isset($view->searches) && in_array("concept", $view->searches["filters"])) echo "checked" ?>></label>
+                            <label id="concept-label">Concept<input type="checkbox" class="filter-by-checkbox" name="filters[]" value="concept" <?php if (isset($view->searches["filters"]) && in_array("concept", $view->searches["filters"])) echo "checked" ?>></label>
                         </div>
                         <div class="filter-option">
-                            <label id="released-label">Released<input type="checkbox" class="filter-by-checkbox" name="filters[]" value="released" <?php if (isset($view->searches) && in_array("released", $view->searches["filters"])) echo "checked" ?>></label>
+                            <label id="released-label">Released<input type="checkbox" class="filter-by-checkbox" name="filters[]" value="released" <?php if (isset($view->searches["filters"]) && in_array("released", $view->searches["filters"])) echo "checked" ?>></label>
                         </div>
                     </div>
                     </div>
@@ -119,6 +122,7 @@
                         <?php endforeach; ?>
                         <?php endif; ?>
                     </div>
+                    <!-- Require the Pagination -->
                     <?php require_once "partials/pagination.phtml"?>
                 </div>
             </div>

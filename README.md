@@ -3,20 +3,20 @@ Client Server System
 
 ## Todo List:
 
-- [ ] Better Query System
+- [x] Better Query System
     - [ ] Extra Class
-    - [ ] Sort By
+    - [x] Sort By
     - [ ] Follower Filter
-    - [ ] Table Indexes
-- [ ] Finish Query Builder
-    - [ ] Order By
+    - [x] Table Indexes
+- [x] Finish Query Builder
+    - [x] Order By
     - [x] Count
 - [ ] Random Post Data
     - [ ] Random Times
     - [x] Random Likes
     - [ ] Random Comments
 - [ ] Random Messages
-- [ ] SQL Post Sorting (replace php)
+- [x] SQL Post Sorting (replace php)
 - [ ] Files (PC, DP)
     - [ ] Check Size
     - [ ] Compress
@@ -40,8 +40,8 @@ Client Server System
     - [ ] Search Page Pagination
     - [ ] Add Tags To Search(?)
     - [ ] Search Author
-    - [ ] Sort By Comments
-    - [ ] Sort By Relevance
+    - [x] Sort By Comments
+    - [x] Sort By Relevance
     - [ ] Follower Filter  
 - [ ] Give Page 3 a home
 - [ ] Minified View
@@ -50,6 +50,6 @@ Client Server System
     - [ ] Most Liked
     - [ ] Followed Users
 - [ ] Notification Setting Button
-- [ ] Optimise Fetch
-    - [ ] Limit Data Fetched ?
-    - [ ] Better Pagination
+- [x] Optimise Fetch
+    - [x] Limit Data Fetched ?
+    - [x] Better Pagination

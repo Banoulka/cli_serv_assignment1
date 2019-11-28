@@ -319,7 +319,6 @@ class User extends Model {
         foreach ($watchListEntries as $entry) {
             array_push($posts, Post::find(["id" => $entry->post_id]));
         }
-        usort($posts, array("Post", "compareTo"));
         return $posts;
     }
 
