@@ -15,18 +15,9 @@ $view = new stdClass();
 $view->title = "Sign Up - uGame";
 $view->pageName = "signup";
 
-//session_destroy();
-if (!Session::isSet("captcha")) {
-    // New captcha session
-    $captcha = new Captcha();
-    Session::setSession("captcha", serialize($captcha));
-} else {
-    // Check the original captcha session
-    $captcha = unserialize(Session::getSession("captcha"));
-}
-//var_dump($captcha->getPhrase());
 
 if (isset($_POST["submit"])) {
+    $captcha = unserialize(Session::getSession("captcha"));
 
     $view->formData = [
         "first_name" => htmlentities($_POST["first_name"]),
@@ -36,6 +27,7 @@ if (isset($_POST["submit"])) {
         "confirm_password" => htmlentities($_POST["confirm_password"]),
         "captcha" => htmlentities($_POST["captcha"]),
     ];
+
     $validation = new Validation();
     $validation->name("Email")->value($view->formData["email"])->required()->type(FILTER_VALIDATE_EMAIL);
     $validation->name("Password")->value($view->formData["password"])->required()->length(3, 50);
@@ -46,8 +38,6 @@ if (isset($_POST["submit"])) {
 
     if (!$validation->isSuccess()) {
         // Send errors back to the signup page
-        $captcha->resetPhrase();
-        Session::setSession("captcha", serialize($captcha));
         $view->formErrors = $validation->getErrors();
     } else {
         $user = User::findByEmail($view->formData["email"]);
@@ -70,6 +60,9 @@ if (isset($_POST["submit"])) {
     }
 
 }
+
+// New captcha session
+$captcha = new Captcha();
 
 $page = new stdClass();
 $page->signup = true;

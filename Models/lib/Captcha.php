@@ -19,6 +19,7 @@ class Captcha
         $enc_iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length(CIPHERMETHOD));
         $encrypted = openssl_encrypt($phrasePlaintext, CIPHERMETHOD, CAPTCHAKEY, 0, $enc_iv) . "::" . bin2hex($enc_iv);
         $this->phrase = $encrypted;
+        Session::setSession("captcha", serialize($this));
     }
 
     public function getPhrase()
