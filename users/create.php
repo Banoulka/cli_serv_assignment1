@@ -15,6 +15,17 @@ $view = new stdClass();
 $view->title = "Sign Up - uGame";
 $view->pageName = "signup";
 
+//session_destroy();
+if (!Session::isSet("captcha")) {
+    // New captcha session
+    $captcha = new Captcha();
+    Session::setSession("captcha", serialize($captcha));
+} else {
+    // Check the original captcha session
+    $captcha = unserialize(Session::getSession("captcha"));
+}
+//var_dump($captcha->getPhrase());
+
 if (isset($_POST["submit"])) {
 
     $view->formData = [

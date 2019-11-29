@@ -484,9 +484,8 @@ footer .footer-addon a:hover {
 /* Signup Page */
 
 .signup-container {
-    padding: 25px 0;
+    padding: 45px 0;
     min-height: 100vh;
-    max-height: 800px;
     background-image: url("../img/keyboard-background.jpg");
     background-size: cover;
     font-size: 16px;

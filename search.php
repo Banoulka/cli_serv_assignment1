@@ -61,7 +61,4 @@ if (isset($_GET["submit"])) {
 
 }
 
-
-
-
 require_once "Views/search.phtml";

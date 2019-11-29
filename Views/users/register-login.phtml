@@ -55,6 +55,11 @@
                     <span class="ml-1 small text-danger"><?= $err ?></span>
                 <?php endforeach; ?>
             </div>
+            <div class="form-group">
+                <img src="/Models/lib/captchaImage.php" class="captcha" alt="captcha"/>
+                <input type="text" class="form-control" name="capatcha" placeholder="Enter Characters Above...">
+                <p class="text-info small my-2 pl-1">Gamers don't likes bots!</p>
+            </div>
             <div class="submit-area">
                 <div class="d-flex flex-row align-items-center justify-content-center mt-3">
                     <button type="submit" name="submit" class="btn btn-success d-inline mr-3">Create Account<i class="fas fa-lock ml-2"></i></button>
