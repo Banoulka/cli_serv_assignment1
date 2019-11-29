@@ -34,7 +34,7 @@ if (isset($_GET["submit"])) {
     $view->resultsCount = count($posts);
 
     // Setup the pagination
-    $view->paginationView = new Pagination("search.php?", 200);
+    $view->paginationView = new Pagination("search.php?", 15);
     $view->paginationView->setRecords($posts);
     $view->page = 1;
 
