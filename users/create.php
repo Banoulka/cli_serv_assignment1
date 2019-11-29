@@ -24,7 +24,7 @@ if (!Session::isSet("captcha")) {
     // Check the original captcha session
     $captcha = unserialize(Session::getSession("captcha"));
 }
-//var_dump($captcha->getPhrase());
+var_dump($captcha->getPhrase());
 
 if (isset($_POST["submit"])) {
 
