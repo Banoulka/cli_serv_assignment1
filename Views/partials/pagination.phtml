@@ -61,7 +61,7 @@ if (isset($view->paginationView)) :
                         </li>
                     <?php endfor; ?>
                     <li class="page-item active">
-                        <a class="page-link" href="<?= $view->page ?>&page=<?= $view->page ?>" tabindex="1"><?= $view->page ?></a>
+                        <a class="page-link" href="<?= $pagination->view() ?>&page=<?= $view->page ?>" tabindex="1"><?= $view->page ?></a>
                     </li>
                     <?php for ($i = $view->page+1; $i < $view->page + 6; $i++) : ?>
                         <li class="page-item">

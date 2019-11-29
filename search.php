@@ -13,13 +13,6 @@ $view->pageName = "search";
 $view->title = "Search - uGame";
 $view->tags = Tag::all();
 
-$dataReader = new DataReader();
-//$dataReader->randomisePostLikesBetterAlgorithim(5);
-//$dataReader->randomizePostTime();
-$dataReader->randomisePostLikesBetterAlgorithim(5000);
-//$dataReader->randomisePostWatches(5000);
-//echo "<br/> <h1 class='display-1'>completed</h1>";
-//die();
 
 if (isset($_COOKIE["searchParams"])) {
     $view->searches = unserialize($_COOKIE["searchParams"]);

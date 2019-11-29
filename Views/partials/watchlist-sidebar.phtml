@@ -6,7 +6,7 @@
     <div class="watchlist-sidebar-body-container">
         <?php foreach ($view->userWatchlist as $post) : ?>
             <?php if ($post instanceof Post) : ?>
-                <a href="<?= "http://" . $_SERVER["HTTP_HOST"]; ?>/posts/view.php?post_id=<?= $post->id; ?>&" class="watchlist-link">
+                <a href="<?= BASEURL ?>/posts/view.php?post_id=<?= $post->id; ?>&" class="watchlist-link">
                     <div class="watchlist-sidebar-item">
                         <div class="watchlist-sidebar-item-body">
                             <h4 class="watchlist-title"><?= substr($post->title, 0, 28); ?></h4>

@@ -1,5 +1,4 @@
 <?php
-    require_once $_SERVER["DOCUMENT_ROOT"] . "/Models/Notification.php";
     $userNotifs = Authentication::User()->notifications();
 
     $countUnread = 0;
@@ -24,9 +23,9 @@
                 <p class="text-muted pl-5">No notifications...</p>
             <?php else : ?>
                 <?php foreach ($userNotifs as $notif) : ?>
-                    <a href="<?= $notif->link; ?>&notif_id=<?= $notif->id ?>" class="notification-link">
+                    <a href="<?= BASEURL . $notif->link; ?>&notif_id=<?= $notif->id ?>" class="notification-link">
                         <div class="notification d-flex flex-row align-items-center <?= $notif->isRead() ? "" : "notification-unread"; ?>">
-                            <img src="<?= $notif->userFrom()->display_pic; ?>" class="notif-profile-pic" alt="">
+                            <img src="<?= Helpers::printIfExternail($notif->userFrom()->display_pic) ?>" class="notif-profile-pic" alt="">
                             <p><span class="notif-profile-name"><?= $notif->userFrom()->name(); ?></span> <?= $notif->getMessage(); ?></p>
                             <div class="time-icon">
                                 <i class="<?= $notif->getIconClass(); ?>"></i>

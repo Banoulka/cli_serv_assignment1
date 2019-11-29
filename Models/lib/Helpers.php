@@ -1,5 +1,7 @@
 <?php
 
+const BASEURL = "http://localhost:8000";
+
 class Helpers {
 
     /**
@@ -17,6 +19,15 @@ class Helpers {
         } else {
             echo "";
         }
+    }
+
+    public static function isexternal($url) {
+        $components = parse_url($url);
+        return !empty($components['host']) && strcasecmp($components['host'], parse_url(BASEURL)["host"]); // empty host will indicate url like '/relative.php'
+    }
+
+    public static function printIfExternail($url) {
+        return Helpers::isexternal(BASEURL . $url) ? $url : BASEURL . $url;
     }
 
     /**
