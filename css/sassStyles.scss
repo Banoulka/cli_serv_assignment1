@@ -1138,3 +1138,16 @@ $light-grey-border: 1px solid #CBCBCB;
 .captcha {
   border-radius: 3px;
 }
+
+
+.post-edit {
+  .option-alpha {color: $alpha-colour}
+  .option-beta {color: $beta-colour}
+  .option-released {color: $released-colour}
+  .option-concept {color: $concept-colour}
+
+  option.active-option {
+    color: white;
+    background-color: $dark-grey-text;
+  }
+}

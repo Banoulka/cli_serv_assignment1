@@ -1,8 +1,63 @@
 <?php require(__DIR__ . "/../partials/header.phtml"); ?>
 <?php $post = $view->post; if ($post instanceof Post) ?>
-<div class="container section" style="background-color: white">
+<div class="container section" style="background-color: white; border: 6px solid lightblue">
     <?php if ($post && $view->owner) : ?>
-        <p>post found yay</p>
+        <form action="<?= $_SERVER["PHP_SELF"] ?>?post_id=<?= $post->id ?>" class="post post-edit" method="post">
+            <div class="row text-center mb-4">
+                <div class="col-12">
+                    <h2 class="text-info">CURRENTLY EDITING</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <input type="text" style="text-transform: none" class="form-control title <?= isset($view->formErrors) ? $view->formErrors["Title"] ? "is-invalid" : "is-valid" : "" ?>" name="title" value="<?= isset($view->formData) ? $view->formData["title"] : $post->title ?>" placeholder="Enter your game's title">
+                    <?php if (isset($view->formErrors["Title"])) foreach ($view->formErrors["Title"] as $err) : ?>
+                        <span class="ml-1 small text-danger"><?= $err ?></span>
+                    <?php endforeach; ?>
+                    <textarea style="height: 40px;" class="form-control game-desc mt-4 <?= isset($view->formErrors) ? $view->formErrors["Description"] ? "is-invalid" : "is-valid" : "" ?>" name="description" placeholder="Enter your game's description" id="description"><?= isset($view->formData) ? $view->formData["description"]: $post->description ?></textarea>
+                    <?php if (isset($view->formErrors["Description"])) foreach ($view->formErrors["Description"] as $err) : ?>
+                        <span class="ml-1 small text-danger"><?= $err ?></span>
+                    <?php endforeach; ?>
+                    <textarea style="height: 175px;" name="body" class="form-control game-body mt-4 <?= isset($view->formErrors) ? $view->formErrors["Body"] ? "is-invalid" : "is-valid" : "" ?>" id="body" placeholder="Tell everyone how good your game is!"><?= isset($view->formData) ? $view->formData["body"]: $post->body ?></textarea>
+                    <?php if (isset($view->formErrors["Body"])) foreach ($view->formErrors["Body"] as $err) : ?>
+                        <span class="ml-1 small text-danger"><?= $err ?></span>
+                    <?php endforeach; ?>
+
+                    <div class="form-group row my-4">
+                        <label for="game-state" class="col-sm-4 col-form-label">Game State:</label>
+                        <div class="col-sm-8">
+                            <select name="type_stage" id="game-state" class="form-control">
+                                <option class="option-alpha <?= $post->type_stage == "alpha" ? "active-option" : "" ?>"
+                                        value="alpha" <?= $post->type_stage == "alpha" ? "selected" : "" ?>>Alpha</option>
+
+                                <option class="option-beta <?= $post->type_stage == "beta" ? "active-option" : "" ?>"
+                                        value="beta" <?= $post->type_stage == "beta" ? "selected" : "" ?>>Beta</option>
+
+                                <option class="option-concept <?= $post->type_stage == "concept" ? "active-option" : "" ?>"
+                                        value="concept" <?= $post->type_stage == "concept" ? "selected" : "" ?>>Concept</option>
+
+                                <option class="option-released <?= $post->type_stage == "released" ? "active-option" : "" ?>"
+                                        value="released" <?= $post->type_stage == "released" ? "selected" : "" ?>>Released</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="game-extras">
+                        <?php foreach($post->tags() as $tag ) : ?>
+                            <span class="game-tag"><?= $tag->title; ?></span>
+                        <?php endforeach; ?>
+                        <span class="game-date">Created <?= date("jS \of F Y H:i", $post->time); ?></span>
+                    </div>
+                </div>
+                <div class="col-md-4 d-flex flex-column justify-content-center">
+                    <img src="<?= $post->cover_image ?>" alt="Game Artwork" class="artwork">
+                    <div class="like-watch-buttons d-flex flex-row justify-content-around">
+                        <button class="btn btn-info" name="submit">Save Post</button>
+                        <a href="view.php?post_id=<?= $post->id; ?>" class="btn btn-outline-danger">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </form>
     <?php else : ?>
         <h1 class="display-3 text-danger text-center">Post Unavailable</h1>
         <h4 class="display-5 text-danger text-center" style="margin-bottom: 200px">This post may have been deleted or you may not have the required permssions to edit this post.</h4>

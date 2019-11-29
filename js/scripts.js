@@ -11,6 +11,8 @@ $(document).ready(function(){
     setCommentForm();
 
     $("#comment").autoResize();
+    $("#body").autoResize();
+    $("#description").autoResize();
 
     $("#messageButton").click(() => {
         let messageBox = $("#message-box");
