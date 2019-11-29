@@ -1,0 +1,14 @@
+<?php require(__DIR__ . "/../partials/header.phtml"); ?>
+<?php $post = $view->post; if ($post instanceof Post) ?>
+<div class="container section" style="background-color: white">
+    <?php if ($post && $view->owner) : ?>
+        <p>post found yay</p>
+    <?php else : ?>
+        <h1 class="display-3 text-danger text-center">Post Unavailable</h1>
+        <h4 class="display-5 text-danger text-center" style="margin-bottom: 200px">This post may have been deleted or you may not have the required permssions to edit this post.</h4>
+        <h4 class="text-danger text-center">:(</h4>
+    <?php endif; ?>
+</div>
+
+
+<?php require(__DIR__ . "/../partials/footer.phtml") ?>

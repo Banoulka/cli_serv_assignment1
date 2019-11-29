@@ -1,5 +1,4 @@
 <?php
-
 require_once "Models/Tag.php";
 
 session_start();

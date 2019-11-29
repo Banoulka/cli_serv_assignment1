@@ -40,7 +40,6 @@
                     <?php if (Authentication::isLoggedOn()) : ?>
                     <form action="<?= $_SERVER["PHP_SELF"]; ?>?post_id=<?= $post->id ?>" method="post">
                         <?php if (Authentication::User() == $view->owner) : ?>
-                            <div class="post-btn disabled"><i class="fas fa-eye"></i></div>
                         <?php elseif (Authentication::User()->isOnWatchList($post->id)) : ?>
                             <button type="submit" name="watchlistRemove" class="post-btn watch reverse"><i class="fas fa-eye-slash"></i></button>
                         <?php else: ?>
@@ -48,7 +47,7 @@
                         <?php endif; ?>
 
                         <?php if (Authentication::User() == $view->owner) : ?>
-                            <div class="post-btn disabled"><i class="fas fa-thumbs-up"></i></div>
+                            <a href="edit.php?post_id=<?= $post->id ?>" class="btn btn-success text-white mx-1">Edit Post</a>
                         <?php elseif (Authentication::User()->isLiked($post->id)) : ?>
                             <button type="submit" name="likeRemove" class="post-btn like reverse"><i class="fas fa-thumbs-down"></i></button>
                         <?php else : ?>

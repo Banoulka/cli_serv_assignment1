@@ -18,7 +18,7 @@ Client Server System
 - [ ] Files (PC, DP)
     - [ ] Check Size
     - [ ] Compress
-- [ ] Capatcha System
+- [x] Capatcha System
 - [ ] Dynamic Sidebar
 - [ ] Profile Tabs
     - [ ] Messages

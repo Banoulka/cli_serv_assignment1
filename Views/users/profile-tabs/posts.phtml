@@ -3,7 +3,7 @@
 
     <?php foreach (Authentication::User()->posts() as $post) : ?>
     <div class="prof-post row">
-        <div class="col-8">
+        <div class="col-12 col-sm-6 col-lg-8">
             <a href="../../posts/view.php?post_id=<?= $post->id; ?>">
                 <h6><?= $post->title; ?></h6>
                 <div class="extras">
@@ -13,10 +13,11 @@
                 </div>
             </a>
         </div>
-        <div class="col-2 d-flex flex-column justify-content-center">
+        <div class="col-12 col-sm-6 col-lg-4 d-flex flex-row justify-content-start align-items-center mt-2 mt-sm-0">
             <form action="<?= $_SERVER["PHP_SELF"]; ?>?tab=posts&post_id=<?= $post->id; ?>" method="post">
                 <button type="submit" name="postDelete" class="btn btn-danger btn-sm">Delete</button>
             </form>
+            <a href="../posts/edit.php?post_id=<?= $post->id ?>" class="btn btn-success btn-sm text-white ml-2">Edit Post</a>
         </div>
     </div>
     <?php endforeach; ?>
