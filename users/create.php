@@ -24,7 +24,7 @@ if (!Session::isSet("captcha")) {
     // Check the original captcha session
     $captcha = unserialize(Session::getSession("captcha"));
 }
-var_dump($captcha->getPhrase());
+//var_dump($captcha->getPhrase());
 
 if (isset($_POST["submit"])) {
 
@@ -34,6 +34,7 @@ if (isset($_POST["submit"])) {
         "email" => htmlentities($_POST["email"]),
         "password" => htmlentities($_POST["password"]),
         "confirm_password" => htmlentities($_POST["confirm_password"]),
+        "captcha" => htmlentities($_POST["captcha"]),
     ];
     $validation = new Validation();
     $validation->name("Email")->value($view->formData["email"])->required()->type(FILTER_VALIDATE_EMAIL);
@@ -41,9 +42,12 @@ if (isset($_POST["submit"])) {
     $validation->name("First Name")->value($view->formData["first_name"])->required()->length(0, 30);
     $validation->name("Last Name")->value($view->formData["last_name"])->required()->length(0, 30);
     $validation->name("Password Confirmation")->value($view->formData["confirm_password"])->required()->length(0, 30)->equal($view->formData["password"]);
+    $validation->name("Captcha")->value($view->formData["captcha"])->required()->equal($captcha->getPhrase());
 
     if (!$validation->isSuccess()) {
         // Send errors back to the signup page
+        $captcha->resetPhrase();
+        Session::setSession("captcha", serialize($captcha));
         $view->formErrors = $validation->getErrors();
     } else {
         $user = User::findByEmail($view->formData["email"]);

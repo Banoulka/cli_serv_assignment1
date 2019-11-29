@@ -25,7 +25,7 @@
                     <span class="game-date">Created <?= date("jS \of F Y H:i", $post->time); ?></span>
                 </div>
                 <div class="game-stats">
-                    <?php if (Authentication::User()->isLiked($post->id)) : ?>
+                    <?php if (Authentication::isLoggedOn() && Authentication::User()->isLiked($post->id)) : ?>
                         <p class="game-likes"><i class="far fa-thumbs-up"></i><span class="number">You and <?= $post->likesCount()-1; ?></span> others like this</p>
                     <?php else : ?>
                         <p class="game-likes"><i class="far fa-thumbs-up"></i><span class="number"><?= $post->likesCount(); ?></span>Like this</p>

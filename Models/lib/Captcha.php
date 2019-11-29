@@ -9,6 +9,11 @@ class Captcha
 
     public function __construct()
     {
+        $this->resetPhrase();
+    }
+
+    public function resetPhrase()
+    {
         // Encrypt the plaintext passphrase and store it
         $phrasePlaintext = substr(md5(microtime()), 0, 5);
         $enc_iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length(CIPHERMETHOD));

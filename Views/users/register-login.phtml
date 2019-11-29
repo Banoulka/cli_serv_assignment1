@@ -56,11 +56,15 @@
                 <?php endforeach; ?>
             </div>
             <div class="form-group">
-                <div class="d-flex flex-row justify-content-center" style="width: 100%">
-                    <img src="../Models/lib/captchaImage.php" class="captcha mb-3" alt="captcha"/>
+                <div class="d-flex flex-row justify-content-around align-items-center mb-3" style="width: 100%">
+                    <img src="../Models/lib/captchaImage.php" class="captcha" alt="captcha"/>
+                    <a href="create.php#signup" class="btn btn-info btn-lg"><i class="fas fa-sync-alt"></i></a>
                 </div>
-                <input type="text" class="form-control" name="capatcha" placeholder="Enter Characters Above...">
-                <p class="text-info small my-2 pl-1">Gamers don't likes bots!</p>
+                <input type="text" class="form-control <?= isset($view->formErrors) ? $view->formErrors["Captcha"] ? "is-invalid" : "is-valid" : "" ?>" name="captcha" placeholder="Enter Characters Above...">
+                <p class="text-info small my-1 pl-1 py-1">Gamers don't likes bots!</p>
+                <?php if (isset($view->formErrors["Captcha"])) : ?>
+                    <span class="ml-1 small text-danger">Captcha does not match</span>
+                <?php endif; ?>
             </div>
             <div class="submit-area">
                 <div class="d-flex flex-row align-items-center justify-content-center mt-3">
