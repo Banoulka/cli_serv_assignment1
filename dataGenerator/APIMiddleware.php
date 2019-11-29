@@ -78,6 +78,40 @@ class APIMiddleware
     }
 
     public static function commentsDataRequest() {
+        $sqlPosts = "SELECT posts.*, COUNT(post_comments.user_id) as Comments
+FROM posts LEFT JOIN post_comments ON posts.id = post_comments.post_id
+GROUP BY posts.id
+HAVING Comments = 0
+ORDER BY Comments;";
+
+        $curl = self::initCurl("https://my.api.mockaroo.com/cli_serv_comments.json?key=f28ce0a0");
+        $comments = json_decode(curl_exec($curl));
+        $posts = Database::getInstance()->getdbConnection()
+            ->query($sqlPosts)->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Post");
+
+        $now = new DateTime();
+        $nowTimeStamp = $now->getTimestamp();
+
+        while(count($comments) > 501) {
+            $index = rand(0, count($posts)-1);
+            $post = $posts[$index];
+            array_splice($posts, $index, 1);
+
+            // Random amount of comments
+            $noComments = rand(1, 500);
+            $commentsToAdd = array_splice($comments, 0, $noComments);
+            $users = User::random($noComments);
+            $sql = "";
+
+            for($i = 0; $i < $noComments; $i++) {
+                $comment = $commentsToAdd[$i];
+                $randomTime = rand(999996666, $nowTimeStamp);
+                $userToAdd = is_array($users) ? $users[$i] : $users;
+                $sql .= "\n INSERT INTO post_comments (post_id, user_id, timestamp, body) VALUES ($post->id, $userToAdd->id, $randomTime, \"$comment->body\"); ";
+            }
+
+            Database::getInstance()->getdbConnection()->exec($sql);
+        }
 
     }
 }

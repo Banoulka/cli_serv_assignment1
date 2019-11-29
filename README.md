@@ -1,7 +1,7 @@
 Client Server System
 ===
 
-## Todo List:
+#### Todo List:
 
 - [x] Better Query System
     - [x] Sort By
@@ -9,10 +9,10 @@ Client Server System
 - [x] Finish Query Builder
     - [x] Order By
     - [x] Count
-- [ ] Random Post Data
-    - [ ] Random Times
+- [x] Random Post Data
+    - [x] Random Times
     - [x] Random Likes
-    - [ ] Random Comments
+    - [x] Random Comments
 - [ ] Random Messages
 - [x] SQL Post Sorting (replace php)
 - [ ] Files (PC, DP)
@@ -41,11 +41,11 @@ Client Server System
     - [x] Sort By Comments
     - [x] Sort By Relevance
     - [ ] Follower Filter  
-- [ ] Give Page 3 a home
+- [x] Give Page 3 a home **trending**
 - [ ] Minified View
 - [ ] Games Page
     - [x] Latest
-    - [ ] Most Liked
+    - [x] ~~Most Liked~~ Trending
     - [ ] Followed Users
 - [ ] Notification Setting Button
 - [x] Optimise Fetch

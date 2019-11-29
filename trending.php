@@ -18,9 +18,6 @@ $view->title = "Trending - uGame";
 $view->userWatchlist = Authentication::isLoggedOn() ? Authentication::User()->watchlist() : [];
 
 $posts = Post::trending();
-var_dump($posts[0]->popularity());
-var_dump(end($posts)->popularity());
-die();
 
 // Setup pagination
 $view->paginationView = new Pagination("trending.php?", 20);

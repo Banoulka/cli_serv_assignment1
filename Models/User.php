@@ -134,23 +134,20 @@ class User extends Model {
 
     public function isOnWatchList($postID)
     {
-        $watchlist = $this->watchlist();
-        foreach ($watchlist as $post) {
-            if ($postID == $post->id)
-                return true;
-        }
-        return false;
+        return QueryBuilder::getInstance()
+            ->table('user_watchlist')
+            ->where('post_id', $postID)
+            ->where('user_id', $this->id)
+            ->first();
     }
 
     public function isLiked($postID)
     {
-        $result = QueryBuilder::getInstance()
+        return QueryBuilder::getInstance()
             ->table('post_likes')
             ->where('post_id', $postID)
             ->where('user_id', $this->id)
             ->first();
-
-        return is_null($result) ? true : false;
     }
 
     public function isFollower(User $user)

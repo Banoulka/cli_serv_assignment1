@@ -370,7 +370,16 @@ class Post extends Model
      */
     public static function trending()
     {
-        $sql = "SELECT * FROM posts ";
+        $sql = "SELECT posts.*,
+                   (COUNT(DISTINCT pl.user_id) +
+                    COUNT(DISTINCT pc.user_id)) AS Popularity
+                FROM posts
+                    LEFT JOIN post_likes pl on posts.id = pl.post_id
+                    LEFT JOIN post_comments pc on posts.id = pc.post_id
+                GROUP BY 1
+                ORDER BY Popularity DESC
+                LIMIT 150";
+        return self::db()->query($sql)->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Post");
     }
 
     // Relationships ============================

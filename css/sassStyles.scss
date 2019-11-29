@@ -219,14 +219,14 @@ $light-grey-border: 1px solid #CBCBCB;
         color: deeppink;
         border: 1px solid deeppink;
         &:hover {
-          background-color: white;
+          background-color: rgba(250, 207, 252, 0.55);
         }
       }
       &.like {
         color: #1a407a;
         border: 1px solid #1a407a;
         &:hover {
-          background-color: white;
+          background-color: rgba(210, 215, 252, 0.55);
         }
       }
 
@@ -892,6 +892,9 @@ $light-grey-border: 1px solid #CBCBCB;
 }
 
 .followers {
+  background-color: #e3e3e3;
+  padding-bottom: 1.5em;
+
   .header {
     display: flex;
     flex-direction: row;
@@ -931,6 +934,7 @@ $light-grey-border: 1px solid #CBCBCB;
       .name {
         color: $dark-blue-text;
         display: inline-block;
+        margin: 0;
       }
 
       .pic {
@@ -955,6 +959,13 @@ $light-grey-border: 1px solid #CBCBCB;
     &>* {
       padding: 0;
     }
+  }
+
+  .commentinfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
   }
 
   .comment-user {

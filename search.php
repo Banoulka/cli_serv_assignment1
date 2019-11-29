@@ -16,8 +16,9 @@ $view->tags = Tag::all();
 $dataReader = new DataReader();
 //$dataReader->randomisePostLikesBetterAlgorithim(5);
 //$dataReader->randomizePostTime();
-//$dataReader->randomisePostWatches();
-//echo "<br/> completed";
+//$dataReader->randomisePostLikesBetterAlgorithim(1000);
+//$dataReader->randomisePostWatches(5000);
+//echo "<br/> <h1 class='display-1'>completed</h1>";
 //die();
 
 if (isset($_COOKIE["searchParams"])) {
@@ -33,7 +34,7 @@ if (isset($_GET["submit"])) {
     $view->resultsCount = count($posts);
 
     // Setup the pagination
-    $view->paginationView = new Pagination("search.php?", 20);
+    $view->paginationView = new Pagination("search.php?", 200);
     $view->paginationView->setRecords($posts);
     $view->page = 1;
 

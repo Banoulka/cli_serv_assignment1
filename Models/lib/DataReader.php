@@ -5,52 +5,11 @@ require_once "Models/Post.php";
 
 class DataReader
 {
+    private $_dbHandler;
+
     public function __construct()
     {
-
-    }
-
-    public function readUserData()
-    {
-        $userFile = fopen("user_data.txt", "r") or die("could not find file");
-        if ($userFile) {
-            while (!feof($userFile)) {
-                $line = fgets($userFile);
-                $dataObjects = explode(",", $line);
-                $user = new User();
-                $user->first_name = $dataObjects[0];
-                $user->last_name = $dataObjects[1];
-                $user->email = $dataObjects[2];
-                $user->display_name = $dataObjects[3];
-                $user->display_pic = $dataObjects[4];
-                $user->password = $dataObjects[5];
-                $user->bio = $dataObjects[6] != "\n" ? $dataObjects[6] : null;
-                $user->save();
-            }
-            fclose($userFile);
-        }
-        echo "success!";
-        die();
-    }
-
-    public function readPostData()
-    {
-        $userFile = fopen("post_data.txt", "r") or die("could not find file");
-        if ($userFile) {
-            while (!feof($userFile)) {
-                $line = fgets($userFile);
-                $data = explode("#", $line);
-                $post = new Post();
-                $post->user_id = $data[0];
-                $post->title= $data[1];
-                $post->description = $data[2];
-                $post->body = $data[3];
-                $post->cover_image = $data[4];
-                $post->type_stage = $data[5];
-                $post->save();
-            }
-        }
-        fclose($userFile);
+        $this->_dbHandler = Database::getInstance()->getdbConnection();
     }
 
     public function randomizePostTime($numberPosts = -1)
@@ -62,7 +21,7 @@ class DataReader
             $now = new DateTime();
             $newTime = rand(666666666, $now->getTimestamp());
             $sql = "UPDATE posts SET time = $newTime WHERE id = $post->id";
-            Database::getInstance()->getdbConnection()->query($sql);
+            $this->_dbHandler->query($sql);
         }
     }
 
@@ -90,33 +49,53 @@ class DataReader
 
     public function randomisePostLikesBetterAlgorithim(int $number)
     {
-        for ($i = 0; $i < $number; $i++) {
-            $post = Post::random(1);
-            $randomUsers = User::random(rand(5, 30));
+        $sqlPosts = "SELECT posts.*, COUNT(post_likes.user_id) as Likes
+                    FROM posts LEFT JOIN post_likes ON posts.id = post_likes.post_id
+                    GROUP BY posts.id
+                    ORDER BY Likes
+                    LIMIT $number;";
+        $posts = $this->_dbHandler->query($sqlPosts)->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Post");
 
+        foreach ($posts as $post) {
             $sql = "";
+            $randomUsers = User::random(rand(5, 400));
             foreach ($randomUsers as $user) {
                 $sql .= "\nINSERT INTO post_likes VALUES ($user->id, $post->id); ";
             }
-            Database::getInstance()->getdbConnection()->exec($sql);
-            echo "Successfully liked post $post->id " . count($randomUsers) . " times <br/>";
+            $this->_dbHandler->exec($sql);
+//            echo "Successfully liked post $post->id " . count($randomUsers) . " times <br/>";
         }
     }
 
-    public function randomisePostWatches($postNumber = -1)
+    public function randomisePostWatches($postNumber = 100)
     {
-        $posts = Post::all($postNumber);
-        $users = User::all();
+        $sqlPosts = "SELECT posts.*, count(uw.user_id) as comments
+                FROM posts
+                    LEFT JOIN user_watchlist uw on posts.id = uw.post_id
+                GROUP BY 1
+                ORDER BY comments
+                LIMIT $postNumber;";
+        $sqlUsers = "SELECT users.*, count(uw.post_id) as watched_posts
+                    FROM users
+                        LEFT JOIN user_watchlist uw on users.id = uw.user_id
+                    GROUP BY 1
+                    ORDER BY watched_posts;";
+
+        // All posts that have the least watches and
+        // all users that have no posts
+
+        $posts = $this->_dbHandler->query($sqlPosts, PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Post")->fetchAll();
+        $users = $this->_dbHandler->query($sqlUsers, PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "User")->fetchAll();
 
         foreach ($posts as $post) {
             // Randomise watches
-            for ($i = 0; $i < rand(0, 500); $i++) {
+            for ($i = 0; $i < rand(0, 100); $i++) {
                 $index = rand(0, count($users)-1);
                 $chosenUser = $users[$index];
 
-                if (!$chosenUser->isOnWatchList($post->id)){
-                    $chosenUser->addToWatchList($post->id);
-                }
+                $sql = "INSERT INTO user_watchlist VALUES ($chosenUser->id, $post->id)";
+
+                $this->_dbHandler->query($sql);
             }
         }
     }
@@ -154,13 +133,19 @@ class DataReader
         echo "Successfully followed -> $followCount <br/>";
     }
 
-    public function randomisePostTags ($postNumber = -1)
+    public function randomisePostTags()
     {
-        // Purge tags
-        $sql = "DELETE FROM post_tags";
-        Database::getInstance()->getdbConnection()->query($sql);
+        // TODO: get posts with no tags
+        $sql = "SELECT posts.*, count(pt.tag_id) as tags
+                FROM posts
+                    LEFT JOIN post_tags pt on posts.id = pt.post_id
+                GROUP BY 1
+                HAVING tags = 0;";
 
-        $posts = Post::all($postNumber);
+        $stmt = $this->_dbHandler->prepare($sql);
+        $stmt->execute();
+
+        $posts = $stmt->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Post");
         foreach ($posts as $post) {
             $tags = Tag::all();
             $chosenTags = [];
@@ -176,29 +161,10 @@ class DataReader
             foreach ($chosenTags as $tag) {
                 $sql .= "\nINSERT into post_tags VALUES ($post->id, $tag);";
             }
-            Database::getInstance()->getdbConnection()->exec($sql);
+
+            $this->_dbHandler->exec($sql);
         }
     }
 
-    public function randomisePostComments ()
-    {
-        // Purge comments
-        $sql = "DELETE FROM post_comments";
-        Database::getInstance()->getdbConnection()->query($sql);
-
-        $posts = Post::all();
-        $users = User::all();
-
-        foreach ($posts as $post) {
-            $noComments = rand(0, $post->likesCount());
-            for ($i = 0; $i < $noComments; $i++) {
-                $comment = new Comment();
-                $comment->post_id = $post->id;
-                $comment->user_id = $users[rand(0, count($users)-1)]->id;
-                $comment->body = "Quisque tincidunt turpis mi. Maecenas pulvinar, sapien nec cursus posuere, ipsum nulla finibus nisi, et vulputate nulla enim quis nulla. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum iaculis magna odio, sed lacinia orci congue a.";
-                $comment->save();
-            }
-        }
-    }
 }
 
