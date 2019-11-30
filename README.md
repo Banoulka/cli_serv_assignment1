@@ -37,11 +37,11 @@ Client Server System
 - [ ] Search Page
     - [ ] Search Bar Links To Search Page
     - [x] Search Page Pagination
-    - [ ] Add Tags To Search(?)
-    - [ ] Search Author
+    - [ ] ~~Add Tags To Search(?)~~
+    - [ ] ~~Search Author~~
     - [x] Sort By Comments
     - [x] Sort By Relevance
-    - [ ] Follower Filter  
+    - [ ] ~~Follower Filter~~  
 - [x] Give Page 3 a home **trending**
 - [ ] Minified View
 - [ ] Games Page

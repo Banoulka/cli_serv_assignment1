@@ -1,12 +1,61 @@
-<h3 class="profile-name mb-3">Messages</h3>
+<?php
+    $messageInfo = Authentication::User()->messageSlimfo();
+    $mDisplay = new stdClass();
+?>
+<div class="col-12">
+    <h3 class="profile-name mb-3">Messages</h3>
+    <!--List Users-->
+    <div class="row">
+        <div class="col-4 p-0">
+            <div class="list-group" id="messages-tab" role="tablist">
+                <?php foreach ($messageInfo as $info) : ?>
+                    <a href="#list-<?= $info->user_id ?>" class="list-group-item list-group-item-action" data-toggle="list" role="tab">
+                        <div class="d-flex flex-row">
+                            <h6 class="m-0"><?= $info->display_name ?? $info->first_name . " " . $info->last_name ?></h6>
+                            <?php if ($info->Unread > 0) : ?>
+                                <span class="badge badge-warning ml-auto"><?= $info->Unread ?></span>
+                            <?php endif; ?>
+                        </div>
+                        <p class="small text-muted m-0 mt-3 message-display-date"><?= Helpers::getTimeSince($info->latest) ?></p>
+                    </a>
+                <?php endforeach; ?>
+            </div>
+        </div>
 
-<div class="col-4">
+        <!--List Messages For Each User-->
+        <div class="col-8 p-0 message-display-area d-flex flex-column">
+            <div class="tab-content" id="content">
+                <?php foreach ($messageInfo as $info) : ?>
+                    <div class="tab-pane fade show full" id="list-<?= $info->user_id ?>" role="tabpanel" aria-labelledby="list-<?= $info->user_id ?>">
+                        <?php $mDisplay->user_id_from = "$info->user_id";
+                        include "../Views/partials/messages-display.phtml" ?>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+            <div class="d-flex flex-row m-0 message-area align-items-start mt-auto bottom">
+                <form action="#" method="post" class="d-block w-100" id="send-message">
+                    <textarea class="message-input" rows="1" name="message" placeholder="Type a message..."></textarea>
+                </form>
+                <button onclick="document.getElementById('send-message').submit();" class="ml-auto message-submit"><i class="far fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
 
-</div>
-<div class="col-8">
-    <?php foreach (Authentication::User()->usersWithMessages() as $userWithMessage) : ?>
-        <?php foreach ($userWithMessage->messages as $message) : ?>
-            <h5>From <?= $userWithMessage->name() ?> - <span class="small"><?= $message->body ?></span></h5>
-        <?php endforeach; ?>
-    <?php endforeach; ?>
-</div>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        $(".list-group-item").click(e => {
+            $(document).ready(function() {
+                let content = $("#content");
+                content.scrollTop(content.prop("scrollHeight"));
+            });
+        });
+
+        $("#content").hover(function() {
+            $(window).scroll().disable();
+        }, function() {
+            $(window).scroll().enable();
+        });
+
+    }, false)
+</script>

@@ -14,6 +14,7 @@ $(document).ready(function(){
     $("#comment").autoResize();
     $("#body").autoResize();
     $("#description").autoResize();
+    $(".message-input").autoResize();
 
     $("#messageButton").click(() => {
         let messageBox = $("#message-box");

@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-8">
             <h3 class="title"><?= $user->name(); ?></h3>
-            <div class="row mt-3">
+            <div class="row">
                 <div class="col-4">
                     <img class="profile-pic mt-0" src="<?= $user->display_pic ?>" alt="Profile Picture">
                     <?php if (Authentication::isLoggedOn()) : ?>
@@ -37,8 +37,8 @@
                         <?php endif; ?>
                     </div>
                     <?php else : ?>
-                        <button class="btn disabled">Sign in to follow</button>
-                        <button class="btn disabled">Sign in to message</button>
+                        <button class="btn dprim-btn-filled user-btn disabled-btn">Sign in to follow</button>
+                        <button class="btn dprim-btn-outline mt-3 user-btn disabled-btn">Sign in to message</button>
                     <?php endif; ?>
                 </div>
                 <div class="col-8">
@@ -46,7 +46,11 @@
                     <h4 class="mb-4"><?= $user->display_name != "" ? $user->display_name : "No display name set"?></h4>
 
                     <h6 class="user-label mt-2">Email:</h6>
-                    <p><?= $user->email; ?></p>
+                    <?php if (Authentication::isLoggedOn()) : ?>
+                        <p><?= $user->email ?></p>
+                    <?php else : ?>
+                        <p class="text-danger">-- Email Hidden -- </p>
+                    <?php endif; ?>
 
                     <h6 class="user-label mt-3">Bio:</h6>
                     <p style="white-space: pre-wrap"><?= $user->bio != "" ? $user->bio : "No bio set"; ?></p>

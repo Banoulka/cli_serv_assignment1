@@ -1,0 +1,16 @@
+<?php
+    $conversation = new Coversation($mDisplay->user_id_from);
+
+    $userFrom = $conversation->userFrom;
+    $messages = $conversation->getMessages();
+?>
+
+
+<div class="message d-flex flex-column">
+    <div class="message-header sticky-top">
+        <?= $userFrom->display_name ?: $userFrom->name() ?>
+    </div>
+    <div class="msg">
+
+    </div>
+</div>

@@ -365,31 +365,23 @@ class User extends Model {
     }
 
     /**
-     * @return User[]
+     * @return object[]
      */
-    public function usersWithMessages()
+    public function messageSlimfo()
     {
-        parent::setCustomClassAndTable("", "user_messages");
-        $messages = parent::findAllByKey(["user_id_to" => $this->id]);
-        $usersWithMessages = array();
-        foreach ($messages as $message) {
+        // Get all messages with user id and user info,
+        // Ordering firstly by the unread messages, then by time
+        $sql = "SELECT user_messages.id as msg_id, u.id as user_id, u.first_name, u.last_name, u.display_name,
+                    MAX(timestamp) as latest, COUNT(u.id) as Messages,
+                    COUNT(case when user_messages.`read` = 0 then u.id end) as Unread
 
-            $userFrom = User::find(["id" => $message->user_id_from]);
-            unset($message->user_from->password);
+                FROM user_messages LEFT JOIN users u on user_messages.user_id_from = u.id
+                WHERE user_id_to = $this->id
+                GROUP BY user_id
+                ORDER BY Unread DESC, latest DESC;";
+        $results = self::db()->query($sql, PDO::FETCH_OBJ)->fetchAll();
 
-            if (array_key_exists($userFrom->email, $usersWithMessages)) {
-                $user = $usersWithMessages[$userFrom->email];
-                if (array_key_exists("messages", $user)) {
-                    array_push($user->messages, $message);
-                } else {
-                    $user->messsages = array($message);
-                }
-            } else {
-                $userFrom->messages = array($message);
-                $usersWithMessages[$userFrom->email] = $userFrom;
-            }
-        }
-        return $usersWithMessages;
+        return $results;
     }
 
 }

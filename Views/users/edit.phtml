@@ -21,7 +21,7 @@
 
                             <label for="email" class="user-label">Email:</label>
                             <input type="email" id="email" name="email" class="form-control edit-prof" style="font-size: 1rem;" value="<?php echo $user->email ?>" placeholder="<?php echo $user->email ?>">
-                            <p class="text-danger small mt-1">Changing your email will force a logout</p>
+                            <p class="text-warning small mt-1">Changing your email will force a logout</p>
 
                             <h6 class="user-label">Password:</h6>
                             <p>*********</p>
@@ -36,8 +36,8 @@
                             </div>
 
                             <div class="d-flex flex-row align-items-center">
-                                <input type="submit" name="submit" class="btn btn-primary mt-4 mr-2" value="Save">
-                                <a href="profile.php" class="btn btn-outline-danger mt-4 mx-2">Cancel</a>
+                                <input type="submit" name="submit" class="btn dprim-btn-filled mt-4 mr-2" value="Save">
+                                <a href="profile.php" class="btn btn-outline-dark mt-4 mx-2">Cancel</a>
                                 <button type="button" id="modalDelete" class="btn btn-danger mt-4 ml-auto" >Delete Profile <i class="fas ml-1 fa-exclamation-triangle"></i></button>
                             </div>
                         </form>
@@ -52,7 +52,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Deleting Profile - <?= $user->name(); ?></h5>
+                <h5 class="modal-title">Deleting Profile - <span class="text-info"><?= $user->name(); ?></span></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -67,7 +67,7 @@
                     <input type="hidden" name="auth-token" readonly value="<?= password_hash($user->id, PASSWORD_DEFAULT) ?>">
                 </form>
                 <button type="button" class="btn btn-danger mr-auto" onclick="document.getElementById('deleteForm').submit()">Yes I am sure</button>
-                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

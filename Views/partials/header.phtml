@@ -33,9 +33,9 @@
 
         <div class="collapse navbar-collapse justify-content-between" id="navbarToggler" aria-expanded="false">
             <div class="navbar-nav my-sm-3">
-                <a href="../games.php" class="nav-item nav-link <?= $view->pageName != "games" ?: "active" ?>">Games</a>
-                <a href="../trending.php" class="nav-item nav-link <?= $view->pageName != "trending" ?: "active" ?>">Trending</a>
-                <a href="../search.php" class="nav-item nav-link <?= $view->pageName != "search" ?: "active" ?>">Search</a>
+                <a href="../games.php" class="nav-item nav-link <?= $view->pageName != "games" ?: "active-link" ?>">Games</a>
+                <a href="../trending.php" class="nav-item nav-link <?= $view->pageName != "trending" ?: "active-link" ?>">Trending</a>
+                <a href="../search.php" class="nav-item nav-link <?= $view->pageName != "search" ?: "active-link" ?>">Search</a>
             </div>
             <div class="search">
                 <form action="" class="d-flex justify-content-center align-items-center">
@@ -52,7 +52,7 @@
                                 Authentication::User()->display_name : Authentication::User()->first_name;?>
                         </a>
                     </div>
-                    <a class="btn toolover <?php if($view->pageName == "create-post") echo "active"; ?>" href="../posts/create.php" data-toggle="tooltip" data-placement="bottom" title="Create New Post"><i class="fas fa-edit"></i></a>
+                    <a class="btn toolover <?php if($view->pageName == "create-post") echo "active-link"; ?>" href="../posts/create.php" data-toggle="tooltip" data-placement="bottom" title="Create New Post"><i class="fas fa-edit"></i></a>
                     <div class="notify-drop d-inline-block" data-placement="bottom" title="Notifications">
                         <?php require_once "notifications.phtml" ?>
                     </div>

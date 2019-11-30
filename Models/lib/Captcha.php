@@ -1,5 +1,7 @@
 <?php
 
+// Key and cipher method are stored server-side as the Captcha class
+// Is the class that is held in the session
 const CAPTCHAKEY = "fd0be570abeb185938dce42da46b59f96b8954593f891f8029657205817b371b21ab75ca8085b39911cd35788329d52842928ac6498568914f64226e3a22df3e";
 const CIPHERMETHOD = "AES256";
 
@@ -18,6 +20,8 @@ class Captcha
 //        $phrasePlaintext = substr(md5(microtime()), 0, 5);
         $charSet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         $phrasePlaintext = substr(str_shuffle(str_repeat($charSet, 5)), 0, 5);
+        // Generate a random environment variable to put together with the encryption.
+        // As this is stored only server side, the client side should not be able to decrypt
         $enc_iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length(CIPHERMETHOD));
         $encrypted = openssl_encrypt($phrasePlaintext, CIPHERMETHOD, CAPTCHAKEY, 0, $enc_iv) . "::" . bin2hex($enc_iv);
         $this->phrase = $encrypted;
@@ -37,6 +41,8 @@ class Captcha
         $imageWidth = 280;
         $image = imagecreatetruecolor($imageWidth, $imageHeight);
 
+        // Random number of lines and fonts,
+        // Work out the font size dynamically
         $captchaLines = rand(10, 30);
         $captchaDots = rand(60, 100);
         $captchaFontSize = $imageHeight * 0.55;
@@ -79,11 +85,7 @@ class Captcha
 
         // Add the lines
         for($count=0; $count < $captchaLines; $count++ ) {
-            imageline(
-                $image,
-                mt_rand(0, $imageWidth),
-                mt_rand(0, $imageHeight),
-                mt_rand(0, $imageWidth),
+            imageline($image, mt_rand(0, $imageWidth), mt_rand(0, $imageHeight), mt_rand(0, $imageWidth),
                 mt_rand(0, $imageHeight), $noiseColours[rand(0, count($noiseColours)-1)] );
         }
 
@@ -92,11 +94,16 @@ class Captcha
         $captchaFont = $captchaFonts[rand(0, count($captchaFonts)-1)];
         $text_box = imagettfbbox($captchaFontSize, 0, $captchaFont, $phrase);
 
+        // Get the absolute middle of the text box
         $inital = ($imageWidth - $text_box[4])/3;
         $y = ($imageHeight - $text_box[5])/2;
 
+        // For each of the letters, render them with a different font
+        // a random angle, and add the initial spacing each time.
         for ($i = 0; $i < strlen($phrase); $i++) {
             $letter_space = 200/strlen($phrase);
+
+            // Pick a random font
             $captchaFont = $captchaFonts[rand(0, count($captchaFonts)-1)];
             imagettftext($image, $captchaFontSize, rand(-25, 25), $inital + $i*$letter_space, rand($y-5, $y+5), $colours[rand(0, count($colours)-1)], $captchaFont, $phrase[$i]);
         }

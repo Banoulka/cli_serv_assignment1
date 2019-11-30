@@ -212,7 +212,4 @@ class QueryBuilder
         $this->cention;
     }
 
-
-
-
 }

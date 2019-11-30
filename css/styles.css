@@ -815,7 +815,7 @@ footer .footer-addon a:hover {
 
 /* Create new post page */
 
-.active {
+.active-link {
     color: var(--dark) !important;
 }
 
