@@ -15,7 +15,7 @@ class Authentication {
     public static function logout()
     {
         if (self::isLoggedOn()) {
-            Session::removeSession(self::$sessionID);
+            session_destroy();
         }
     }
 

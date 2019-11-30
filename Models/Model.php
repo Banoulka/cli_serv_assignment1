@@ -244,6 +244,7 @@ abstract class Model {
         $stmt = self::db()->prepare($sql);
         $completed = $stmt->execute();
 
+
         // Display errors if there are any (shouldnt be if i can program right)
         if(!is_null($stmt->errorInfo()[2]))
             var_dump($stmt->errorInfo());

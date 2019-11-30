@@ -1,5 +1,5 @@
 <?php
-    $userNotifs = Authentication::User()->notifications();
+    $userNotifs = Authentication::User()->recentNotifications();
 
     $countUnread = 0;
     foreach ($userNotifs as $notifs) { if (!$notifs->isRead()) $countUnread++; }
@@ -34,6 +34,11 @@
                         </div>
                     </a>
                 <?php endforeach; ?>
+                <div class="px-2 py-3 text-center">
+                    <form action="<?= $_SERVER["PHP_SELF"] ?>" method="post">
+                        <button style="font-size: 1.1rem" name="addNotifLimit" class="btn btn-white text-info load-more">Load More...</button>
+                    </form>
+                </div>
             <?php endif; ?>
         </div>
         <!-- NOTIFICATIONS ENDS -->

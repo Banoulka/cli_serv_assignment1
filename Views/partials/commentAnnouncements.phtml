@@ -32,7 +32,7 @@
                             <?php if (Authentication::isLoggedOn()) : ?>
                                 <button class="dprim-btn dprim-btn-filled reply">Reply</button>
                             <?php endif; ?>
-                            <span class="likes"><i class="far fa-thumbs-up ml-3"></i><?= $announcement->likesCount(); ?></span>
+<!--                            <span class="likes"><i class="far fa-thumbs-up ml-3"></i><?//= $announcement->likesCount(); ?></span>-->
                             <span class="time-info ml-auto"><?= Helpers::getTimeSinceMin($announcement->timestamp); ?></span>
                             <?php if (Authentication::isLoggedOn() && $announcement->isOwner(Authentication::User())) : ?>
                                 <form class="ml-3" method="post" action="<?= $_SERVER["PHP_SELF"]; ?>?post_id=<?= $post->id ?>&comment_id=<?= $announcement->id; ?>">

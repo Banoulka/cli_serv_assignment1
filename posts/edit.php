@@ -33,7 +33,7 @@ if (isset($_GET["post_id"])) {
         ];
 
         $validation = new Validation();
-        $validation->name("Title")->value($formData["title"])->required()->length(0, 19);
+        $validation->name("Title")->value($formData["title"])->required()->length(0, 20);
         $validation->name("Description")->value($formData["description"])->required()->length(0, 220);
         $validation->name("Body")->value($formData["body"])->required()->length(0, 1500);
         $validation->name("Type Stage")->value($formData["type_stage"])->required();

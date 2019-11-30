@@ -299,8 +299,14 @@ class User extends Model {
     public function notifications()
     {
         // TODO: add preloading
-        $notifs = Notification::allWithDataByID($this->id);
-        return $notifs;
+        return Notification::allWithDataByID($this->id);
+    }
+
+    public function recentNotifications()
+    {
+        return Notification::allWithDataByID(
+            $this->id,
+            Session::isSet("notif_limit") ? Session::getSession("notif_limit") : 15);
     }
 
     /**

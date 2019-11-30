@@ -187,6 +187,8 @@ class Post extends Model
         $foundPost = Post::find(["id" => isset($this->id) ? $this->id : "-1"] );
         if ($foundPost) {
             parent::updateModel(["id" => $this->id]);
+
+            // Send new notification?
         } else {
             $now = new DateTime();
             $this->time = $now->getTimestamp();

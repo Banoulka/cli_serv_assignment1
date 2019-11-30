@@ -25,14 +25,15 @@ Client Server System
     - [ ] Watchlist
     - [ ] Settings
 - [ ] Posts
-    - [ ] Edit Post
-    - [ ] Delete Post
+    - [x] Edit Post
+    - [x] Delete Post
     - [ ] Owner Can Delete Any Comment
     - [ ] Announcement Deletion
     - [ ] Extras Count Query Update
 - [ ] Notifications
     - [ ] Notification Delete (?)
     - [ ] Read All Button
+    - [x] Lazy Load System
 - [ ] Search Page
     - [ ] Search Bar Links To Search Page
     - [x] Search Page Pagination

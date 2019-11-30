@@ -93,11 +93,11 @@ class Notification extends Model implements Comparable
     public static function all()
     {}
 
-    public static function allWithDataByID($userIDTo)
+    public static function allWithDataByID($userIDTo, $limit = 4000)
     {
         $notifs = QueryBuilder::getInstance()->table("user_notifications")
             ->fetchAs("Notification")->where("user_id_to", $userIDTo)
-            ->orderby("time", QueryBuilder::ORDER_DESC)->getAll();
+            ->orderby("time", QueryBuilder::ORDER_DESC)->limit($limit)->getAll();
 
         foreach ($notifs as $notif) {
 

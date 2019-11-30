@@ -1151,3 +1151,10 @@ $light-grey-border: 1px solid #CBCBCB;
     background-color: $dark-grey-text;
   }
 }
+
+.notif-col {
+
+  .load-more:hover {
+    text-decoration: underline;
+  }
+}
