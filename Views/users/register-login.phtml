@@ -57,7 +57,8 @@
             </div>
             <div class="form-group">
                 <div class="d-flex flex-row justify-content-around align-items-center mb-3" style="width: 100%">
-                    <img src="../Models/lib/captchaImage.php" class="captcha" alt="captcha"/>
+<!--                    <img src="../Models/lib/captchaImage.php" class="captcha" alt="captcha"/>-->
+                    <div class="captcha"></div>
                     <a href="create.php" class="btn btn-info btn-lg"><i class="fas fa-sync-alt"></i></a>
                 </div>
                 <input type="text" class="form-control <?= isset($view->formErrors) ? $view->formErrors["Captcha"] ? "is-invalid" : "is-valid" : "" ?>" name="captcha" placeholder="Enter Characters Above...">

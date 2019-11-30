@@ -54,16 +54,18 @@ class Captcha
 
         // Noise colours
         $noiseColour = imagecolorallocate($image, rand(0, 255), rand(0, 255), rand(0, 244));
+        $noiseColourTwo = imagecolorallocate($image, rand(0, 125), rand(0, 125), rand(0, 125));
+        $noiseColourThree = imagecolorallocate($image, rand(0, 255), rand(0, 255), rand(0, 244));
         $noiseColourBlack = imagecolorallocate($image, 0, 0, 0);
         $noiseColourWhite = imagecolorallocate($image, 255, 255, 255);
-        $noiseColours = [$noiseColour, $noiseColourBlack, $noiseColourWhite];
+        $noiseColours = [$noiseColour, $noiseColourBlack, $noiseColourWhite, $noiseColourTwo, $noiseColourThree];
 
         // Fill the background
         imagefill($image, 0, 0, $backgroundColour);
 
         // Add the circle noise
         for($count=0; $count < $captchaDots; $count++ ) {
-            imagefilledellipse($image, mt_rand(0, $imageWidth), mt_rand(0, $imageHeight), rand(1, 5), rand(2, 6), $noiseColours[rand(0, 2)]);
+            imagefilledellipse($image, mt_rand(0, $imageWidth), mt_rand(0, $imageHeight), rand(1, 5), rand(2, 6), $noiseColours[rand(0, count($noiseColours)-1)]);
         }
 
         // Add the lines
@@ -73,7 +75,7 @@ class Captcha
                 mt_rand(0, $imageWidth),
                 mt_rand(0, $imageHeight),
                 mt_rand(0, $imageWidth),
-                mt_rand(0, $imageHeight), $noiseColours[rand(0, 2)] );
+                mt_rand(0, $imageHeight), $noiseColours[rand(0, count($noiseColours)-1)] );
         }
 
         // Write the text
@@ -85,7 +87,7 @@ class Captcha
 
         for ($i = 0; $i < strlen($phrase); $i++) {
             $letter_space = 170/strlen($phrase);
-            imagettftext($image, $captchaFontSize, rand(-15, 15), $inital + $i*$letter_space, rand($y-5, $y+5), $colours[rand(0, count($colours)-1)], $captchaFont, $phrase[$i]);
+            imagettftext($image, $captchaFontSize, rand(-35, 35), $inital + $i*$letter_space, rand($y-5, $y+5), $colours[rand(0, count($colours)-1)], $captchaFont, $phrase[$i]);
         }
 
 

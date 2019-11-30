@@ -1136,6 +1136,9 @@ $light-grey-border: 1px solid #CBCBCB;
 }
 
 .captcha {
+  background-image: url("../Models/lib/captchaImage.php");
+  height: 60px;
+  width: 250px;
   border-radius: 3px;
 }
 
