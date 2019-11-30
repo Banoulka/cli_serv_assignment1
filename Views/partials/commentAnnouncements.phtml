@@ -4,7 +4,7 @@
         <?php if (Authentication::isLoggedOn()) : ?>
             <div class="comment-box row p-2 m-0 mr-auto">
                 <div class="col-2 d-flex align-items-center justify-content-center pr-0">
-                    <img src="<?= Helpers::printIfExternail(Authentication::User()->display_pic); ?>" alt="" class="form-profile">
+                    <img src="<?= Helpers::printIfExternal(Authentication::User()->display_pic); ?>" alt="" class="form-profile">
                 </div>
                 <div class="col-10 d-flex align-items-center pl-0">
                     <form action="<?= $_SERVER["PHP_SELF"]; ?>?post_id=<?= $post->id; ?>" class="comment-area pl-4" id="commentForm" method="post">
@@ -21,7 +21,7 @@
             <div class="row">
                 <div class="col-3">
                     <div class="image">
-                        <img src="<?= Helpers::printIfExternail($announcement->user()->display_pic); ?>" alt="" class="comment-pic">
+                        <img src="<?= Helpers::printIfExternal($announcement->user()->display_pic); ?>" alt="" class="comment-pic">
                     </div>
                 </div>
                 <div class="col-9">
@@ -57,7 +57,7 @@
                         </div>
                     </div>
                     <div class="col-3 d-flex align-items-center justify-content-center pr-0">
-                        <img src="<?= Helpers::printIfExternail(Authentication::User()->display_pic); ?>" alt="" class="form-profile">
+                        <img src="<?= Helpers::printIfExternal(Authentication::User()->display_pic); ?>" alt="" class="form-profile">
                     </div>
                 </div>
                 <input type="submit" name="announcementAdd" value="Announce" class="dprim-btn dprim-btn-filled mr-0 mt-2">
@@ -70,7 +70,7 @@
                     <div class="row">
                         <div class="col-3">
                             <div class="image">
-                                <img src="<?= Helpers::printIfExternail($post->user()->display_pic) ?>" alt="" class="comment-pic">
+                                <img src="<?= Helpers::printIfExternal($post->user()->display_pic) ?>" alt="" class="comment-pic">
                             </div>
                         </div>
                         <div class="col-9">

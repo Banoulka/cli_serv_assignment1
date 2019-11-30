@@ -1226,6 +1226,53 @@ $light-grey-border: 1px solid #CBCBCB;
   width: 100%;
   height: 100%;
 
+  .msg-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+
+    &.self {
+      align-items: flex-end;
+      .user-thumbnail {
+        margin-bottom: .8em;
+      }
+    }
+
+    .msg {
+      margin: .7em .2em;
+      display: inline-flex;
+      padding: 0.6em;
+      flex-direction: column;
+      background-color: white;
+      border-radius: 10px;
+      width: 75%;
+
+      &.self {
+        background-color: $dark-blue-text;
+        color: white;
+        align-items: flex-start;
+        text-align: left;
+        margin-right: auto;
+        margin-left: 1.5em;
+
+        .m-date {
+          color: #b4b4b4 !important;
+        }
+      }
+
+      .m-body {
+        font-size: 0.9rem;
+        max-width: 100%;
+      }
+
+      .m-date {
+        display: inline-block;
+        margin-top: .4em;
+      }
+    }
+  }
+
   .message-header {
     color: $dark-blue-text;
     font-weight: 500;
@@ -1233,6 +1280,18 @@ $light-grey-border: 1px solid #CBCBCB;
     padding: 0.25em 0.5em;
     width: 100%;
     background-color: white;
+
+  }
+}
+
+.user-thumbnail {
+  height: 60px;
+  width: 60px;
+  border-radius: 200px;
+
+  &.tiny {
+    height: 30px;
+    width: 30px;
   }
 }
 

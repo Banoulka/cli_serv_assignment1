@@ -26,7 +26,7 @@ class Helpers {
         return !empty($components['host']) && strcasecmp($components['host'], parse_url(BASEURL)["host"]); // empty host will indicate url like '/relative.php'
     }
 
-    public static function printIfExternail($url) {
+    public static function printIfExternal($url) {
         return Helpers::isexternal(BASEURL . $url) ? $url : BASEURL . $url;
     }
 
