@@ -15,9 +15,9 @@ Client Server System
     - [x] Random Comments
 - [ ] Random Messages
 - [x] SQL Post Sorting (replace php)
-- [ ] Files (PC, DP)
-    - [ ] Check Size
-    - [ ] Compress
+- [x] Files (PC, DP)
+    - [x] Check Size
+    - [x] Compress
 - [x] Capatcha System
 - [ ] Dynamic Sidebar
 - [ ] Profile Tabs
