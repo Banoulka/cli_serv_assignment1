@@ -15,7 +15,9 @@ class Captcha
     public function resetPhrase()
     {
         // Encrypt the plaintext passphrase and store it
-        $phrasePlaintext = substr(md5(microtime()), 0, 5);
+//        $phrasePlaintext = substr(md5(microtime()), 0, 5);
+        $charSet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        $phrasePlaintext = substr(str_shuffle(str_repeat($charSet, 5)), 0, 5);
         $enc_iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length(CIPHERMETHOD));
         $encrypted = openssl_encrypt($phrasePlaintext, CIPHERMETHOD, CAPTCHAKEY, 0, $enc_iv) . "::" . bin2hex($enc_iv);
         $this->phrase = $encrypted;
@@ -31,14 +33,21 @@ class Captcha
 
     public function getImage()
     {
-        $imageHeight = 60;
-        $imageWidth = 250;
+        $imageHeight = 75;
+        $imageWidth = 280;
         $image = imagecreatetruecolor($imageWidth, $imageHeight);
 
         $captchaLines = rand(10, 30);
         $captchaDots = rand(60, 100);
-        $captchaFontSize = $imageHeight * 0.65;
-        $captchaFont = dirname(__FILE__) . "/monofont.ttf";
+        $captchaFontSize = $imageHeight * 0.55;
+
+        // List of fonts
+        $captchaFonts = [
+            dirname(__FILE__) . "/../../fonts/monofont.ttf",
+            dirname(__FILE__) . "/../../fonts/BigShouldersText-Regular.ttf",
+            dirname(__FILE__) . "/../../fonts/GloriaHallelujah-Regular.ttf",
+            dirname(__FILE__) . "/../../fonts/IndieFlower-Regular.ttf"
+        ];
 
         imageantialias($image, true);
 
@@ -80,14 +89,16 @@ class Captcha
 
         // Write the text
         $phrase = $this->getPhrase();
-        $text_box = imagettfbbox($captchaFontSize, 0, $captchaFont , $phrase);
+        $captchaFont = $captchaFonts[rand(0, count($captchaFonts)-1)];
+        $text_box = imagettfbbox($captchaFontSize, 0, $captchaFont, $phrase);
 
         $inital = ($imageWidth - $text_box[4])/3;
         $y = ($imageHeight - $text_box[5])/2;
 
         for ($i = 0; $i < strlen($phrase); $i++) {
-            $letter_space = 170/strlen($phrase);
-            imagettftext($image, $captchaFontSize, rand(-35, 35), $inital + $i*$letter_space, rand($y-5, $y+5), $colours[rand(0, count($colours)-1)], $captchaFont, $phrase[$i]);
+            $letter_space = 200/strlen($phrase);
+            $captchaFont = $captchaFonts[rand(0, count($captchaFonts)-1)];
+            imagettftext($image, $captchaFontSize, rand(-25, 25), $inital + $i*$letter_space, rand($y-5, $y+5), $colours[rand(0, count($colours)-1)], $captchaFont, $phrase[$i]);
         }
 
 
