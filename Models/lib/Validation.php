@@ -115,6 +115,42 @@ class Validation
         return $this;
     }
 
+    /**
+     * @param array $fileArr
+     * @return self
+     */
+    public function file(array $fileArr)
+    {
+        $this->value = $fileArr;
+        return $this;
+    }
+
+    /**
+     * @param int $size
+     * @return self
+     */
+    public function maxFileSizeBytes(int $size)
+    {
+        if ($this->value["size"] > $size) {
+            $this->addError("%s max file size is " . Helpers::formatSizeUnits($size));
+        }
+        return $this;
+    }
+
+    /**
+     * @param $typeArr
+     * @return self
+     */
+    public function fileType($typeArr)
+    {
+        $imageFileType = strtolower(pathinfo($this->value["name"], PATHINFO_EXTENSION ));
+        if (!in_array($imageFileType, $typeArr)) {
+            $this->addError("%s file type can only be image files");
+        }
+
+        return $this;
+    }
+
     public function isSuccess() {
         $success = true;
         foreach ($this->error as $arr) {

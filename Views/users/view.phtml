@@ -49,8 +49,9 @@
                     <p><?= $user->email; ?></p>
 
                     <h6 class="user-label mt-3">Bio:</h6>
-                    <p style="white-space: pre"><?= $user->bio != "" ? $user->bio : "No bio set"; ?></p>
-                </div>            </div>
+                    <p style="white-space: pre-wrap"><?= $user->bio != "" ? $user->bio : "No bio set"; ?></p>
+                </div>
+            </div>
             <div class="row mt-4">
                 <div class="col-12">
                     <h3 class="title mt-4 mb-4 pb-2" style="border-bottom: 1px solid #1a407a; font-size: 1.7rem; font-weight: 400;">Recent Posts</h3>

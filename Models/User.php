@@ -258,6 +258,11 @@ class User extends Model {
         parent::setCustomClassAndTable("", "user_watchlist");
         parent::delete()->value("user_id", $this->id)->executeDelete();
 
+        // Delete the file if it exists
+        if (!Helpers::isexternal($this->display_pic) && $this->display_pic != "/uploads/profile_pictures/nodp.png") {
+            unlink(realpath("../" . $this->display_pic));
+        }
+
         // Delete the user
         self::setClassAndTable();
         parent::deleteModel(["id" => $this->id]);

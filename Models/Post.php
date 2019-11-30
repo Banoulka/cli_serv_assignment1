@@ -122,6 +122,11 @@ class Post extends Model
         self::setCustomClassAndTable("", "post_announcements");
         parent::deleteModel(["post_id" => $this->id]);
 
+        // Delete the file if it exists and isnt the default
+        if (!Helpers::isexternal($this->cover_image) && $this->cover_image != "/uploads/post_covers/no-cover.jpg") {
+            unlink(realpath("../" . $this->cover_image));
+        }
+
         // Delete self
         self::setClassAndTable();
         parent::deleteModel(["id" => $this->id]);

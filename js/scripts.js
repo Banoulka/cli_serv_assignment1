@@ -9,6 +9,7 @@ $(document).ready(function(){
     setupTagCheckButtons();
     setMinifiedForm();
     setCommentForm();
+    setFileUploadForm();
 
     $("#comment").autoResize();
     $("#body").autoResize();
@@ -306,4 +307,14 @@ function setCommentForm() {
     }
 }
 
+function setFileUploadForm() {
+    let fileNameArea = document.getElementById("file-name");
+    let input = document.getElementById("cover-image");
+
+    if (input) {
+        input.addEventListener("change", ev => {
+            fileNameArea.textContent = input.files[0].name;
+        });
+    }
+}
 

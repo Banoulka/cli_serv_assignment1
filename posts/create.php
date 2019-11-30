@@ -35,14 +35,17 @@ if (isset($_POST["submit"])) {
     $validation->name("type_stage")->value($post->type_stage)->required();
     $validation->name("tags")->value(count($tags))->length(0, 4);
 
+    // If there is a file waiting to upload
     if ($_FILES["cover_image"]["name"] != "") {
+        $fileTypes = ["png", "jpg", "jpeg"];
+        // 4194304 = 4MB
+        $validation->name("Cover Image")->value($_FILES["cover_image"])->maxFileSizeBytes(4194304)->fileType($fileTypes);
         $file = true;
-        $imageFileType =  strtolower(pathinfo($_FILES["cover_image"]["name"], PATHINFO_EXTENSION ));
+        $imageFileType = strtolower(pathinfo($_FILES["cover_image"]["name"], PATHINFO_EXTENSION ));
         $targetDir = "../uploads/post_covers/";
     }
 
     if (!$validation->isSuccess()) {
-//        var_dump($validation->getErrors());
         $view->errors = $validation->getErrors();
         $view->post = $post;
     } else {
@@ -57,7 +60,10 @@ if (isset($_POST["submit"])) {
             $targetFile = $targetDir . $postFileName;
             //TODO: file checks
             $post->save();
+
+            // Move and compress the image
             move_uploaded_file($_FILES["cover_image"]["tmp_name"], $targetFile);
+            Helpers::compressImage($targetFile);
         }
 
         Route::redirect("view.php?post_id=$post->id");
