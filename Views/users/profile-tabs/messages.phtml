@@ -1,7 +1,7 @@
 <?php
     $messageInfo = Authentication::User()->messageSlimfo();
     $mDisplay = new stdClass();
-    $list = $_GET["list"] ?? null;
+    $user_id = $_GET["list"] ?? null;
 ?>
 <div class="col-12">
     <h3 class="profile-name mb-3">Messages</h3>
@@ -10,7 +10,7 @@
         <div class="col-4 p-0">
             <div class="list-group" id="messages-tab" role="tablist">
                 <?php foreach ($messageInfo as $info) : ?>
-                    <a href="#list-<?= $info->user_id ?>" id="<?= $info->user_id ?>" class="list-group-item list-group-item-action <?= !is_null($list) && $list == $info->user_id ? "active" : "" ?>" data-toggle="list" role="tab">
+                    <a href="#list-<?= $info->user_id ?>" id="<?= $info->user_id ?>" class="list-group-item list-group-item-action <?= !is_null($user_id) && $user_id == $info->user_id ? "active" : "" ?>" data-toggle="list" role="tab">
                         <div class="d-flex flex-row">
                             <h6 class="m-0"><?= $info->display_name ?? $info->first_name . " " . $info->last_name ?></h6>
                             <?php if ($info->Unread > 0) : ?>
@@ -27,7 +27,7 @@
         <div class="col-8 p-0 message-display-area d-flex flex-column">
             <div class="tab-content" id="content">
                 <?php foreach ($messageInfo as $info) : ?>
-                    <div class="tab-pane fade show full <?= !is_null($list) && $list == $info->user_id ? "active" : "" ?>" id="list-<?= $info->user_id ?>" role="tabpanel" aria-labelledby="list-<?= $info->user_id ?>">
+                    <div class="tab-pane fade show full <?= !is_null($user_id) && $user_id == $info->user_id ? "active" : "" ?>" id="list-<?= $info->user_id ?>" role="tabpanel" aria-labelledby="list-<?= $info->user_id ?>">
                         <?php $mDisplay->user_id_from = "$info->user_id";
                         include "../Views/partials/messages-display.phtml" ?>
                     </div>
@@ -35,25 +35,44 @@
             </div>
             <div class="d-flex flex-row m-0 message-area align-items-start mt-auto bottom">
                 <form action="/messages/create.php" method="post" class="d-block w-100" id="send-message">
-                    <textarea class="message-input" rows="1" name="message" placeholder="Type a message..."></textarea>
-                    <input type="hidden" name="user_id" value="" id="u-id" readonly>
+                    <textarea class="message-input" rows="1" name="message" placeholder="Type a message..." id="msg-input"></textarea>
+                    <input type="hidden" name="user_id" value="<?= $user_id ?? "" ?>" id="u-id" readonly>
                     <input type="hidden" name="list" readonly>
                 </form>
-                <button onclick="document.getElementById('send-message').submit();" type="submit" class="ml-auto message-submit"><i class="far fa-paper-plane"></i></button>
+                <button onclick="document.getElementById('send-message').submit();" class="ml-auto message-submit"><i class="far fa-paper-plane"></i></button>
             </div>
         </div>
     </div>
 </div>
 
+<form action="/messages/markRead.php" class="hidden" id="read-message" method="post">
+    <input type="hidden" name="user_id" id="read_user" value="">
+</form>
+
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         $(".list-group-item").click(function() {
-            $(document).ready(() => {
-                let content = $("#content");
-                content.scrollTop(content.prop("scrollHeight"));
-                $("#u-id")[0].value = this.id;
-            });
+            $("#read_user")[0].value = this.id;
+            $("#read-message").submit();
         });
 
+        $("#msg-input").focus(() => {
+            // On focus
+            console.log("focus");
+            $(document).on("keydown", enterClick);
+        });
+
+        $("#msg-input").blur(() => {
+            // On focus
+            console.log("unfocus");
+            $(document).off("keydown", enterClick);
+        });
+
+        function enterClick(e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                $("#send-message").submit();
+            }
+        }
     }, false)
 </script>

@@ -24,6 +24,14 @@ class Coversation
         return Database::getInstance()->getdbConnection()->query($sql)->fetchAll(PDO::FETCH_OBJ);
     }
 
+    public static function markReadMessages($userIDTo)
+    {
+        $userMe = Authentication::User();
+        $sql = "UPDATE user_messages SET `read` = 1
+                WHERE user_id_from = $userIDTo AND user_id_to = $userMe->id";
+        Database::getInstance()->getdbConnection()->exec($sql);
+    }
+
     public static function unreadMessages($userIDTo)
     {
         $sql = "SELECT COUNT(case when user_messages.`read` = 0 then 1 end) as Unread
