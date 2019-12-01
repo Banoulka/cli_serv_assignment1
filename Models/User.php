@@ -388,7 +388,7 @@ class User extends Model {
                       FROM user_messages
                                LEFT JOIN users u on user_messages.user_id_from = u.id
                       WHERE user_id_to = $this->id
-                      GROUP BY u.id, user_id_from UNION SELECT user_id_to, user_id_from, first_name, last_name, display_name, u.id, 0 as Messages, 0 as Unread, 0 as latest
+                      GROUP BY u.id, user_id_from UNION SELECT user_id_to, user_id_from, first_name, last_name, display_name, u.id, 0 as Messages, 0 as Unread, MAX(timestamp) as latest
                       FROM user_messages
                                LEFT JOIN users u on user_messages.user_id_to = u.id
                       WHERE user_id_from = $this->id
