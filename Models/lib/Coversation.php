@@ -16,7 +16,7 @@ class Coversation
         $userFromID = $this->userFrom->id;
         $userToID = $this->userMe->id;
 
-        $sql = "SELECT user_messages.body, user_messages.timestamp, IF(user_id_from = $userToID, true, false) as own
+        $sql = "SELECT user_messages.body, user_messages.timestamp, user_messages.`read` ,IF(user_id_from = $userToID, true, false) as own
                 FROM user_messages
                 WHERE (user_id_from = $userFromID AND user_id_to = $userToID)
                 OR (user_id_to = $userFromID AND user_id_from = $userToID)

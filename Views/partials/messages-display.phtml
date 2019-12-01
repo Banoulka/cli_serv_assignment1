@@ -13,8 +13,10 @@
     <?php foreach ($messages as $message) : ?>
         <?php if ($message->own) : ?>
             <div class="msg-container self">
-                <?php if ($message == end($messages)) : ?>
+                <?php if ($message == end($messages) && $message->read) : ?>
                     <img src="<?= Helpers::printIfExternal($userFrom->display_pic) ?>" alt="profile picture" class="user-thumbnail tiny">
+                <?php elseif ($message == end($messages)) : ?>
+                    <i class="fas fa-check-circle sent-icon"></i>
                 <?php endif; ?>
                 <div class="msg self">
                     <p class="m-body m-0"><?= $message->body ?></p>

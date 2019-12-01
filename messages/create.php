@@ -16,8 +16,14 @@ if (isset($_POST["user_id"]) && Authentication::isLoggedOn()) {
     $message = htmlentities($_POST["message"]);
     // Send message
     Authentication::User()->messageUser($user, $message);
-//    unset($_POST);
-    Route::redirect("/users/view.php?id=$user->id");
+
+    if (isset($_POST["list"])) {
+        $user_id = $_POST["user_id"];
+        Route::redirect("/users/profile.php?tab=messages&list=$user_id");
+    } else {
+        FlashMessager::addMessage("Successfully messaged " . $user->name(), "primary", ["> $message"]);
+        Route::redirect("/users/view.php?id=$user->id");
+    }
 } else {
     Route::redirect("/games.php");
 }

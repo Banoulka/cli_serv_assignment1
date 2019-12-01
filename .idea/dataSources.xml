@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="sgb779_cli_serv_ugame@localhost" uuid="512a2c95-c093-45ab-a8e4-9aab2b5c15a7">
+    <data-source source="LOCAL" name="sgb779_cli_serv_ugame@poseidon.salford.ac.uk" uuid="d44fd4ce-09cc-421a-a3b9-15d7285a6dca">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:3306/sgb779_cli_serv_ugame</jdbc-url>
+      <jdbc-url>jdbc:mysql://poseidon.salford.ac.uk:3306/sgb779_cli_serv_ugame</jdbc-url>
+      <driver-properties>
+        <property name="autoReconnect" value="true" />
+        <property name="zeroDateTimeBehavior" value="CONVERT_TO_NULL" />
+        <property name="tinyInt1isBit" value="false" />
+        <property name="characterEncoding" value="utf8" />
+        <property name="characterSetResults" value="utf8" />
+        <property name="yearIsDateType" value="false" />
+      </driver-properties>
     </data-source>
   </component>
 </project>

@@ -1200,6 +1200,7 @@ $light-grey-border: 1px solid #CBCBCB;
 }
 
 .message-display-area {
+  height: 700px;
   background-color: #e7e7e7;
   border-top-right-radius: .25em;
   border-bottom-right-radius: .25em;
@@ -1207,7 +1208,7 @@ $light-grey-border: 1px solid #CBCBCB;
 
 
   .tab-content {
-    height: 550px;
+    height: 100%;
     overflow-x: hidden;
     overflow-y: scroll;
     border-bottom-right-radius: 0;
@@ -1235,9 +1236,18 @@ $light-grey-border: 1px solid #CBCBCB;
     &.self {
       justify-content: flex-end;
       align-items: flex-end;
+
       .user-thumbnail {
         margin-left: 1.7em;
         margin-bottom: .8em;
+        margin-right: auto;
+      }
+
+      .sent-icon {
+        font-size: 1.2rem;
+        color: $dark-blue-text;
+        margin-left: 1.2em;
+        margin-bottom: .6em;
         margin-right: auto;
       }
     }
@@ -1255,6 +1265,7 @@ $light-grey-border: 1px solid #CBCBCB;
       margin-bottom: .7em;
       margin-right: auto;
       margin-left: 1.5em;
+
 
       &.self {
         background-color: $dark-blue-text;

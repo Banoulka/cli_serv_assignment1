@@ -226,7 +226,6 @@ class User extends Model {
             ->value("body", $message)
             ->value("timestamp", $now->getTimestamp())
             ->executeInsert();
-        FlashMessager::addMessage("Successfully messaged " . $user->name(), "primary", ["> $message"]);
     }
 
     public function destroy()
