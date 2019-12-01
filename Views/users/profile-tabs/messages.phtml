@@ -10,7 +10,7 @@
         <div class="col-4 p-0">
             <div class="list-group" id="messages-tab" role="tablist">
                 <?php foreach ($messageInfo as $info) : ?>
-                    <a href="#list-<?= $info->user_id ?>" id="<?= $info->user_id ?>" class="list-group-item list-group-item-action <?= !is_null($user_id) && $user_id == $info->user_id ? "active" : "" ?>" data-toggle="list" role="tab">
+                    <a href="#loading" id="<?= $info->user_id ?>" class="list-group-item list-group-item-action <?= !is_null($user_id) && $user_id == $info->user_id ? "active" : "" ?>" data-toggle="list" role="tab">
                         <div class="d-flex flex-row">
                             <h6 class="m-0"><?= $info->display_name ?? $info->first_name . " " . $info->last_name ?></h6>
                             <?php if ($info->Unread > 0) : ?>
@@ -32,6 +32,13 @@
                         include "../Views/partials/messages-display.phtml" ?>
                     </div>
                 <?php endforeach; ?>
+                <div class="tab-pane fade show full" id="loading" role="tabpanel" aria-labelledby="loading">
+                    <div class="d-flex justify-content-center align-items-center h-100">
+                        <div class="spinner-border text-primary spin" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="d-flex flex-row m-0 message-area align-items-start mt-auto bottom">
                 <form action="/messages/create.php" method="post" class="d-block w-100" id="send-message">
@@ -67,6 +74,9 @@
             console.log("unfocus");
             $(document).off("keydown", enterClick);
         });
+
+        let content = $("#content");
+        content.scrollTop(content.prop("scrollHeight"));
 
         function enterClick(e) {
             if (e.key === "Enter") {
