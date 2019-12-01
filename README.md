@@ -13,7 +13,7 @@ Client Server System
     - [x] Random Times
     - [x] Random Likes
     - [x] Random Comments
-- [ ] Random Messages
+- [x] Random Messages
 - [x] SQL Post Sorting (replace php)
 - [x] Files (PC, DP)
     - [x] Check Size
@@ -21,11 +21,11 @@ Client Server System
 - [x] Capatcha System
 - [ ] Dynamic Sidebar
 - [ ] Profile Tabs
-    - [ ] Messages
+    - [x] Messages
         - [x] Messages Display
         - [x] List Messages
-        - [ ] Send Messages
-        - [ ] Read Messages 
+        - [x] Send Messages
+        - [x] Read Messages 
     - [ ] Watchlist
     - [ ] Settings
 - [ ] Posts
