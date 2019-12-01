@@ -59,3 +59,7 @@ Client Server System
  - [ ] Web Scraping Defense
     - [ ] Random Generated ID's
     - [ ] On the fly CSS 
+- [ ] Paginaion improvement
+    - [ ] Limit rows and only get
+          posts that are needed
+    - [ ] Change pagination SQL
