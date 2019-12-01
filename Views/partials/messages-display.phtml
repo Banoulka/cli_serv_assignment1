@@ -8,24 +8,26 @@
 
 <div class="message d-flex flex-column">
     <div class="message-header sticky-top text-center">
-        <span><?= $userFrom->display_name ?: $userFrom->name() ?></span>
+        <a href="view.php?id=<?= $userFrom->id?>"><?= $userFrom->display_name ?: $userFrom->name() ?></a>
     </div>
     <?php foreach ($messages as $message) : ?>
         <?php if ($message->own) : ?>
             <div class="msg-container self">
+                <?php if ($message == end($messages)) : ?>
+                    <img src="<?= Helpers::printIfExternal($userFrom->display_pic) ?>" alt="profile picture" class="user-thumbnail tiny">
+                <?php endif; ?>
                 <div class="msg self">
                     <p class="m-body m-0"><?= $message->body ?></p>
                     <span class="text-muted m-date small"><?= Helpers::getTimeSinceMin($message->timestamp);  ?></span>
                 </div>
-                <img src="<?= Helpers::printIfExternal($userFrom->display_pic) ?>" alt="profile picture" class="user-thumbnail tiny">
             </div>
         <?php else :  ?>
             <div class="msg-container">
-                <img src="<?= Helpers::printIfExternal($userFrom->display_pic) ?>" alt="profile picture" class="user-thumbnail">
                 <div class="msg">
                     <p class="m-body m-0"><?= $message->body ?></p>
                     <span class="text-muted m-date small"><?= Helpers::getTimeSinceMin($message->timestamp);  ?></span>
                 </div>
+                <img src="<?= Helpers::printIfExternal($userFrom->display_pic) ?>" alt="profile picture" class="user-thumbnail mr-3">
             </div>
         <?php endif; ?>
     <?php endforeach; ?>

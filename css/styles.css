@@ -462,7 +462,7 @@ footer .footer-addon a:hover {
     text-decoration: none !important;
 }
 
-.chat-button:hover span{
+.chat-button:hover span:first-child {
     color: var(--dark) !important;
 }
 
@@ -470,7 +470,6 @@ footer .footer-addon a:hover {
     transition: 0.1s color;
     position: relative;
     bottom: 12px;
-    right: 24px;
     font-size: 1rem;
     color: var(--dark-text);
 }

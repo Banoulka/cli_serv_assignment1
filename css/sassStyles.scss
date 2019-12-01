@@ -1233,28 +1233,33 @@ $light-grey-border: 1px solid #CBCBCB;
     justify-content: space-around;
 
     &.self {
+      justify-content: flex-end;
       align-items: flex-end;
       .user-thumbnail {
+        margin-left: 1.7em;
         margin-bottom: .8em;
+        margin-right: auto;
       }
     }
 
     .msg {
-      margin: .7em .2em;
       display: inline-flex;
       padding: 0.6em;
+      text-align: left;
       flex-direction: column;
       background-color: white;
       border-radius: 10px;
-      width: 75%;
+      align-items: flex-start;
+      max-width: 75%;
+      margin-top: .7em;
+      margin-bottom: .7em;
+      margin-right: auto;
+      margin-left: 1.5em;
 
       &.self {
         background-color: $dark-blue-text;
         color: white;
-        align-items: flex-start;
-        text-align: left;
-        margin-right: auto;
-        margin-left: 1.5em;
+        margin-right: .7em;
 
         .m-date {
           color: #b4b4b4 !important;

@@ -23,4 +23,13 @@ class Coversation
                 ORDER BY timestamp;";
         return Database::getInstance()->getdbConnection()->query($sql)->fetchAll(PDO::FETCH_OBJ);
     }
+
+    public static function unreadMessages($userIDTo)
+    {
+        $sql = "SELECT COUNT(case when user_messages.`read` = 0 then 1 end) as Unread
+                FROM user_messages
+                WHERE user_id_to = $userIDTo;";
+        $number = Database::getInstance()->getdbConnection()->query($sql)->fetch(PDO::FETCH_COLUMN);
+        return $number > 0 ? $number : null;
+    }
 }

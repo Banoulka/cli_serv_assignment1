@@ -3,7 +3,10 @@
 <footer class="d-flex flex-column">
     <?php if (Authentication::isLoggedOn() && $view->pageName != "index") : ?>
         <div class="chat-button-contain">
-            <a class="chat-button" href="<?= BASEURL ?>/users/profile.php?tab=messages"><span>Chat</span></a>
+            <a class="chat-button" href="<?= BASEURL ?>/users/profile.php?tab=messages">
+                <span class="ml-2">Chat</span>
+                <span class="badge badge-danger text-white ml-2"><?= Coversation::unreadMessages(Authentication::User()->id) ?></span>
+            </a>
         </div>
     <?php endif ?>
     <div class="banner">

@@ -370,17 +370,20 @@ class User extends Model {
     public function messageSlimfo()
     {
         // Get all messages with user id and user info,
-        // Ordering firstly by the unread messages, then by time
-        $sql = "SELECT user_messages.id as msg_id, u.id as user_id, u.first_name, u.last_name, u.display_name,
-                    MAX(timestamp) as latest, COUNT(u.id) as Messages,
-                    COUNT(case when user_messages.`read` = 0 then u.id end) as Unread
-
-                FROM user_messages LEFT JOIN users u on user_messages.user_id_from = u.id
-                WHERE user_id_to = $this->id
-                GROUP BY user_id
-                ORDER BY Unread DESC, latest DESC;";
+        // Ordering by time
+        $sql = "SELECT id as user_id, first_name, last_name, display_name, Messages.Messages, Messages.Unread, Messages.latest
+                FROM (SELECT user_id_to, user_id_from, first_name, last_name, display_name, u.id, COUNT(u.id) as Messages, COUNT(case when `read` = 0 then 1 end) as Unread, MAX(timestamp) as latest
+                      FROM user_messages
+                           LEFT JOIN users u on user_messages.user_id_from = u.id
+                      WHERE user_id_to = $this->id
+                      GROUP BY u.id UNION SELECT user_id_to, user_id_from, first_name, last_name, display_name, u.id, 0 as Messages, 0 as Unread, 0 as latest
+                      FROM user_messages
+                          LEFT JOIN users u on user_messages.user_id_to = u.id
+                      WHERE user_id_from = $this->id
+                      GROUP BY user_id_to) as Messages
+                GROUP BY id
+                ORDER BY latest DESC;";
         $results = self::db()->query($sql, PDO::FETCH_OBJ)->fetchAll();
-
         return $results;
     }
 

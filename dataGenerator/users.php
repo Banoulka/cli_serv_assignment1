@@ -9,6 +9,6 @@ spl_autoload_register(function ($className) {
 
 for ($i = 0; $i < 25; $i++) {
     echo "============== FOR LOOP $i ================" . "<br/>";
-    APIMiddleware::commentsDataRequest();
+    APIMiddleware::messagesDataRequest();
 }
 echo "Completed!";

@@ -22,6 +22,10 @@ Client Server System
 - [ ] Dynamic Sidebar
 - [ ] Profile Tabs
     - [ ] Messages
+        - [x] Messages Display
+        - [x] List Messages
+        - [ ] Send Messages
+        - [ ] Read Messages 
     - [ ] Watchlist
     - [ ] Settings
 - [ ] Posts

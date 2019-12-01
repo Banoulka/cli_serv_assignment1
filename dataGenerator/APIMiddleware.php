@@ -114,4 +114,30 @@ ORDER BY Comments;";
         }
 
     }
+
+    public static function messagesDataRequest()
+    {
+        $curl = self::initCurl("https://my.api.mockaroo.com/cli_serv_comments.json?key=f28ce0a0");
+        $messagesArray = json_decode(curl_exec($curl));
+
+        $now = new DateTime();
+        $nowTimeStamp = $now->getTimestamp();
+        $userSQL = "SELECT id FROM users ORDER BY RAND() LIMIT 2;";
+
+        foreach ($messagesArray as $comment) {
+            do {
+                $users = Database::getInstance()->getdbConnection()->query($userSQL)->fetchAll(PDO::FETCH_COLUMN);
+            } while($users[0] == $users[1]);
+
+            $randomTime = rand(1298249321, $nowTimeStamp);
+            $randomBool = rand(0, 1);
+            $userIDTo = $users[0];
+            $userIDFrom = $users[1];
+
+            $sql = "INSERT INTO user_messages (user_id_to, user_id_from, body, timestamp, user_messages.read) 
+                    VALUES ($userIDTo, $userIDFrom, \"$comment->body\", $randomTime, $randomBool)";
+            Database::getInstance()->getdbConnection()->exec($sql);
+        }
+        curl_close($curl);
+    }
 }
