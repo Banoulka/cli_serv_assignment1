@@ -18,7 +18,7 @@ class Coversation
 
         $sql = "SELECT user_messages.body, user_messages.timestamp, IF(user_id_from = $userToID, true, false) as own
                 FROM user_messages
-                WHERE user_id_from = $userFromID
+                WHERE (user_id_from = $userFromID AND user_id_to = $userToID)
                 OR (user_id_to = $userFromID AND user_id_from = $userToID)
                 ORDER BY timestamp;";
         return Database::getInstance()->getdbConnection()->query($sql)->fetchAll(PDO::FETCH_OBJ);
