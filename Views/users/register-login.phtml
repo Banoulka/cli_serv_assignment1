@@ -61,7 +61,7 @@
                     <div class="captcha"></div>
                     <a href="create.php" class="btn btn-info btn-lg"><i class="fas fa-sync-alt"></i></a>
                 </div>
-                <input type="text" class="form-control <?= isset($view->formErrors) ? $view->formErrors["Captcha"] ? "is-invalid" : "is-valid" : "" ?>" name="captcha" placeholder="Enter Characters Above...">
+                <input type="text" class="form-control <?= isset($view->formErrors) ? $view->formErrors["Captcha"] ? "is-invalid" : "is-valid" : "" ?>" name="captcha" placeholder="Enter Characters Above..." autocomplete="off">
                 <?php if (isset($view->formErrors["Captcha"])) : ?>
                     <span class="ml-1 small text-danger">Captcha does not match</span>
                 <?php else : ?>

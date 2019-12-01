@@ -70,7 +70,6 @@ class Validation
      */
     public function length(int $min, int $max): self
     {
-        $lengthError = false;
         if (is_string($this->value)) {
             // Process the value as a string length
             $lengthError = strlen($this->value) < $min || strlen($this->value) > $max;
@@ -81,6 +80,27 @@ class Validation
 
         if ($lengthError) {
             $this->addError("Field %s must be between $min and $max");
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param $tableName
+     * @param $colName
+     * @return self
+     */
+    public function unique($tableName, $colName)
+    {
+        $value = $this->value;
+        $sql = "SELECT id FROM $tableName
+                WHERE $colName = '$value'
+                LIMIT 1";
+        $result = Database::getInstance()->getdbConnection()->query($sql)->fetch(PDO::FETCH_COLUMN);
+
+        if ($result) {
+            // True
+            $this->addError("%s has already been taken!");
         }
 
         return $this;

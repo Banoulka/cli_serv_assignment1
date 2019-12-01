@@ -25,11 +25,11 @@ if (isset($_POST["submit"])) {
         "email" => htmlentities($_POST["email"]),
         "password" => htmlentities($_POST["password"]),
         "confirm_password" => htmlentities($_POST["confirm_password"]),
-        "captcha" => htmlentities($_POST["captcha"]),
+        "captcha" => htmlentities(ucwords($_POST["captcha"])),
     ];
 
     $validation = new Validation();
-    $validation->name("Email")->value($view->formData["email"])->required()->type(FILTER_VALIDATE_EMAIL);
+    $validation->name("Email")->value($view->formData["email"])->required()->type(FILTER_VALIDATE_EMAIL)->unique("users", "email");
     $validation->name("Password")->value($view->formData["password"])->required()->length(3, 50);
     $validation->name("First Name")->value($view->formData["first_name"])->required()->length(0, 30);
     $validation->name("Last Name")->value($view->formData["last_name"])->required()->length(0, 30);
@@ -55,7 +55,7 @@ if (isset($_POST["submit"])) {
             // Login user
             Authentication::validateAndLogonUser($user->email, $_POST["password"]);
             Authentication::refresh();
-            Route::redirect("/games.php");
+            Route::redirect("profile.php?tab=details");
         }
     }
 

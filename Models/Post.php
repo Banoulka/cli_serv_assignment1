@@ -385,7 +385,7 @@ class Post extends Model
                     LEFT JOIN post_comments pc on posts.id = pc.post_id
                 GROUP BY 1
                 ORDER BY Popularity DESC
-                LIMIT 150";
+                LIMIT 100";
         return self::db()->query($sql)->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Post");
     }
 

@@ -18,8 +18,8 @@ $view->title = "Games - uGame";
 $view->userWatchlist = Authentication::isLoggedOn() ? Authentication::User()->watchlist() : [];
 
 // Setup pagination
-$view->paginationView = new Pagination("games.php?", 30);
-$view->paginationView->setRecords(Post::all(2000));
+$view->paginationView = new Pagination("games.php?", 20);
+$view->paginationView->setRecords(Post::all(1000));
 $view->page = 1;
 
 if (isset($_GET["page"]) && $_GET["page"] <= $view->paginationView->totalPages()) {

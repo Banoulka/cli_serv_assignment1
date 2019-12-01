@@ -262,6 +262,11 @@ class User extends Model {
             unlink(realpath("../" . $this->display_pic));
         }
 
+        // Delete messages
+        parent::setCustomClassAndTable("", "user_messages");
+        parent::delete()->value("user_id_from", $this->id)->executeDelete();
+        parent::delete()->value("user_id_to", $this->id)->executeDelete();
+
         // Delete the user
         self::setClassAndTable();
         parent::deleteModel(["id" => $this->id]);
