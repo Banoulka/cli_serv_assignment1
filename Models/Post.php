@@ -279,6 +279,7 @@ class Post extends Model
 
         if (!empty($getReq["search"]) ) $titleSearch = true;
         if (isset($getReq["filters"]) && !empty($getReq["filters"]) ) $filterSearch = true;
+        if (!isset($getReq["sort-by"])) $getReq["sort-by"] = "relevance";
 
         // Add the filters back if their are none
         if (!$filterSearch) {
