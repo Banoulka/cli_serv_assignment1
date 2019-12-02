@@ -43,8 +43,13 @@
             <?php require_once "partials/pagination.phtml" ?>
         </div>
         <div class="d-none px-lg-0 px-xl-2 col-lg-4 d-lg-block">
-            <!-- TODO: Add dynamic sidebar-->
-            <?php require("partials/watchlist-sidebar.phtml") ?>
+            <?php
+                if (isset($_COOKIE["sidebar"]) && $_COOKIE["sidebar"] == "messages") {
+                    require("partials/messages-sidebar.phtml");
+                } else {
+                    require("partials/watchlist-sidebar.phtml");
+                }
+            ?>
         </div>
     </div>
 </div> <!-- Container end -->

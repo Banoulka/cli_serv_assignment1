@@ -162,10 +162,6 @@ class User extends Model {
         if (!self::isLiked($postID)) {
             parent::setCustomClassAndTable("", "post_likes");
             parent::insert()->value("user_id", $this->id)->value("post_id", $postID)->executeInsert();
-//            QueryBuilder::getInstance()->table("post_likes")->insert([
-//                "user_id" => $this->id,
-//                "post_id" => $postID
-//            ]);
 
             $postLiked = Post::find(["id" => $postID]);
 
@@ -375,19 +371,7 @@ class User extends Model {
     {
         // Get all messages with user id and user info,
         // Ordering by time
-//        $sql = "SELECT id as user_id, first_name, last_name, display_name, Messages.Messages, Messages.Unread, Messages.latest
-//                FROM (SELECT user_id_to, user_id_from, first_name, last_name, display_name, u.id, COUNT(u.id) as Messages, COUNT(case when `read` = 0 then 1 end) as Unread, MAX(timestamp) as latest
-//                      FROM user_messages
-//                           LEFT JOIN users u on user_messages.user_id_from = u.id
-//                      WHERE user_id_to = $this->id
-//                      GROUP BY u.id, user_id_from UNION SELECT user_id_to, user_id_from, first_name, last_name, display_name, u.id, 0 as Messages, 0 as Unread, 0 as latest
-//                      FROM user_messages
-//                          LEFT JOIN users u on user_messages.user_id_to = u.id
-//                      WHERE user_id_from = $this->id
-//                      GROUP BY user_id_to) as Messages
-//                GROUP BY id
-//                ORDER BY latest DESC;";
-        $sql = "SELECT id as user_id, ANY_VALUE(first_name) as first_name, ANY_VALUE(last_name) as last_name, ANY_VALUE(display_name) as display_name, ANY_VALUE(Messages.Messages) as Messages, ANY_VALUE(Messages.Unread) as Unread, MAX(Messages.latest) as latest
+        $sql = "SELECT id as user_id, first_name , last_name,  display_name, Messages.Messages as Messages, Messages.Unread as Unread, MAX(Messages.latest) as latest
                 FROM (SELECT user_id_to, user_id_from, first_name, last_name, display_name, u.id, COUNT(u.id) as Messages, COUNT(case when `read` = 0 then 1 end) as Unread, MAX(timestamp) as latest
                       FROM user_messages
                                LEFT JOIN users u on user_messages.user_id_from = u.id

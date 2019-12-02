@@ -7,7 +7,7 @@ class Authentication {
     private static $sessionID = "user";
     public static $err;
 
-    private static function logonUser(User $user)
+    public static function logonUser(User $user)
     {
         Session::setSession(self::$sessionID, serialize($user));
     }
@@ -16,6 +16,7 @@ class Authentication {
     {
         if (self::isLoggedOn()) {
             session_destroy();
+            if (isset($_COOKIE["a-login"])) unset($_COOKIE["a-login"]);
         }
     }
 

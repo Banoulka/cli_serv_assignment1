@@ -17,6 +17,10 @@ $light-grey-border: 1px solid #CBCBCB;
   color: #f01b1c;
 }
 
+.popover * {
+  z-index: 2020;
+}
+
 //  Watchlist ==================================================
 .watch-wrapper {
   z-index: 100;
@@ -1238,17 +1242,14 @@ $light-grey-border: 1px solid #CBCBCB;
       align-items: flex-end;
 
       .user-thumbnail {
-        margin-left: 1.7em;
-        margin-bottom: .2em;
-        margin-right: auto;
+        margin-bottom: .8em;
       }
 
       .sent-icon {
         font-size: 1.2rem;
         color: $dark-blue-text;
-        margin-left: 1.2em;
         margin-bottom: .6em;
-        margin-right: auto;
+        margin-right: .2em;
       }
     }
 
@@ -1270,6 +1271,7 @@ $light-grey-border: 1px solid #CBCBCB;
       &.self {
         background-color: $dark-blue-text;
         color: white;
+        align-items: flex-end;
         margin-right: .7em;
 
         .m-date {
@@ -1353,4 +1355,8 @@ $light-grey-border: 1px solid #CBCBCB;
       background-color: $dark-blue-text;
     }
   }
+}
+
+.toast {
+  z-index: 500;
 }

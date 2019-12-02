@@ -19,7 +19,7 @@ if (isset($_POST["user_id"]) && Authentication::isLoggedOn()) {
 
     if (isset($_POST["list"])) {
         $user_id = $_POST["user_id"];
-        Route::redirect("/users/profile.php?tab=messages&list=$user_id");
+        Route::redirect("/users/profile.php?tab=messages&list=$user_id#messages");
     } else {
         FlashMessager::addMessage("Successfully messaged " . $user->name(), "primary", ["> $message"]);
         Route::redirect("/users/view.php?id=$user->id");

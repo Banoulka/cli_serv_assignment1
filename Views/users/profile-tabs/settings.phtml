@@ -1,0 +1,23 @@
+<div class="col-12">
+    <h3 class="profile-name mb-3">Settings</h3>
+
+    <form action="<?= $_SERVER["PHP_SELF"]; ?>" method="post">
+        <div class="form-group row">
+            <label for="sidebar" class="col-sm-4 col-form-label">Sidebar:</label>
+            <div class="col-sm-8">
+                <select name="sidebar" id="sidebar" class="form-control">
+                    <option value="watchlist" <?= isset($_COOKIE["sidebar"]) &&
+                        $_COOKIE["sidebar"] == "watchlist" ? "selected" : "" ?>>Watchlist</option>
+                    <option value="messages" <?= isset($_COOKIE["sidebar"]) &&
+                        $_COOKIE["sidebar"] == "messages" ? "selected" : "" ?>>Messages</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-12">
+                <p class="text-info">Some other settings to come...</p>
+            </div>
+        </div>
+        <button type="submit" name="settingsChange" class="btn dprim-btn-filled">Save</button>
+    </form>
+</div>

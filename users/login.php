@@ -5,7 +5,7 @@ spl_autoload_register(function ($className) {
     require_once "../Models/lib/" . $className . ".php";
 });
 
-if (Authentication::isLoggedOn() ) {
+if (Authentication::isLoggedOn()) {
     Route::redirect("../games.php");
 }
 
@@ -21,6 +21,17 @@ if ($_SERVER["HTTP_REFERER"] != $currentURL) {
     $cameFrom = Session::getSession("referer");
 }
 
+if (isset($_COOKIE["a-login"])) {
+    $id = $_COOKIE["a-login"];
+    $user = User::find(["id" => $id]);
+
+    if ($user) {
+        Authentication::logonUser($user);
+        Route::redirect($cameFrom);
+        return;
+    }
+}
+
 if (isset($_POST["submit"])) {
     $email = htmlentities($_POST["email"]);
     $password = htmlentities($_POST["password"]);
@@ -33,6 +44,13 @@ if (isset($_POST["submit"])) {
     if (Authentication::validateAndLogonUser($email, $password)) {
         // If logon redirct to referer
         Session::removeSession("referer");
+
+        // Check if the remember me is ticked
+        if ($_POST["rememberMe"] == "on") {
+            // Set the cookie to remember login
+            setcookie("a-login", Authentication::User()->id, time()+60*60*24*30*12, "/");
+        }
+
         Route::redirect($cameFrom);
     } else {
         $view->errors = Authentication::$err;

@@ -25,9 +25,8 @@ if (isset($_POST["submit"])) {
     $user->display_pic = null;
 
     // If there is a file to upload, process it
-    if (!empty($_FILES["display_pic"][0])) {
+    if (!empty($_FILES["display_pic"]["name"])) {
         $imageFileType =  strtolower(pathinfo($_FILES["display_pic"]["name"], PATHINFO_EXTENSION ));
-
         $targetDir = "../uploads/profile_pictures/";
         $userFileName = "user-$user->id.$imageFileType";
         $targetFile = $targetDir . $userFileName;

@@ -13,23 +13,23 @@
     <?php foreach ($messages as $message) : ?>
         <?php if ($message->own) : ?>
             <div class="msg-container self">
+                <div class="msg self">
+                    <p class="m-body m-0"><?= $message->body ?></p>
+                    <span class="text-muted m-date small"><?= Helpers::getTimeSinceMin($message->timestamp);  ?></span>
+                </div>
                 <?php if ($message == end($messages) && $message->read) : ?>
                     <img src="<?= Helpers::printIfExternal($userFrom->display_pic) ?>" alt="profile picture" class="user-thumbnail tiny">
                 <?php elseif ($message == end($messages)) : ?>
                     <i class="fas fa-check-circle sent-icon"></i>
                 <?php endif; ?>
-                <div class="msg self">
-                    <p class="m-body m-0"><?= $message->body ?></p>
-                    <span class="text-muted m-date small"><?= Helpers::getTimeSinceMin($message->timestamp);  ?></span>
-                </div>
             </div>
         <?php else :  ?>
             <div class="msg-container">
+                <img src="<?= Helpers::printIfExternal($userFrom->display_pic) ?>" alt="profile picture" class="user-thumbnail ml-2">
                 <div class="msg">
                     <p class="m-body m-0"><?= $message->body ?></p>
                     <span class="text-muted m-date small"><?= Helpers::getTimeSinceMin($message->timestamp);  ?></span>
                 </div>
-                <img src="<?= Helpers::printIfExternal($userFrom->display_pic) ?>" alt="profile picture" class="user-thumbnail mr-3">
             </div>
         <?php endif; ?>
     <?php endforeach; ?>

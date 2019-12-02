@@ -1,0 +1,23 @@
+<div class="col-12 profile-posts">
+    <h3 class="profile-name mb-3">Watchlist</h3>
+
+    <?php foreach (Authentication::User()->watchlist() as $post) : ?>
+        <div class="prof-post row">
+            <div class="col-12 col-sm-6 col-lg-8">
+                <a href="../../posts/view.php?post_id=<?= $post->id; ?>">
+                    <h6><?= $post->title; ?></h6>
+                    <div class="extras">
+                        <span class="icon-count"><i class="far fa-thumbs-up"></i><?= $post->likesCount(); ?></span>
+                        <span class="icon-count"><i class="fas fa-eye"></i><?= $post->watchCount(); ?></span>
+                        <span class="icon-count"><i class="far fa-comment-dots"></i><?= $post->commentCount(); ?></span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4 d-flex flex-row justify-content-start align-items-center mt-2 mt-sm-0">
+                <form action="<?= $_SERVER["PHP_SELF"]; ?>?tab=watchlist&post_id=<?= $post->id; ?>" method="post">
+                    <button type="submit" name="postUnsubscribe" class="btn btn-outline-danger btn-sm">Unsubscribe</button>
+                </form>
+            </div>
+        </div>
+    <?php endforeach; ?>
+</div>

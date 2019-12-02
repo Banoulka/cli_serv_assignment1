@@ -200,6 +200,7 @@ body {
 }
 
 .popover {
+    z-index: 9999;
     box-shadow: 10px 5px 15px #dcdcdc;
     font-family: "Montserrat", sans-serif !important;
 }

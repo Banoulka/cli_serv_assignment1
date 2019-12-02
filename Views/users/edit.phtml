@@ -48,6 +48,13 @@
     </div>
 </div>
 
+<script>
+    $(".custom-file-input").on("change", function() {
+        var fileName = $(this).val().split("\\").pop();
+        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+    });
+</script>
+
 <div class="modal fade" tabindex="-1" role="dialog" id="deleteProfileModal" style="border: 15px solid rgba(255,39,35,0.7);">
     <div class="modal-dialog" role="document">
         <div class="modal-content">

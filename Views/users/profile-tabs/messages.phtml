@@ -24,7 +24,7 @@
         </div>
 
         <!--List Messages For Each User-->
-        <div class="col-8 p-0 message-display-area d-flex flex-column">
+        <div class="col-8 p-0 message-display-area d-flex flex-column" id="messages">
             <div class="tab-content" id="content">
                 <?php foreach ($messageInfo as $info) : ?>
                     <div class="tab-pane fade show full <?= !is_null($user_id) && $user_id == $info->user_id ? "active" : "" ?>" id="list-<?= $info->user_id ?>" role="tabpanel" aria-labelledby="list-<?= $info->user_id ?>">
