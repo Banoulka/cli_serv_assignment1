@@ -19,15 +19,15 @@ Client Server System
     - [x] Check Size
     - [x] Compress
 - [x] Capatcha System
-- [ ] Dynamic Sidebar
-- [ ] Profile Tabs
+- [x] Dynamic Sidebar
+- [x] Profile Tabs
     - [x] Messages
         - [x] Messages Display
         - [x] List Messages
         - [x] Send Messages
         - [x] Read Messages 
-    - [ ] Watchlist
-    - [ ] Settings
+    - [x] Watchlist
+    - [x] Settings
 - [ ] Posts
     - [x] Edit Post
     - [x] Delete Post
