@@ -1025,6 +1025,14 @@ $light-grey-border: 1px solid #CBCBCB;
       font-size: 0.8rem;
       padding: 0.3em;
       min-width: 60px;
+
+      &.reply-popover {
+        display: none;
+        top: 11em;
+        right: 8em;
+
+        &.show {display: block;}
+      }
     }
   }
 }

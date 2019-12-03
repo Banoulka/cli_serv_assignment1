@@ -63,3 +63,5 @@ Client Server System
     - [ ] Limit rows and only get
           posts that are needed
     - [ ] Change pagination SQL
+- [ ] Post Replies
+    - [ ] Recursive replies

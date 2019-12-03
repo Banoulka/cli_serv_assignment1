@@ -60,7 +60,6 @@ if (isset($_GET["post_id"])) {
         $announce->body = htmlentities($_POST["announcement"]);
         $announce->save();
         Route::redirect("view.php?post_id=$postID#comments");
-
     }
 
     require_once "../views/posts/view.phtml";

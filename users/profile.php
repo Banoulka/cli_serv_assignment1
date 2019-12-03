@@ -10,8 +10,6 @@ spl_autoload_register(
 // Require authentication to get to this page
 require_once "../auth.php";
 
-session_destroy();
-
 $view = new stdClass();
 $view->title = Authentication::User()->name() . " - uGame";
 $view->pageName = "profile";

@@ -1,7 +1,5 @@
 <?php
 
-require_once "Helpers.php";
-
 class Pagination
 {
 
@@ -21,7 +19,7 @@ class Pagination
 
     public function __construct($view, $recordsPerPage)
     {
-        $this->view = BASEURL . "/" . $view;
+        $this->view = "/" . $view;
         $this->recordsPerPage = $recordsPerPage;
     }
 

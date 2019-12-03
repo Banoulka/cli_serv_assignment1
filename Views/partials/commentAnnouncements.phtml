@@ -17,22 +17,31 @@
 
         <?php foreach ($post->comments() as $announcement) : ?>
         <?php if ($announcement instanceof Comment) : ?>
+            <?php $commentOwner = $announcement->user() ?>
             <div class="comment">
             <div class="row">
                 <div class="col-3">
                     <div class="image">
-                        <img src="<?= Helpers::printIfExternal($announcement->user()->display_pic); ?>" alt="" class="comment-pic">
+                        <img src="<?= Helpers::printIfExternal($commentOwner->display_pic); ?>" alt="" class="comment-pic">
                     </div>
                 </div>
                 <div class="col-9">
                     <div class="commentinfo">
-                        <a href="../../users/view.php?id=<?= $announcement->user()->id; ?>" class="comment-user"><?= $announcement->user()->name();?></a>
+                        <a href="../../users/view.php?id=<?= $commentOwner->id; ?>" class="comment-user"><?= $commentOwner->name();?></a>
                         <p class="comment-body"><?= $announcement->body; ?></p>
                         <div class="extra">
                             <?php if (Authentication::isLoggedOn()) : ?>
-                                <button class="dprim-btn dprim-btn-filled reply">Reply</button>
+                                <button class="dprim-btn dprim-btn-filled reply-btn" role="button" id="<?= $announcement->id ?>">Reply</button>
+                                <div class="popover reply reply-popover" id="reply-<?= $announcement->id ?>">
+                                    <form action="<?= $_SERVER["PHP_SELF"] ?>" method="post">
+                                        <div class="d-flex flex-column justify-content-center p-3">
+                                            <textarea class="msg-box form-control" name="message" placeholder="Enter Reply..."></textarea>
+                                            <input type="text" class="hidden" name="comment_id" value="<?= $announcement->id ?>" readonly>
+                                            <button type="submit" name="sendReply" class="mt-3 dprim-btn dprim-btn-outline">Send</button>
+                                        </div>
+                                    </form>
+                                </div>
                             <?php endif; ?>
-<!--                            <span class="likes"><i class="far fa-thumbs-up ml-3"></i><?//= $announcement->likesCount(); ?></span>-->
                             <span class="time-info ml-auto"><?= Helpers::getTimeSinceMin($announcement->timestamp); ?></span>
                             <?php if (Authentication::isLoggedOn() && $announcement->isOwner(Authentication::User())) : ?>
                                 <form class="ml-3" method="post" action="<?= $_SERVER["PHP_SELF"]; ?>?post_id=<?= $post->id ?>&comment_id=<?= $announcement->id; ?>">
@@ -91,3 +100,18 @@
             <?php endif; endforeach; ?>
     </div>
 </div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        $(".reply-btn").on("click", function() {
+            let replies = $(".reply-popover");
+            let id = "reply-" + this.id;
+            replies.each(function(index) {
+                if (this.id !== id)
+                    $(this).slideUp(250);
+            });
+            $("#reply-"+this.id).slideToggle(500);
+        });
+    });
+</script>
