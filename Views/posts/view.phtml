@@ -14,6 +14,14 @@
                 <a href="../../users/view.php?id=<?= $post->user()->id; ?>">
                     <p class="game-author"><?= $post->user()->name(); ?></p>
                 </a>
+                <div class="price d-flex flex-row align-items-center">
+                    <h5 class="text-danger m-0"><?= Helpers::displayBalance($post->price) ?></h5>
+                    <?php if (Authentication::isLoggedOn() && Authentication::User() != $view->owner) : ?>
+                    <form method="post" action="<?= $_SERVER["PHP_SELF"] ?>?post_id=<?= $post->id ?>">
+                        <button type="submit" name="buyGame" class="btn btn-success btn-sm ml-3">Buy</button>
+                    </form>
+                    <?php endif; ?>
+                </div>
                 <p class="game-desc"><?= $post->description ?></p>
                 <div class="game-body">
                     <p><?= $post->body; ?></p>

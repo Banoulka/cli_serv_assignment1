@@ -10,6 +10,7 @@ require_once "Comment.php";
  * @property-read int time
  * @property-read int id
  * @property int user_id
+ * @property int price
  * @property string title
  * @property string type_stage
  * @property string body
@@ -41,13 +42,14 @@ class Post extends Model
         // Construct with attributes
         parent::__construct(
             [
-            "user_id",
-            "title",
-            "description",
-            "body",
-            "cover_image",
-            "time",
-            "type_stage",
+                "user_id",
+                "title",
+                "description",
+                "body",
+                "cover_image",
+                "time",
+                "type_stage",
+                "price",
             ]
         );
     }

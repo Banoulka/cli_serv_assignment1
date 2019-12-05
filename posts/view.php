@@ -60,6 +60,13 @@ if (isset($_GET["post_id"])) {
         $announce->body = htmlentities($_POST["announcement"]);
         $announce->save();
         Route::redirect("view.php?post_id=$postID#comments");
+    } else if (isset($_POST["buyGame"])) {
+        if (Authentication::User()->buyGame($_GET["post_id"])) {
+            FlashMessager::addMessage("Successfully bought game", "success");
+        } else {
+            FlashMessager::addMessage("Could not afford game", "danger");
+        }
+        Authentication::refresh();
     }
 
     require_once "../views/posts/view.phtml";

@@ -13,6 +13,7 @@ require_once "Notification.php";
  * @property string bio
  * @property string password
  * @property-read int id
+ * @property int balance
  *
  * */
 class User extends Model {
@@ -36,6 +37,7 @@ class User extends Model {
             "display_pic",
             "bio",
             "password",
+            "balance"
         ]);
     }
 
@@ -266,6 +268,29 @@ class User extends Model {
         // Delete the user
         self::setClassAndTable();
         parent::deleteModel(["id" => $this->id]);
+    }
+
+    public function buyGame($id): bool
+    {
+        $game = Post::find(["id" => $id]);
+        $owner = $game->user();
+        if ($game->price > $this->balance) {
+            // Cannot buy
+            return false;
+        }
+        $owner->balance += $game->price;
+        $owner->save();
+
+        $this->balance -= $game->price;
+        $this->save();
+
+        $notification = new Notification();
+        $notification->type = Notification::BUY_TO_USER_GAME;
+        $notification->user_id_from = Authentication::User()->id;
+        $notification->user_id_to = $owner->id;
+        $notification->link = "/posts/view.php?post_id=$id";
+        $notification->save();
+        return true;
     }
 
     // Relationships

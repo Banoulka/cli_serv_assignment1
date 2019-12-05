@@ -230,7 +230,7 @@ abstract class Model {
             if (is_numeric($attValue))
                 $sql .= "$attKey = $attValue";
             else
-                $sql .= "$attKey = '$attValue'";
+                $sql .= "$attKey = \"$attValue\"";
 
             // Check if at the end of the attributes
             if ($attKey != $lastKey)
@@ -239,11 +239,14 @@ abstract class Model {
         $key = array_keys($whereKeyValArr)[0];
         $value = array_values($whereKeyValArr)[0];
 
-        $sql .= " WHERE $key = '$value';";
+        if (is_numeric($value)) {
+            $sql .= " WHERE $key = $value;";
+        } else {
+            $sql .= " WHERE $key = '$value';";
+        }
 
         $stmt = self::db()->prepare($sql);
         $completed = $stmt->execute();
-
 
         // Display errors if there are any (shouldnt be if i can program right)
         if(!is_null($stmt->errorInfo()[2]))

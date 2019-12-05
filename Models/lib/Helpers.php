@@ -163,4 +163,14 @@ class Helpers {
             die($e);
         }
     }
+
+    public static function displayBalance(int $balance)
+    {
+        $pounds = floor($balance / 100);
+        $pence = round($balance % 100, 0, PHP_ROUND_HALF_UP);
+        if ($pence < 10) {
+            $pence = "0" . $pence;
+        }
+        return "£$pounds.$pence";
+    }
 }

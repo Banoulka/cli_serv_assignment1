@@ -50,6 +50,7 @@ class Authentication {
     public static function refresh()
     {
         $refreshedUser = User::findByEmail(self::User()->email);
+        Session::removeSession(self::$sessionID);
         Session::setSession(self::$sessionID, serialize($refreshedUser));
     }
 }

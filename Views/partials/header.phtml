@@ -40,14 +40,12 @@
                 <a href="../trending.php" class="nav-item nav-link <?= $view->pageName != "trending" ?: "active-link" ?>">Trending</a>
                 <a href="../search.php" class="nav-item nav-link <?= $view->pageName != "search" ?: "active-link" ?>">Search</a>
             </div>
-            <div class="search">
-                <form action="" class="d-flex justify-content-center align-items-center">
-                    <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-secondary search-button" type="submit"><i class="fas fa-search"></i></button>
-                </form>
-            </div>
             <?php if (Authentication::isLoggedOn()) : ?>
                 <!-- USER LOGGED IN -->
+                <div class="balance d-flex flex-row align-items-center justify-content-center">
+                    <i class="far fa-money-bill-alt mr-2"></i>
+                    <p class="m-0">Balance: <span class="text-info"><?= Helpers::displayBalance(Authentication::User()->balance) ?></span></p>
+                </div>
                 <div class="user d-inline">
                     <div class="text-center">
                         <a href="../users/profile.php?tab=details" class="m-0 username text-body <?php Helpers::echoActive($view->pageName, "profile") ?>" data-toggle="tooltip" data-placement="bottom" title="Profile">

@@ -12,6 +12,21 @@ class DataReader
         $this->_dbHandler = Database::getInstance()->getdbConnection();
     }
 
+    public function randomisePostPrice()
+    {
+        $sql = "SELECT * FROM posts WHERE price > 12000";
+        $posts = $this->_dbHandler->query($sql)->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Post");
+        $count = count($posts);
+        echo "about to change $count posts <br/>";
+        foreach ($posts as $post) {
+            $post->price = rand(100, 12000);
+            $post->save();
+        }
+
+
+        echo "success - $count posts changed";
+    }
+
     public function randomizePostTime($numberPosts = -1)
     {
         $posts = Post::all($numberPosts);

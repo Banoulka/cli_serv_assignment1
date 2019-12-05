@@ -29,6 +29,7 @@ class Notification extends Model implements Comparable
     const UPLOAD_BY_FOLLOWED = "upload-by-followed";
     const WATCHLIST_UPDATE = "watchlist-update";
     const COMMENT_TO_USER_POST = "comment-to-user-post";
+    const BUY_TO_USER_GAME = "buy-to-user-game";
 
     // Set the class and table of the model
 
@@ -140,6 +141,8 @@ class Notification extends Model implements Comparable
             return "replied to your comment.";
         case self::COMMENT_TO_USER_POST:
             return "commented on your post.";
+        case self::BUY_TO_USER_GAME:
+            return "just bought your game!";
         default:
             return "nill type";
         }
@@ -162,6 +165,8 @@ class Notification extends Model implements Comparable
         case self::REPLY_TO_USER_COMMENT:
         case self::COMMENT_TO_USER_POST:
             return "fas fa-comment-dots";
+        case self::BUY_TO_USER_GAME:
+            return "fas fa-coins";
         default:
             return "";
         }
