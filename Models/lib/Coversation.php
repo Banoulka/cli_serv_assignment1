@@ -9,6 +9,7 @@ class Coversation
     {
         $this->userMe = Authentication::User();
         $this->userFrom = User::find(["id" => $userIdFrom]);
+        $this->userFrom->display_pic = Helpers::printIfExternal($this->userFrom->display_pic);
     }
 
     public function getMessages()
@@ -21,7 +22,15 @@ class Coversation
                 WHERE (user_id_from = $userFromID AND user_id_to = $userToID)
                 OR (user_id_to = $userFromID AND user_id_from = $userToID)
                 ORDER BY timestamp;";
-        return Database::getInstance()->getdbConnection()->query($sql)->fetchAll(PDO::FETCH_OBJ);
+
+        $messages = Database::getInstance()->getdbConnection()->query($sql)->fetchAll(PDO::FETCH_OBJ);
+        array_map(function($msg){
+            $msg->own = $msg->own == "1" ? true : false;
+            $msg->timestamp = Helpers::getTimeSinceMin($msg->timestamp);
+            $msg->read = $msg->read == "1" ? true : false;
+        }, $messages);
+
+        return $messages;
     }
 
     public static function markReadMessages($userIDTo)

@@ -42,12 +42,10 @@
                 </div>
             </div>
             <div class="d-flex flex-row m-0 message-area align-items-start mt-auto bottom">
-                <form action="/messages/create.php" method="post" class="d-block w-100" id="send-message">
+                <form method="post" class="d-block w-100" id="send-message">
                     <textarea class="message-input" rows="1" name="message" placeholder="Type a message..." id="msg-input"></textarea>
-                    <input type="hidden" name="user_id" value="<?= $user_id ?? "" ?>" id="u-id" readonly>
-                    <input type="hidden" name="list" readonly>
                 </form>
-                <button onclick="document.getElementById('send-message').submit();" class="ml-auto message-submit"><i class="far fa-paper-plane"></i></button>
+                <button id="sendMessage" class="ml-auto message-submit"><i class="far fa-paper-plane"></i></button>
             </div>
         </div>
     </div>
@@ -65,6 +63,7 @@
         let channelName = null;
         let toUserId = null;
         let typing = false;
+        let otherTyping = false;
 
         let pusher = new Pusher("8f49b51adc7ccf8e85a4", {
             cluster: "eu",
@@ -72,59 +71,105 @@
         });
         
         $(".list-group-item").click(function() {
+            // If the user is not the current selected user
             if (toUserId !== this.id) {
+
+                // Reset the message box, set the user to not typing and
+                // get the to users' id
                 document.getElementById("msg-input").value = "";
                 typing = false;
                 toUserId = this.id;
 
+                // Fade out the typing indicator as it is a new user
                 $("#type-indicator").fadeOut();
-                console.log(`pusher, started listening on <messages-${state.user.id}>`);
+
+                // console.log(`pusher, started listening on <messages-${state.user.id}>`);
+                // If the app is currently already listening for changes, unsubscribe and
+                // subscribe to a new message channel
                 if (channelName) {
                     pusher.unsubscribe(channelName);
                 }
                 channelName = `msg-to-${state.user.id}-from-${toUserId}`;
                 let channel = pusher.subscribe(channelName);
 
-
+                // Listen for the typing from event and respond
                 channel.bind("other-type", function(data) {
                     let indicator = $("#type-indicator");
-                    console.log(data);
+                    // console.log(data);
+
+                    // If the user is typing, fade in the little typing
+                    // indicator, otherwise fade out
                     if (data.typing) {
                         indicator.fadeIn().css("display", "table");
-                        console.log("pusher, other user typing!!");
+
+                        // Scroll down so that the indicator is visible
+                        otherTyping = true;
+                        scrollToContent();
                     } else {
+
+                        // User has stopped typing, fade out the indicator
+                        otherTyping = false;
                         indicator.fadeOut();
-                        console.log("pusher, other user stopped typing!!!");
                     }
                 });
 
-                // Get the actual messages
+                // Listen for the new message event
+                channel.bind("new-msg", function(data) {
+                    $("#type-indicator").fadeOut();
+                    $("#sent-icon").remove();
+
+                    let htmlString = `
+                        <div class="msg-container">
+                            <img src="${data.userFrom.display_pic}" alt="profile picture" class="user-thumbnail ml-2">
+                            <div class="msg">
+                                <p class="m-body m-0">${data.message.body}</p>
+                                <span class="text-muted m-date small">${data.message.timestamp}</span>
+                            </div>
+                        </div>
+                    `;
+
+                    $("#msg-content").append(htmlString);
+                    scrollToContent();
+                });
+
+                // Get the actual messages and display them
                 getMessages();
             }
         });
 
         $("#msg-input").focus(() => {
             // On focus
-            console.log("focus");
+            // console.log("focus");
             $(document).on("keyup", handleKeyDown);
         });
 
         $("#msg-input").blur(() => {
             // On unfocus
-            console.log("unfocus");
+            // console.log("unfocus");
             $(document).off("keyup", handleKeyDown);
         });
 
         async function handleKeyDown(e) {
             // Send typing to server
-            let value = document.getElementById("msg-input").value;
+            const messageBox = document.getElementById("msg-input");
 
+            // If there is no user id set, bail
             if (!toUserId) {
                 return;
             }
 
-            if (!typing && value) {
-                console.log("typing");
+            if (e.key === "Enter" && messageBox.value !== "") {
+                const messageSent = await sendMessage();
+                scrollToContent();
+                return;
+            }
+
+            // If the user has not started typing and there is a value in the box
+            // Send the new typing request to the server,
+            // Checking this prevents sending the new request everytime a key is pressed
+            if (!typing && messageBox.value) {
+                // console.log("typing");
+                // URL form encoded string with the from and typing attribute
                 let body = `from=${state.user.id}&typing=true`;
                 typing = true;
 
@@ -136,10 +181,12 @@
                     body: body
                 });
                 const json = await res.json();
-                console.log(json);
+                // console.log(json);
 
-            } else if (typing && !value) {
-                console.log("stopped typing");
+            } else if (typing && !messageBox.value) {
+                // If the user is currently typing but there is no values left in the
+                // box, the user has stopped typing, send the requests
+                // console.log("stopped typing");
                 let body = `from=${state.user.id}&typing=false`;
                 typing = false;
 
@@ -153,13 +200,6 @@
                 const json = await res.json();
                 console.log(json);
             }
-
-
-            if (e.key === "Enter") {
-                e.preventDefault();
-                console.log("send message");
-                // $("#send-message").submit();
-            }
         }
 
         let messages = {};
@@ -168,33 +208,115 @@
             const loading = $("#loading");
             const messageDisplay = $("#messageDisplay");
 
+            // Fade in the loading indicator and fade out any current message
+            // displays
             messageDisplay.fadeOut();
             loading.fadeIn();
 
+            // Set the messageDisplay to nothing, delete any previous messages
             messageDisplay[0].innerHTML = "";
 
+
+            // Fetch the conversation array from the server
             const res = await fetch(`../requests/messages/conversation/${toUserId}`);
             const json = await res.json();
+
+            // Get the data as well as any other data
             messages = json.messages;
+            let userFrom = json.userFrom;
+            let displayName = userFrom.display_name || userFrom.first_name + " " + userFrom.last_name;
+            console.log(json);
 
-            messageDisplay.fadeIn();
-            loading.fadeOut();
 
+            // Construct the messages
+            let htmlString = `
+                <div class="message d-flex flex-column" id="msg-content">
+                    <div class="message-header sticky-top text-center">
+                        <a href="view.php?id=${userFrom.id}">${displayName}</a>
+                    </div>
+            `;
             for (let message of messages) {
-                let htmlString = "";
                 if (message.own) {
                     // Message is own
+                    htmlString += `
+                        <div class="msg-container self">
+                            <div class="msg self">
+                                <p class="m-body m-0">${message.body}</p>
+                                <span class="text-muted m-date small">${message.timestamp}</span>
+                            </div>
+                    `;
+
+                    if (messages.indexOf(message) === messages.length-1 && message.read) {
+                        htmlString += `<img src="${userFrom.display_pic}" alt="profile picture" class="user-thumbnail tiny" id="sent-icon">`;
+                    } else if (messages.indexOf(message) === messages.length-1) {
+                        htmlString += `<i class="fas fa-check-circle sent-icon" id="sent-icon"></i>`;
+                    }
+
+                    htmlString += "</div>";
 
                 } else {
                     // Message is from other user
-
+                    htmlString += `
+                        <div class="msg-container">
+                            <img src="${userFrom.display_pic}" alt="profile picture" class="user-thumbnail ml-2">
+                            <div class="msg">
+                                <p class="m-body m-0">${message.body}</p>
+                                <span class="text-muted m-date small">${message.timestamp}</span>
+                            </div>
+                        </div>
+                    `;
                 }
-                messageDisplay.append(htmlString);
             }
+            htmlString += "</div>";
+            messageDisplay.append(htmlString);
 
+            // Fade in the messages and fade out the loading symbol
+            messageDisplay.fadeIn();
+            loading.fadeOut();
+
+            scrollToContent();
+        }
+
+        function scrollToContent(){
             // Scroll down to messages
             let content = $("#content");
             content.scrollTop(content.prop("scrollHeight"));
+        }
+
+        async function sendMessage() {
+            const messageBox = document.getElementById("msg-input");
+            let message = messageBox.value.trim();
+
+            $("#sent-icon").remove();
+            let htmlString = `
+                        <div class="msg-container self">
+                            <div class="msg self">
+                                <p class="m-body m-0">${message}</p>
+                                <span class="text-muted m-date small">now</span>
+                            </div>
+                            <i class="fas fa-check-circle sent-icon" id="sent-icon"></i>
+                        </div>
+                    `;
+            $("#msg-content").append(htmlString);
+
+            // Remove the messageBox value
+            messageBox.value = "";
+            let body = `to=${toUserId}&from=${state.user.id}&message=${message}&read=${otherTyping}`;
+
+            // Add the new message client side
+            const res = await fetch("../requests/messages/new", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: body,
+            });
+            const json = await res.json();
+            console.log(json);
+            if (json.message.read) {
+                $("#sent-icon").replaceWith(`<img src="${json.userTo.display_pic}" alt="profile picture" class="user-thumbnail tiny" id="sent-icon">`);
+            }
+            return json.message;
         }
 
     }, false)
