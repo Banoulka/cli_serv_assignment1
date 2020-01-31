@@ -10,7 +10,7 @@
         <div class="col-4 p-0">
             <div class="list-group" id="messages-tab" role="tablist">
                 <?php foreach ($messageInfo as $info) : ?>
-                    <a href="#loading" id="<?= $info->user_id ?>" class="list-group-item list-group-item-action <?= !is_null($user_id) && $user_id == $info->user_id ? "active" : "" ?>" data-toggle="list" role="tab">
+                    <a href="#" id="<?= $info->user_id ?>" class="list-group-item list-group-item-action <?= !is_null($user_id) && $user_id == $info->user_id ? "active" : "" ?>" data-toggle="list" role="tab">
                         <div class="d-flex flex-row">
                             <h6 class="m-0"><?= $info->display_name ?? $info->first_name . " " . $info->last_name ?></h6>
                             <?php if ($info->Unread > 0) : ?>
@@ -26,13 +26,14 @@
         <!--List Messages For Each User-->
         <div class="col-8 p-0 message-display-area d-flex flex-column" id="messages">
             <div class="tab-content" id="content">
-                <?php foreach ($messageInfo as $info) : ?>
-                    <div class="tab-pane fade show full <?= !is_null($user_id) && $user_id == $info->user_id ? "active" : "" ?>" id="list-<?= $info->user_id ?>" role="tabpanel" aria-labelledby="list-<?= $info->user_id ?>">
-                        <?php $mDisplay->user_id_from = "$info->user_id";
-                        include "../Views/partials/messages-display.phtml" ?>
-                    </div>
-                <?php endforeach; ?>
-                <div class="tab-pane fade show full" id="loading" role="tabpanel" aria-labelledby="loading">
+                <div class="tab-pane fade show" id="messageDisplay">
+                </div>
+                <div class="typing-indicator hide" id="type-indicator">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="tab-pane fade show full" id="loading">
                     <div class="d-flex justify-content-center align-items-center h-100">
                         <div class="spinner-border text-primary spin" role="status">
                             <span class="sr-only">Loading...</span>
@@ -52,37 +53,149 @@
     </div>
 </div>
 
-<form action="/messages/markRead.php" class="hidden" id="read-message" method="post">
-    <input type="hidden" name="user_id" id="read_user" value="">
-</form>
 
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("DOMContentLoaded", async () => {
+        const state = {};
+        // Send request to get user
+        const res = await fetch("../requests/auth/me");
+        const json = await res.json();
+        state.user = json.user;
+
+        let channelName = null;
+        let toUserId = null;
+        let typing = false;
+
+        let pusher = new Pusher("8f49b51adc7ccf8e85a4", {
+            cluster: "eu",
+            forceTLS: true,
+        });
+        
         $(".list-group-item").click(function() {
-            $("#read_user")[0].value = this.id;
-            $("#read-message").submit();
+            if (toUserId !== this.id) {
+                document.getElementById("msg-input").value = "";
+                typing = false;
+                toUserId = this.id;
+
+                $("#type-indicator").fadeOut();
+                console.log(`pusher, started listening on <messages-${state.user.id}>`);
+                if (channelName) {
+                    pusher.unsubscribe(channelName);
+                }
+                channelName = `msg-to-${state.user.id}-from-${toUserId}`;
+                let channel = pusher.subscribe(channelName);
+
+
+                channel.bind("other-type", function(data) {
+                    let indicator = $("#type-indicator");
+                    console.log(data);
+                    if (data.typing) {
+                        indicator.fadeIn().css("display", "table");
+                        console.log("pusher, other user typing!!");
+                    } else {
+                        indicator.fadeOut();
+                        console.log("pusher, other user stopped typing!!!");
+                    }
+                });
+
+                // Get the actual messages
+                getMessages();
+            }
         });
 
         $("#msg-input").focus(() => {
             // On focus
             console.log("focus");
-            $(document).on("keydown", enterClick);
+            $(document).on("keyup", handleKeyDown);
         });
 
         $("#msg-input").blur(() => {
-            // On focus
+            // On unfocus
             console.log("unfocus");
-            $(document).off("keydown", enterClick);
+            $(document).off("keyup", handleKeyDown);
         });
 
-        let content = $("#content");
-        content.scrollTop(content.prop("scrollHeight"));
+        async function handleKeyDown(e) {
+            // Send typing to server
+            let value = document.getElementById("msg-input").value;
 
-        function enterClick(e) {
+            if (!toUserId) {
+                return;
+            }
+
+            if (!typing && value) {
+                console.log("typing");
+                let body = `from=${state.user.id}&typing=true`;
+                typing = true;
+
+                const res = await fetch(`../requests/Messages/typing/${toUserId}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: body
+                });
+                const json = await res.json();
+                console.log(json);
+
+            } else if (typing && !value) {
+                console.log("stopped typing");
+                let body = `from=${state.user.id}&typing=false`;
+                typing = false;
+
+                const res = await fetch(`../requests/Messages/typing/${toUserId}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: body
+                });
+                const json = await res.json();
+                console.log(json);
+            }
+
+
             if (e.key === "Enter") {
                 e.preventDefault();
-                $("#send-message").submit();
+                console.log("send message");
+                // $("#send-message").submit();
             }
         }
+
+        let messages = {};
+
+        async function getMessages() {
+            const loading = $("#loading");
+            const messageDisplay = $("#messageDisplay");
+
+            messageDisplay.fadeOut();
+            loading.fadeIn();
+
+            messageDisplay[0].innerHTML = "";
+
+            const res = await fetch(`../requests/messages/conversation/${toUserId}`);
+            const json = await res.json();
+            messages = json.messages;
+
+            messageDisplay.fadeIn();
+            loading.fadeOut();
+
+            for (let message of messages) {
+                let htmlString = "";
+                if (message.own) {
+                    // Message is own
+
+                } else {
+                    // Message is from other user
+
+                }
+                messageDisplay.append(htmlString);
+            }
+
+            // Scroll down to messages
+            let content = $("#content");
+            content.scrollTop(content.prop("scrollHeight"));
+        }
+
     }, false)
 </script>

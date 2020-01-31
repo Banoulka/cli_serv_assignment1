@@ -1,5 +1,8 @@
 <?php
 
+// Vendor packages
+require_once "../vendor/autoload.php";
+
 session_start();
 spl_autoload_register(
     function ($className) {

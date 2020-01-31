@@ -1368,3 +1368,63 @@ $light-grey-border: 1px solid #CBCBCB;
 .toast {
   z-index: 500;
 }
+
+.typing-indicator {
+  $ti-color-bg: #E6E7ED;
+  background-color: white;
+  will-change: transform;
+  width: auto;
+  border-radius: 50px;
+  padding: 10px;
+  display: table;
+  margin: 10px 65px;
+  position: relative;
+  animation: 2s bulge infinite ease-out;
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: -4px;
+    height: 14px;
+    width: 14px;
+    border-radius: 50%;
+    background-color: white;
+  }
+  &::after {
+    height: 8px;
+    width: 8px;
+    left: -10px;
+    bottom: -10px;
+  }
+  span {
+    height: 8px;
+    width: 8px;
+    float: left;
+    margin: 0 1px;
+    background-color: #9E9EA1;
+    display: block;
+    border-radius: 50%;
+    opacity: 0.4;
+    @for $i from 1 through 3 {
+      &:nth-of-type(#{$i}) {
+        animation: 1s blink infinite ($i * .3333s);
+      }
+    }
+  }
+  &.hide {
+    display: none;
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes bulge {
+  50% {
+    transform: scale(1.05);
+  }
+}

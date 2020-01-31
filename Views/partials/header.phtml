@@ -24,8 +24,15 @@
     <link rel="stylesheet" href="../css/styles.css" type="text/css">
     <link rel="stylesheet" href="../css/sassStyles.css" type="text/css">
 
+    <script src="https://js.pusher.com/5.0/pusher.min.js"></script>
+
 </head>
 <body>
+
+<script>
+    Pusher.logToConsole = true;
+</script>
+
 
 <nav class="navbar <?php if(strcmp($view->pageName, "index")) echo "navbar-expand-lg" ?> navbar-light shadow mb-4">
     <div class="container my-auto">

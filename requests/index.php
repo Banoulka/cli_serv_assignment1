@@ -2,7 +2,8 @@
 
 require_once "./Core.php";
 require_once "./Controller.php";
-
+require_once "../vendor/autoload.php";
+session_start();
 spl_autoload_register(function ($className) {
     $file = "./controllers/$className.php";
     if (!file_exists($file)) {
