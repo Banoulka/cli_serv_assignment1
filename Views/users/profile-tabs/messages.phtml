@@ -55,7 +55,7 @@
 <script>
     document.addEventListener("DOMContentLoaded", async () => {
         const state = {};
-        // Send request to get user
+        // Send request to get user on loading
         const res = await fetch("../requests/auth/me");
         const json = await res.json();
         state.user = json.user;
@@ -115,9 +115,15 @@
 
                 // Listen for the new message event
                 channel.bind("new-msg", function(data) {
+                    // Fade out any typing as assume the other user has sent the message
                     $("#type-indicator").fadeOut();
+                    otherTyping = false;
+
+                    // Remove the sent icon from any messages and next one is
+                    // from another user
                     $("#sent-icon").remove();
 
+                    // Construct the message div
                     let htmlString = `
                         <div class="msg-container">
                             <img src="${data.userFrom.display_pic}" alt="profile picture" class="user-thumbnail ml-2">
@@ -158,6 +164,8 @@
                 return;
             }
 
+            // If the enter key is pressed and there is a message to send,
+            // SEND IT YO, wait, and then scroll to content
             if (e.key === "Enter" && messageBox.value !== "") {
                 const messageSent = await sendMessage();
                 scrollToContent();
@@ -221,11 +229,13 @@
             const res = await fetch(`../requests/messages/conversation/${toUserId}`);
             const json = await res.json();
 
-            // Get the data as well as any other data
+            // Get the data as well as any other data that is needed
             messages = json.messages;
             let userFrom = json.userFrom;
+
+            // Display name or if not available, fname + sname
             let displayName = userFrom.display_name || userFrom.first_name + " " + userFrom.last_name;
-            console.log(json);
+            // console.log(json);
 
 
             // Construct the messages
@@ -246,6 +256,8 @@
                             </div>
                     `;
 
+                    // If the message is the last message AND
+                    // it has been read, add the avatar, otherwise add a sent icon
                     if (messages.indexOf(message) === messages.length-1 && message.read) {
                         htmlString += `<img src="${userFrom.display_pic}" alt="profile picture" class="user-thumbnail tiny" id="sent-icon">`;
                     } else if (messages.indexOf(message) === messages.length-1) {
@@ -255,7 +267,7 @@
                     htmlString += "</div>";
 
                 } else {
-                    // Message is from other user
+                    // Message is from other user, avatar and timestamp
                     htmlString += `
                         <div class="msg-container">
                             <img src="${userFrom.display_pic}" alt="profile picture" class="user-thumbnail ml-2">
@@ -267,6 +279,8 @@
                     `;
                 }
             }
+
+            // End the container and append the string
             htmlString += "</div>";
             messageDisplay.append(htmlString);
 
@@ -287,6 +301,9 @@
             const messageBox = document.getElementById("msg-input");
             let message = messageBox.value.trim();
 
+            // Remove the sent icon from the old messages and
+            // append the new message classes with the body and now
+            // BEFORE THE REQUEST
             $("#sent-icon").remove();
             let htmlString = `
                         <div class="msg-container self">
@@ -300,10 +317,11 @@
             $("#msg-content").append(htmlString);
 
             // Remove the messageBox value
+            // Set the form-encoded body
             messageBox.value = "";
             let body = `to=${toUserId}&from=${state.user.id}&message=${message}&read=${otherTyping}`;
 
-            // Add the new message client side
+            // Send a new request to add the message to the database
             const res = await fetch("../requests/messages/new", {
                 method: "POST",
                 headers: {
@@ -312,7 +330,9 @@
                 body: body,
             });
             const json = await res.json();
-            console.log(json);
+            // console.log(json);
+
+            // If the message has already been read, replace the sent icon with the display picture
             if (json.message.read) {
                 $("#sent-icon").replaceWith(`<img src="${json.userTo.display_pic}" alt="profile picture" class="user-thumbnail tiny" id="sent-icon">`);
             }
