@@ -7,6 +7,11 @@
     <div class="row">
         <div class="col-4 p-0">
             <div class="list-group" id="messages-tab" role="tablist">
+                <div class="d-flex justify-content-center align-items-center p-5" style="margin-top: 250px;" id="loadSlimfo">
+                    <div class="spinner-grow text-dark" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -14,6 +19,7 @@
         <div class="col-8 p-0 message-display-area d-flex flex-column" id="messages">
             <div class="tab-content" id="content">
                 <div class="tab-pane fade show" id="messageDisplay">
+
                 </div>
                 <div class="typing-indicator hide" id="type-indicator">
                     <span></span>
@@ -47,39 +53,12 @@
         const json = await res.json();
         state.user = json.user;
 
-        await displaySlimfos();
-
-        async function displaySlimfos() {
-            const sres = await fetch("../requests/messages/slimfo");
-            const sjson = await sres.json();
-            state.slimfo = sjson.info;
-
-            $("#messages-tab")[0].innerHTML = "";
-            const messagesTab = $("#messages-tab");
-            for (let info of state.slimfo) {
-                let displayName = info.display_name || info.first_name + " " + info.last_name;
-
-                let htmlString = `
-                    <a href="#" id="${info.user_id}" class="list-group-item list-group-item-action" data-toggle="list" role="tab">
-                        <div class="d-flex flex-row">
-                            <h6 class="m-0">${displayName}</h6>`;
-
-                if (info.Unread > 0) {
-                    htmlString += `<span class="badge badge-warning ml-auto">${info.Unread}</span>`
-                }
-                htmlString += `
-                        </div>
-                        <p class="small text-muted m-0 mt-3 message-display-date">${info.latest}</p>
-                    </a>`;
-                messagesTab.append(htmlString);
-            }
-            setupListeners();
-        }
-
         let channelName = null;
         let toUserId = null;
         let typing = false;
         let otherTyping = false;
+
+        await displaySlimfos();
 
         let pusher = new Pusher("8f49b51adc7ccf8e85a4", {
             cluster: "eu",
@@ -352,6 +331,7 @@
                         </div>
                     `;
             $("#msg-content").append(htmlString);
+            scrollToContent();
 
             // Remove the messageBox value
             // Set the form-encoded body
@@ -372,7 +352,38 @@
             if (json.message.read) {
                 $("#sent-icon").replaceWith(`<img src="${json.userTo.display_pic}" alt="profile picture" class="user-thumbnail tiny" id="sent-icon">`);
             }
+            await displaySlimfos();
             return json.message;
+        }
+
+        async function displaySlimfos() {
+            const sres = await fetch("../requests/messages/slimfo");
+            const sjson = await sres.json();
+            state.slimfo = sjson.info;
+
+            $("#messages-tab")[0].innerHTML = "";
+            const messagesTab = $("#messages-tab");
+            for (let info of state.slimfo) {
+                let displayName = info.display_name || info.first_name + " " + info.last_name;
+
+                let htmlString = `
+                    <a href="#" id="${info.user_id}" class="list-group-item list-group-item-action" data-toggle="list" role="tab">
+                        <div class="d-flex flex-row">
+                            <h6 class="m-0">${displayName}</h6>`;
+
+                if (info.Unread > 0) {
+                    htmlString += `<span class="badge badge-warning ml-auto">${info.Unread}</span>`
+                }
+                htmlString += `
+                        </div>
+                        <p class="small text-muted m-0 mt-3 message-display-date">${info.latest}</p>
+                    </a>`;
+                messagesTab.append(htmlString);
+                if (toUserId === info.user_id) {
+                    $(`#${info.user_id}`)[0].classList.add("active");
+                }
+            }
+            setupListeners();
         }
 
     }, false)
