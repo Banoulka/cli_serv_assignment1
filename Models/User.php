@@ -409,6 +409,9 @@ class User extends Model {
                 GROUP BY id
                 ORDER BY latest DESC;";
         $results = self::db()->query($sql, PDO::FETCH_OBJ)->fetchAll();
+        foreach ($results as $result) {
+            $result->latest = Helpers::getTimeSince($result->latest);
+        }
         return $results;
     }
 

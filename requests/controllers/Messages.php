@@ -20,6 +20,16 @@ class Messages extends Controller
         $this->send(200, $data);
     }
 
+    public function read($id) {
+        Coversation::markReadMessages($id);
+    }
+
+    public function slimfo() {
+        $data = new stdClass();
+        $data->info = Authentication::User()->messageSlimfo();
+        $this->send(200, $data);
+    }
+
     public function new() {
         $userFrom = $_POST["from"];
         $userTo = $_POST["to"];
@@ -57,7 +67,15 @@ class Messages extends Controller
             $data->userTo = User::find(["id" => $userTo]);
             $data->userTo->display_pic = Helpers::printIfExternal($data->userTo->display_pic);
 
+            $data->message->read = $data->message->read == 1 ? true : false;
+
+            // Local message instance
             Pusher::getInstance()->trigger("msg-to-$userTo-from-$userFrom", "new-msg", $data);
+
+            // Global message instance
+            $gData = new stdClass();
+            $gData->userFrom = $data->userFrom->id;
+            Pusher::getInstance()->trigger("msg-to-$userTo", "new-msg", $gData);
             $this->send(201, $data);
 
         } else {

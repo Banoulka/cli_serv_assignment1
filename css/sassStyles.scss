@@ -1225,7 +1225,7 @@ $light-grey-border: 1px solid #CBCBCB;
     overflow-y: scroll;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
-    z-index: 5000;
+    z-index: 200;
 
     // Custom scrollbar
     &::-webkit-scrollbar { width: 5px; height: 40%; }

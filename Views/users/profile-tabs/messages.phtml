@@ -1,7 +1,5 @@
 <?php
     $messageInfo = Authentication::User()->messageSlimfo();
-    $mDisplay = new stdClass();
-    $user_id = $_GET["list"] ?? null;
 ?>
 <div class="col-12">
     <h3 class="profile-name mb-3">Messages</h3>
@@ -9,17 +7,6 @@
     <div class="row">
         <div class="col-4 p-0">
             <div class="list-group" id="messages-tab" role="tablist">
-                <?php foreach ($messageInfo as $info) : ?>
-                    <a href="#" id="<?= $info->user_id ?>" class="list-group-item list-group-item-action <?= !is_null($user_id) && $user_id == $info->user_id ? "active" : "" ?>" data-toggle="list" role="tab">
-                        <div class="d-flex flex-row">
-                            <h6 class="m-0"><?= $info->display_name ?? $info->first_name . " " . $info->last_name ?></h6>
-                            <?php if ($info->Unread > 0) : ?>
-                                <span class="badge badge-warning ml-auto"><?= $info->Unread ?></span>
-                            <?php endif; ?>
-                        </div>
-                        <p class="small text-muted m-0 mt-3 message-display-date"><?= Helpers::getTimeSince($info->latest) ?></p>
-                    </a>
-                <?php endforeach; ?>
             </div>
         </div>
 
@@ -43,7 +30,7 @@
             </div>
             <div class="d-flex flex-row m-0 message-area align-items-start mt-auto bottom">
                 <form method="post" class="d-block w-100" id="send-message">
-                    <textarea class="message-input" rows="1" name="message" placeholder="Type a message..." id="msg-input"></textarea>
+                    <textarea class="message-input" rows="1" name="message" placeholder="Type a message..." id="msg-input" disabled></textarea>
                 </form>
                 <button id="sendMessage" class="ml-auto message-submit"><i class="far fa-paper-plane"></i></button>
             </div>
@@ -60,6 +47,35 @@
         const json = await res.json();
         state.user = json.user;
 
+        await displaySlimfos();
+
+        async function displaySlimfos() {
+            const sres = await fetch("../requests/messages/slimfo");
+            const sjson = await sres.json();
+            state.slimfo = sjson.info;
+
+            $("#messages-tab")[0].innerHTML = "";
+            const messagesTab = $("#messages-tab");
+            for (let info of state.slimfo) {
+                let displayName = info.display_name || info.first_name + " " + info.last_name;
+
+                let htmlString = `
+                    <a href="#" id="${info.user_id}" class="list-group-item list-group-item-action" data-toggle="list" role="tab">
+                        <div class="d-flex flex-row">
+                            <h6 class="m-0">${displayName}</h6>`;
+
+                if (info.Unread > 0) {
+                    htmlString += `<span class="badge badge-warning ml-auto">${info.Unread}</span>`
+                }
+                htmlString += `
+                        </div>
+                        <p class="small text-muted m-0 mt-3 message-display-date">${info.latest}</p>
+                    </a>`;
+                messagesTab.append(htmlString);
+            }
+            setupListeners();
+        }
+
         let channelName = null;
         let toUserId = null;
         let typing = false;
@@ -69,62 +85,82 @@
             cluster: "eu",
             forceTLS: true,
         });
-        
-        $(".list-group-item").click(function() {
-            // If the user is not the current selected user
-            if (toUserId !== this.id) {
 
-                // Reset the message box, set the user to not typing and
-                // get the to users' id
-                document.getElementById("msg-input").value = "";
-                typing = false;
-                toUserId = this.id;
+        let notifChannel = pusher.subscribe(`msg-to-${state.user.id}`);
+        notifChannel.bind("new-msg", (data) => {
+            console.log("new message from " + data.userFrom);
+            if (toUserId !== data.userFrom) {
+                displaySlimfos();
+            }
+            let audio = new Audio("../sounds/message.wav");
+            audio.play();
+        });
 
-                // Fade out the typing indicator as it is a new user
-                $("#type-indicator").fadeOut();
+        function setupListeners() {
+            $(".list-group-item").click(function() {
+                $("#msg-input").removeAttr("disabled");
 
-                // console.log(`pusher, started listening on <messages-${state.user.id}>`);
-                // If the app is currently already listening for changes, unsubscribe and
-                // subscribe to a new message channel
-                if (channelName) {
-                    pusher.unsubscribe(channelName);
-                }
-                channelName = `msg-to-${state.user.id}-from-${toUserId}`;
-                let channel = pusher.subscribe(channelName);
+                // If the user is not the current selected user
+                if (toUserId !== this.id) {
 
-                // Listen for the typing from event and respond
-                channel.bind("other-type", function(data) {
-                    let indicator = $("#type-indicator");
-                    // console.log(data);
-
-                    // If the user is typing, fade in the little typing
-                    // indicator, otherwise fade out
-                    if (data.typing) {
-                        indicator.fadeIn().css("display", "table");
-
-                        // Scroll down so that the indicator is visible
-                        otherTyping = true;
-                        scrollToContent();
-                    } else {
-
-                        // User has stopped typing, fade out the indicator
-                        otherTyping = false;
-                        indicator.fadeOut();
-                    }
-                });
-
-                // Listen for the new message event
-                channel.bind("new-msg", function(data) {
-                    // Fade out any typing as assume the other user has sent the message
-                    $("#type-indicator").fadeOut();
+                    // Reset the message box, set the user to not typing and
+                    // get the to users' id
+                    document.getElementById("msg-input").value = "";
+                    typing = false;
+                    toUserId = this.id;
                     otherTyping = false;
 
-                    // Remove the sent icon from any messages and next one is
-                    // from another user
-                    $("#sent-icon").remove();
+                    // Remove the unread badges
+                    $(`#${toUserId} .badge`).remove();
 
-                    // Construct the message div
-                    let htmlString = `
+                    // Send all the read messages to the server
+                    fetch(`../requests/messages/read/${toUserId}`);
+
+                    // Fade out the typing indicator as it is a new user
+                    $("#type-indicator").fadeOut();
+
+                    // console.log(`pusher, started listening on <messages-${state.user.id}>`);
+                    // If the app is currently already listening for changes, unsubscribe and
+                    // subscribe to a new message channel
+                    if (channelName) {
+                        pusher.unsubscribe(channelName);
+                    }
+                    channelName = `msg-to-${state.user.id}-from-${toUserId}`;
+                    let channel = pusher.subscribe(channelName);
+
+                    // Listen for the typing from event and respond
+                    channel.bind("other-type", function(data) {
+                        let indicator = $("#type-indicator");
+                        // console.log(data);
+
+                        // If the user is typing, fade in the little typing
+                        // indicator, otherwise fade out
+                        if (data.typing) {
+                            indicator.fadeIn().css("display", "table");
+
+                            // Scroll down so that the indicator is visible
+                            otherTyping = true;
+                            scrollToContent();
+                        } else {
+
+                            // User has stopped typing, fade out the indicator
+                            otherTyping = false;
+                            indicator.fadeOut();
+                        }
+                    });
+
+                    // Listen for the new message event
+                    channel.bind("new-msg", function(data) {
+                        // Fade out any typing as assume the other user has sent the message
+                        $("#type-indicator").fadeOut();
+                        otherTyping = false;
+
+                        // Remove the sent icon from any messages and next one is
+                        // from another user
+                        $("#sent-icon").remove();
+
+                        // Construct the message div
+                        let htmlString = `
                         <div class="msg-container">
                             <img src="${data.userFrom.display_pic}" alt="profile picture" class="user-thumbnail ml-2">
                             <div class="msg">
@@ -134,14 +170,15 @@
                         </div>
                     `;
 
-                    $("#msg-content").append(htmlString);
-                    scrollToContent();
-                });
+                        $("#msg-content").append(htmlString);
+                        scrollToContent();
+                    });
 
-                // Get the actual messages and display them
-                getMessages();
-            }
-        });
+                    // Get the actual messages and display them
+                    getMessages();
+                }
+            });
+        }
 
         $("#msg-input").focus(() => {
             // On focus
@@ -166,7 +203,7 @@
 
             // If the enter key is pressed and there is a message to send,
             // SEND IT YO, wait, and then scroll to content
-            if (e.key === "Enter" && messageBox.value !== "") {
+            if (e.key === "Enter" && messageBox.value.trim() !== "") {
                 const messageSent = await sendMessage();
                 scrollToContent();
                 return;
@@ -330,7 +367,6 @@
                 body: body,
             });
             const json = await res.json();
-            // console.log(json);
 
             // If the message has already been read, replace the sent icon with the display picture
             if (json.message.read) {
