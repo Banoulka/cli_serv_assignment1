@@ -66,8 +66,11 @@
         });
 
         let notifChannel = pusher.subscribe(`msg-to-${state.user.id}`);
-        notifChannel.bind("new-msg", (data) => {
+        notifChannel.bind("new-msg", data => {
             console.log("new message from " + data.userFrom);
+            // Update the slimfos if the user is currently looking at
+            // somebody elses messages, there to put recent messages at the top
+            // like a real app
             if (toUserId !== data.userFrom) {
                 displaySlimfos();
             }
@@ -77,6 +80,7 @@
 
         function setupListeners() {
             $(".list-group-item").click(function() {
+                // Allow the users to start writing in the text box
                 $("#msg-input").removeAttr("disabled");
 
                 // If the user is not the current selected user
@@ -108,7 +112,7 @@
                     let channel = pusher.subscribe(channelName);
 
                     // Listen for the typing from event and respond
-                    channel.bind("other-type", function(data) {
+                    channel.bind("other-type", data => {
                         let indicator = $("#type-indicator");
                         // console.log(data);
 
@@ -129,7 +133,7 @@
                     });
 
                     // Listen for the new message event
-                    channel.bind("new-msg", function(data) {
+                    channel.bind("new-msg", data => {
                         // Fade out any typing as assume the other user has sent the message
                         $("#type-indicator").fadeOut();
                         otherTyping = false;
@@ -301,8 +305,8 @@
             messageDisplay.append(htmlString);
 
             // Fade in the messages and fade out the loading symbol
-            messageDisplay.fadeIn();
             loading.fadeOut();
+            messageDisplay.fadeIn();
 
             scrollToContent();
         }
@@ -361,8 +365,9 @@
             const sjson = await sres.json();
             state.slimfo = sjson.info;
 
-            $("#messages-tab")[0].innerHTML = "";
             const messagesTab = $("#messages-tab");
+            messagesTab[0].innerHTML = "";
+
             for (let info of state.slimfo) {
                 let displayName = info.display_name || info.first_name + " " + info.last_name;
 

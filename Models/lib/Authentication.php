@@ -15,8 +15,9 @@ class Authentication {
     public static function logout()
     {
         if (self::isLoggedOn()) {
+            if (isset($_COOKIE["a-login"]))
+                setcookie("a-login", "", time() - 1, "/");
             session_destroy();
-            if (isset($_COOKIE["a-login"])) unset($_COOKIE["a-login"]);
         }
     }
 

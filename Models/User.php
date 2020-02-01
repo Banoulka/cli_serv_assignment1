@@ -224,6 +224,9 @@ class User extends Model {
             ->value("body", $message)
             ->value("timestamp", $now->getTimestamp())
             ->executeInsert();
+        $data = new stdClass();
+        $data->userFrom = $user->id;
+        Pusher::getInstance()->trigger("msg-to-$user->id", "new-msg", $data);
     }
 
     public function destroy()
