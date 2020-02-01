@@ -8,39 +8,12 @@
                 <span class="minified-checkbox"></span><span>Minified View?</span>
             </label>
             <div class="posts">
-                <?php foreach ($view->posts as $post) : ?>
-                    <?php if ($post instanceof Post) : ?>
-                    <a href="../posts/view.php?post_id=<?= $post->id ?>" class="post-reg">
-                        <div class="rows d-flex">
-                            <div class="row">
-                                <div class="col-5">
-                                    <img src="<?= Authentication::isLoggedOn() ? $post->cover_image : "../../uploads/post_covers/cover-hidden.jpg" ?>" alt="" class="game-cover">
-                                </div>
-                                <div class="col-7 min">
-                                    <h3 class="post-title"><?= substr($post->title, 0, 33); ?></h3>
-                                    <p class="author"><?= $post->user()->name(); ?></p>
-                                    <p class="content"><?= $post->description; ?></p>
-                                    <div class="tags">
-                                        <?php foreach ($post->tags() as $tag) : ?>
-                                            <p class="tag"><?= $tag->title; ?></p>
-                                        <?php endforeach; ?>
-                                    </div>
-                                </div>
-                                <div class="row extras">
-                                    <span class="likes"><i class="far fa-thumbs-up"></i><?= $post->likesCount(); ?></span>
-                                    <span class="watches"><i class="fas fa-eye"></i><?= $post->watchCount(); ?></span>
-                                    <span class="comments"><i class="far fa-comment-dots"></i><?= $post->commentCount(); ?></span>
-                                    <span class="ml-3"><?= $post->getTimeSince(); ?></span>
-                                </div>
-                            </div>
-                            <div class="post-colour"><span class="<?= $post->type_stage; ?>"></span></div>
-                        </div>
-                    </a>
-                    <?php endif; ?>
-                <?php endforeach; ?>
             </div>
-            <!-- Get the pagination -->
-            <?php require_once "partials/pagination.phtml" ?>
+            <div class="d-flex justify-content-center align-items-center">
+                <div id="loader" class="spinner-border text-primary p-3" role="status" style="display: none; margin-right: 30%">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
         </div>
         <div class="d-none px-lg-0 px-xl-2 col-lg-4 d-lg-block">
             <?php
@@ -53,5 +26,90 @@
         </div>
     </div>
 </div> <!-- Container end -->
+
+<script>
+    document.addEventListener("DOMContentLoaded", async () => {
+            const loader = $("#loader");
+            const postsContainer = $(".posts");
+
+            const ures = await fetch("../requests/auth/me");
+            const ujson = await ures.json();
+            let loading = true;
+
+            const user = ujson.user;
+            let offset = 0;
+
+            // Get the trending posts
+            await getTrendingPost();
+
+            async function getTrendingPost() {
+                toggleLoader(true);
+                const res = await fetch(`../requests/Posts/trending/${offset}`);
+                const data = await res.json();
+                console.log(data);
+
+                offset++;
+                for (let post of data.posts) {
+                    let displayName = post.user.display_name || post.user.first_name + " " + post.user.last_name;
+                    let displayPicture = user ? post.cover_image : "../../uploads/post_covers/cover-hidden.jpg";
+
+                    let htmlString = `
+                        <a href="../posts/view.php?post_id=${post.id}" class="post-reg">
+                            <div class="rows d-flex">
+                                <div class="row">
+                                    <div class="col-5">
+                                        <img src="${displayPicture}" alt="" class="game-cover">
+                                    </div>
+                                    <div class="col-7 min">
+                                        <h3 class="post-title">${post.title}</h3>
+                                        <p class="author">${displayName}</p>
+                                        <p class="content">${post.description}</p>
+                                        <div class="tags">`;
+                    for (let tag of post.tags) {
+                        htmlString += `    <p class="tag">${tag.title}</p>`;
+                    }
+                    htmlString += `
+                                        </div>
+                                    </div>
+                                    <div class="row extras">
+                                        <span class="likes"><i class="far fa-thumbs-up"></i>${post.likeCount }</span>
+                                        <span class="watches"><i class="fas fa-eye"></i>${post.watchCount}</span>
+                                        <span class="comments"><i class="far fa-comment-dots"></i>${post.commentCount}</span>
+                                        <span class="ml-3">${post.time}</span>
+                                    </div>
+                                </div>
+                                <div class="post-colour"><span class="${post.type_stage}"></span></div>
+                            </div>
+                        </a>
+                    `;
+                    postsContainer.append(htmlString);
+                }
+                toggleLoader(false);
+            }
+
+            function toggleLoader(bool) {
+                if (bool) {
+                    loading = true;
+                    loader.fadeIn();
+                }
+                else {
+                    loading = false;
+                    loader.fadeOut();
+                }
+            }
+
+            document.addEventListener("scroll", handleScroll);
+
+            function handleScroll() {
+                if (!loading && offset) {
+                    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+                    if (scrollTop + clientHeight >= scrollHeight - 500) {
+                        // Start loading more posts
+                        getTrendingPost();
+                    }
+                }
+            }
+    }, false)
+</script>
 
 <?php require_once "partials/footer.phtml" ?>

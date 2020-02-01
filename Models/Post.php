@@ -7,7 +7,7 @@ require_once "Comparable.php";
 require_once "Comment.php";
 
 /**
- * @property-read int time
+ * @property int time
  * @property-read int id
  * @property int user_id
  * @property int price
@@ -254,7 +254,10 @@ class Post extends Model
         return count(parent::findAllByKey(["post_id" => $this->id]));
     }
 
-    public function likesCount()
+    /**
+     * @return int
+     */
+    public function likesCount(): int
     {
 //        parent::setCustomClassAndTable("", "post_likes");
 //        return count(parent::findAllByKey(["post_id" => $this->id]));
@@ -264,7 +267,7 @@ class Post extends Model
             ->count();
     }
 
-    public function commentCount()
+    public function commentCount(): int
     {
         parent::setCustomClassAndTable("Comment", "post_comments");
         return count(parent::findAllByKey(["post_id" => $this->id]));
@@ -375,19 +378,20 @@ class Post extends Model
     }
 
     /**
+     * @param $offset
      * @return Post[]
      */
-    public static function trending()
+    public static function trending($offset = 0)
     {
+        $offsetCount = $offset * 10;
         $sql = "SELECT posts.*,
-                   (COUNT(DISTINCT pl.user_id) +
-                    COUNT(DISTINCT pc.user_id)) AS Popularity
+                   COUNT(DISTINCT pl.user_id) AS Popularity
                 FROM posts
                     LEFT JOIN post_likes pl on posts.id = pl.post_id
-                    LEFT JOIN post_comments pc on posts.id = pc.post_id
                 GROUP BY 1
                 ORDER BY Popularity DESC
-                LIMIT 100";
+                LIMIT 10
+                OFFSET $offsetCount";
         return self::db()->query($sql)->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Post");
     }
 
