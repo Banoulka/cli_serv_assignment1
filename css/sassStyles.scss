@@ -1427,3 +1427,59 @@ $light-grey-border: 1px solid #CBCBCB;
     transform: scale(1.05);
   }
 }
+
+
+.load-bar {
+  width: 100%;
+  background-color: transparent;
+  height: 10px;
+  margin: 1em 8em 1em 0;
+  position: relative;
+  z-index: 10;
+
+  .inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 100%;
+    border-radius: 200px;
+    background-color: rgba(0, 0, 0, 0.25);
+    z-index: 20;
+    animation: spulge 1.4s ease-in infinite forwards;
+
+    &.ghost {
+      background-color: rgba(0, 0, 0, 0.1);
+      //background-color: red;
+      border-radius: 400px;
+      animation: spulge 1.4s linear infinite backwards;
+      animation-delay: 0.3s;
+      z-index: 15;
+      //animation: none;
+    }
+  }
+
+  @keyframes spulge {
+    0% {
+       left: 0;
+       width: 10px;
+     }
+
+    25% {
+      left: 30%;
+    }
+
+    50% {
+      width: 140px;
+    }
+
+    60% {
+      width: 80px;
+    }
+
+    100% {
+      left: 100%;
+      width: 4px;
+    }
+  }
+}
