@@ -1,14 +1,12 @@
 <?php
-    $userNotifs = Authentication::User()->recentNotifications();
+//    $userNotifs = Authentication::User()->recentNotifications();
 
-    $countUnread = 0;
-    foreach ($userNotifs as $notifs) { if (!$notifs->isRead()) $countUnread++; }
+//    $countUnread = 0;
+//    foreach ($userNotifs as $notifs) { if (!$notifs->isRead()) $countUnread++; }
 ?>
 
 <a tabindex="0" class="btn" data-toggle="popover" role="button"><i class="fas fa-bell"></i>
-    <?php if ($countUnread > 0) : ?>
-    <span class="badge badge-danger"><?= $countUnread; ?></span>
-    <?php endif; ?>
+    <span class="badge badge-danger" id="unread-count"></span>
 </a>
 
 <div id="notif-col" class="notif-col">
@@ -18,29 +16,130 @@
             <h6>Notifications</h6>
             <a href="#" class="ml-auto"><i class="fas fa-cog ml-1"></i></a>
         </div>
-        <div class="popover-body">
-            <?php if (count($userNotifs) == 0) :  ?>
-                <p class="text-muted pl-5">No notifications...</p>
-            <?php else : ?>
-                <?php foreach ($userNotifs as $notif) : ?>
-                    <a href="<?= BASEURL . $notif->link; ?>&notif_id=<?= $notif->id ?>" class="notification-link">
-                        <div class="notification d-flex flex-row align-items-center <?= $notif->isRead() ? "" : "notification-unread"; ?>">
-                            <img src="<?= Helpers::printIfExternal($notif->userFrom()->display_pic) ?>" class="notif-profile-pic" alt="">
-                            <p><span class="notif-profile-name"><?= $notif->userFrom()->name(); ?></span> <?= $notif->getMessage(); ?></p>
-                            <div class="time-icon">
-                                <i class="<?= $notif->getIconClass(); ?>"></i>
-                                <span class="time-text"><?= $notif->getTimeSince(); ?></span>
-                            </div>
-                        </div>
-                    </a>
-                <?php endforeach; ?>
-                <div class="px-2 py-3 text-center">
-                    <form action="<?= $_SERVER["PHP_SELF"] ?>" method="post">
-                        <button style="font-size: 1.1rem" name="addNotifLimit" class="btn btn-white text-info load-more">Load More...</button>
-                    </form>
-                </div>
-            <?php endif; ?>
+        <div class="popover-body" id="notif-scroll">
+            <div id="notif-list"></div>
+            <div id="notif-loader" class="load-bar mb-3">
+                <div class="inner"></div>
+                <div class="inner ghost"></div>
+            </div>
         </div>
         <!-- NOTIFICATIONS ENDS -->
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", async () => {
+
+        const notifLoader = $("#notif-loader");
+        const notifList = $("#notif-list");
+        const unreadCount = document.getElementById("unread-count");
+        let offset = 0;
+        let loading = true;
+        let unread = 0;
+        let loadMore = true;
+
+        let user = {};
+        const res = await fetch("../requests/auth/me");
+        const data = await res.json();
+        user = data.user;
+
+        await getNotifications();
+
+        let pusher = new Pusher("8f49b51adc7ccf8e85a4", {
+            cluster: "eu",
+            forceTLS: true,
+        });
+
+        let notifChannel = pusher.subscribe(`notif-to-${user.id}`);
+        notifChannel.bind("new-notif", data => {
+            let audio = new Audio("../sounds/message.wav");
+            audio.play();
+
+            let notif = data.notif;
+
+            // Add the notification to the list
+            let htmlString = `
+                    <a href="${notif.link}&notif_id=${notif.id}" class="notification-link">
+                        <div class="notification d-flex flex-row align-items-center notification-unread">
+                            <img src="${notif.user_from.display_pic}" class="notif-profile-pic" alt="">
+                            <p><span class="notif-profile-name">${notif.user_from.name}</span> ${notif.message}</p>
+                            <div class="time-icon">
+                                <i class="${notif.icon}"></i>
+                                <span class="time-text">${notif.time}</span>
+                            </div>
+                        </div>
+                    </a>`;
+
+            notifList.prepend(htmlString);
+
+            // Update the notifcation unread count
+            unread++;
+            unreadCount.innerText = unread > 99 ? "99+" : unread;
+        });
+
+
+        async function getNotifications() {
+            toggleNotifLoader(true);
+
+            const res = await fetch(`../requests/notifications/${offset}`);
+            const data = await res.json();
+            offset++;
+
+
+            let notifs = data.notifs;
+            if (notifs.length === 0) {
+                loadMore = false;
+                toggleNotifLoader(false);
+                return;
+            }
+
+            // Grab the notification array and count the unread messages
+            unread = notifs.reduce((count, item) => parseInt(item.isRead) === 0 ? count + 1 : count + 0, unread);
+
+            // Display the unread messages
+            unreadCount.innerText = unread > 99 ? "99+" : unread;
+
+            // Start displaying the string for each notification
+            notifs.forEach(notif => {
+                let unread = parseInt(notif.isRead) === 0 ? 'notification-unread' : '';
+                let htmlString = `
+                    <a href="${notif.link}&notif_id=${notif.id}" class="notification-link">
+                        <div class="notification d-flex flex-row align-items-center ${unread}">
+                            <img src="${notif.user_from.display_pic}" class="notif-profile-pic" alt="">
+                            <p><span class="notif-profile-name">${notif.user_from.name}</span> ${notif.message}</p>
+                            <div class="time-icon">
+                                <i class="${notif.icon}"></i>
+                                <span class="time-text">${notif.time}</span>
+                            </div>
+                        </div>
+                    </a>`;
+
+               notifList.append(htmlString);
+            });
+
+            toggleNotifLoader(false);
+        }
+
+        function toggleNotifLoader(bool) {
+            if (bool) {
+                loading = true;
+                notifLoader.fadeIn();
+            }
+            else {
+                loading = false;
+                notifLoader.fadeOut();
+            }
+        }
+
+        document.getElementById("notif-scroll").addEventListener("scroll", notifScroll);
+
+        function notifScroll(e) {
+            if (!loading && loadMore) {
+                const { scrollTop, scrollHeight, clientHeight } = this;
+                if (scrollTop > scrollHeight - clientHeight - 10) {
+                    getNotifications();
+                }
+            }
+        }
+    });
+</script>

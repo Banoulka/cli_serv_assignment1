@@ -1269,10 +1269,7 @@ $light-grey-border: 1px solid #CBCBCB;
       border-radius: 10px;
       align-items: flex-start;
       max-width: 75%;
-      margin-top: .7em;
-      margin-bottom: .7em;
-      margin-right: auto;
-      margin-left: 1.5em;
+      margin: .7em auto .7em 1.5em;
 
 
       &.self {
@@ -1430,12 +1427,16 @@ $light-grey-border: 1px solid #CBCBCB;
 
 
 .load-bar {
-  width: 100%;
+  width: 90%;
   background-color: transparent;
   height: 10px;
   margin: 1em 8em 1em 0;
   position: relative;
   z-index: 10;
+
+  &.hide {
+    opacity: 0;
+  }
 
   .inner {
     position: absolute;

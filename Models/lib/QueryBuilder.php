@@ -7,7 +7,7 @@ class QueryBuilder
     private static $instance = null;
 
     private $className, $tableName, $keyValueArr;
-    private $fetchAll, $orderby, $cention, $limit;
+    private $fetchAll, $orderby, $cention, $limit, $offset;
     private $stmt;
     private $sql;
 
@@ -91,8 +91,11 @@ class QueryBuilder
         if (!is_null($this->limit)) {
             $sql .= " LIMIT $this->limit";
         }
-//        var_dump($sql);
-//        die();
+
+        if (!is_null($this->offset)) {
+            $sql .= " OFFSET $this->offset";
+        }
+
         return self::db()->prepare($sql);
     }
 
@@ -171,6 +174,13 @@ class QueryBuilder
         $this->cention = $cention;
         return $this;
     }
+
+    public function offset($offset)
+    {
+        $this->offset = $offset;
+        return $this;
+    }
+
     public function getAll()
     {
         $stmt = $this->prepareSelect();
@@ -209,6 +219,7 @@ class QueryBuilder
         $this->orderby = null;
         $this->stmt = null;
         $this->limit = null;
+        $this->offset = null;
         $this->cention;
     }
 

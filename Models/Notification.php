@@ -71,6 +71,20 @@ class Notification extends Model implements Comparable
         $now = new DateTime();
         $this->time = $now->getTimestamp();
         parent::saveModel();
+
+        $notif = Notification::find(["id" => Database::getInstance()->getdbConnection()->lastInsertId()]);
+        $notif->user_from = User::find(["id" => $notif->user_id_from]);
+        $notif->user_from->name = $notif->user_from->name();
+        $notif->user_from->display_pic = Helpers::printIfExternal($notif->user_from->display_pic);
+        $notif->message = $notif->getMessage();
+        $notif->time = Helpers::getTimeSinceMin($notif->time);
+        $notif->icon = $notif->getIconClass();
+
+        $data = new stdClass();
+        $data->notif = $notif;
+
+        Pusher::getInstance()->trigger("notif-to-$notif->user_id_to", "new-notif", $data);
+
     }
 
     public function isRead(): bool
@@ -94,18 +108,24 @@ class Notification extends Model implements Comparable
     public static function all()
     {}
 
-    public static function allWithDataByID($userIDTo, $limit = 4000)
+    public static function allWithDataByID($userIDTo, $offset = 0, $limit = 10)
     {
         $notifs = QueryBuilder::getInstance()->table("user_notifications")
             ->fetchAs("Notification")->where("user_id_to", $userIDTo)
-            ->orderby("time", QueryBuilder::ORDER_DESC)->limit($limit)->getAll();
+            ->orderby("time", QueryBuilder::ORDER_DESC)->limit($limit)->offset($offset)->getAll();
 
         foreach ($notifs as $notif) {
 
             $notif->user_from = QueryBuilder::getInstance()->table("users")
                 ->fetchAs("User")->where("id", $notif->user_id_from)->first();
 
-            $notif->user_to = Authentication::User();
+            // Get the name and display picture
+            $notif->user_from->name = $notif->user_from->name();
+            $notif->user_from->display_pic = Helpers::printIfExternal($notif->user_from->display_pic);
+            $notif->message = $notif->getMessage();
+            $notif->time = Helpers::getTimeSinceMin($notif->time);
+            $notif->icon = $notif->getIconClass();
+//            $notif->user_to = Authentication::User();
         }
         return $notifs;
     }

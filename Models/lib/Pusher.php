@@ -1,6 +1,5 @@
 <?php
 
-
 class Pusher
 {
     protected static $instance = null;

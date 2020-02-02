@@ -327,12 +327,13 @@ class User extends Model {
     /**
      * Get all notifications to user
      *
+     * @param $offset
      * @return Notification[]
-     * */
-    public function notifications()
+     */
+    public function notifications($offset)
     {
         // TODO: add preloading
-        return Notification::allWithDataByID($this->id);
+        return Notification::allWithDataByID($this->id, $offset);
     }
 
     public function recentNotifications()
