@@ -415,6 +415,17 @@ class User extends Model {
         $results = self::db()->query($sql, PDO::FETCH_OBJ)->fetchAll();
         foreach ($results as $result) {
             $result->latest = Helpers::getTimeSince($result->latest);
+
+            $uFrom = $result->user_id;
+            $uTo = $this->id;
+
+            $sql = "SELECT body FROM user_messages
+                    WHERE (user_id_to = $uFrom
+                    AND user_id_from = $uTo)
+                    OR (user_id_from = $uFrom AND user_id_to = $uTo)
+                    ORDER BY timestamp DESC
+                    LIMIT 1";
+            $result->lmessage = self::db()->query($sql)->fetch(PDO::FETCH_COLUMN);
         }
         return $results;
     }

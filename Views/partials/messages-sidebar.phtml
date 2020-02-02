@@ -5,8 +5,52 @@
         </div>
 
         <div class="watchlist-sidebar-body-container">
-            <p>messages here</p>
+            <div id="messages">
+            </div>
         </div>
     </div>
     <a href="users/profile.php?tab=settings" class="sidebar-edit-link">Edit Your Sidebar</a>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", async () => {
+
+        const res = await fetch("../requests/auth/me");
+        const data = await res.json();
+        const user = data.user;
+
+        const messagesList = $("#messages");
+
+        if (user) {
+            await getSlimfo();
+        }
+
+        async function getSlimfo() {
+            const res = await fetch("../requests/messages/slimfo");
+            const json = await res.json();
+            const info = json.info;
+
+            info.forEach(item => {
+                // Destruct
+                let { display_name, first_name, last_name, lmessage, latest, Unread} = item;
+
+                let unread = parseInt(Unread) > 0 ? "unread" : "";
+               let displayName = !display_name ? first_name + " " + last_name : display_name;
+
+               let htmlString = `
+                   <div class="message ${unread}">
+                        <h2>${displayName}</h2>
+                        <p>${lmessage}</p>
+                        <small>${latest}</small>
+                    </div>
+               `;
+
+               messagesList.append(htmlString);
+
+            });
+        }
+
+        let loadingMessages = true;
+
+    });
+</script>
