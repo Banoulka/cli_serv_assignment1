@@ -67,11 +67,13 @@
 
         let notifChannel = pusher.subscribe(`msg-to-${state.user.id}`);
         notifChannel.bind("new-msg", data => {
-            console.log("new message from " + data.userFrom);
+            const { userFrom } = data;
+
+            console.log("new message from " + userFrom);
             // Update the slimfos if the user is currently looking at
             // somebody elses messages, there to put recent messages at the top
             // like a real app
-            if (toUserId !== data.userFrom) {
+            if (toUserId !== userFrom) {
                 displaySlimfos();
             }
             let audio = new Audio("../sounds/message.wav");
@@ -251,7 +253,7 @@
 
             // Get the data as well as any other data that is needed
             messages = json.messages;
-            let userFrom = json.userFrom;
+            let { userFrom } = json;
 
             // Display name or if not available, fname + sname
             let displayName = userFrom.display_name || userFrom.first_name + " " + userFrom.last_name;

@@ -28,6 +28,7 @@ $light-grey-border: 1px solid #CBCBCB;
   .watchlist-sidebar {
     max-height: 80vh;
     overflow-y: scroll;
+    overflow-x: hidden;
 
     &::-webkit-scrollbar {
       width: 7px;
@@ -1230,7 +1231,7 @@ $light-grey-border: 1px solid #CBCBCB;
     // Custom scrollbar
     &::-webkit-scrollbar { width: 5px; height: 40%; }
     &::-webkit-scrollbar-track { background: transparent; }
-    &::-webkit-scrollbar-thumb { background: white !important; border-radius: 100px; }
+    &::-webkit-scrollbar-thumb { background: $light-grey-text; border-radius: 100px; }
     &::-webkit-scrollbar-thumb:hover { background: rgba(85, 85, 85, 0.6); }
   }
 }
@@ -1486,67 +1487,110 @@ $light-grey-border: 1px solid #CBCBCB;
   }
 }
 
-#messages {
-  .message {
-    display: flex;
-    flex-direction: column;
-    background-color: white;
-    padding: 0.7em;
-    cursor: pointer;
-    transition: 0.2s all ease-in-out;
-    border-bottom: 1px solid #6e6e6e;
+.msg-sidebar {
 
-    h2 {
-      font-size: 1.2rem;
-    }
+  #messages {
+    overflow: hidden;
 
-    p {
+    .message {
+      display: flex;
+      flex-direction: column;
+      background-color: white;
+      padding: 0.7em;
+      cursor: pointer;
       transition: 0.2s all ease-in-out;
-      font-size: 0.8rem;
-      color: #a4a4a4;
-    }
+      border-bottom: 1px solid #6e6e6e;
+      opacity: 0;
+      transform: translateX(100%);
+      transition-duration: 0.75s;
+      transition-timing-function: cubic-bezier(0.75, -0.015, 0.565, 1.055);
+      transition-property: opacity, transform;
+      transition-delay: calc(0.02s * (var(--length) - (var(--index) + 1)));
 
-    small {
-      font-size: 0.6rem;
-      margin-top: 10px;
-      color: $dark-blue-text;
-    }
-
-    &.unread {
-      background-color: rgba(198, 218, 241, 0.53);
-
-      p {
-        color: #828282;
-      }
-
-      h2:after {
-        font-size: 1.5rem;
-        margin-left: 2em;
-        content: "*";
-        color: $dark-blue-text;
-      }
-    }
-
-    &:hover {
-      background-color: #efefef;
-
-      p {
-        color: #999999;
+      &.sm {
+        opacity: 1;
+        transform: translateX(0);
+        transition-delay: calc(0.08s * var(--index));
       }
 
       h2 {
-        color: #3b3b3b;
+        font-size: 1.2rem;
+      }
+
+      p {
+        transition: 0.2s all ease-in-out;
+        font-size: 0.8rem;
+        color: #a4a4a4;
+      }
+
+      small {
+        font-size: 0.6rem;
+        margin-top: 10px;
+        color: $dark-blue-text;
+      }
+
+      &.unread {
+        background-color: rgba(198, 218, 241, 0.53);
+
+        p {
+          color: #828282;
+        }
+
+        h2:after {
+          font-size: 1.5rem;
+          margin-left: 2em;
+          content: "*";
+          color: $dark-blue-text;
+        }
+      }
+
+      &:hover {
+        background-color: #efefef;
+
+        p {
+          color: #999999;
+        }
+
+        h2 {
+          color: #3b3b3b;
+        }
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+      }
+    }
+  }
+
+  .single-message {
+    width: 100%;
+    background-color: white;
+    padding: 0.7em 0.4em;
+    color: $dark-blue-text;
+
+    p {
+      margin: 0;
+    }
+
+    &.self {
+      text-align: right;
+      color: $dark-grey-text;
+
+      p {
+        margin-right: 0.2em;
       }
     }
 
-    * {
-      margin: 0;
-      padding: 0;
+    &:not(.self) {
+      p {
+        margin-left: 0.2em;
+      }
     }
   }
 }
 
-.message-header {
+.m-header {
   background-color: white;
   color: $dark-blue-text;
   padding: 0.8em;
@@ -1556,8 +1600,21 @@ $light-grey-border: 1px solid #CBCBCB;
   align-items: center;
   justify-content: space-between;
 
+  transform: translateX(100%);
+  opacity: 0;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
+  transition-property: opacity, transform;
+
+  &.sm {
+    transform: translateX(0);
+    opacity: 1;
+    transition-delay: 0.3s;
+  }
+
   h2 {
     font-size: 1.2em;
+    margin: 0;
   }
 
   .fas {
@@ -1570,28 +1627,3 @@ $light-grey-border: 1px solid #CBCBCB;
   }
 }
 
-.single-message {
-  width: 100%;
-  background-color: white;
-  padding: 0.7em 0.4em;
-  color: $dark-blue-text;
-
-  p {
-    margin: 0;
-  }
-
-  &.self {
-    text-align: right;
-    color: $dark-grey-text;
-
-    p {
-      margin-right: 0.2em;
-    }
-  }
-
-  &:not(.self) {
-    p {
-      margin-left: 0.2em;
-    }
-  }
-}

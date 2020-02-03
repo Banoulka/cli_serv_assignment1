@@ -5,22 +5,17 @@
         </div>
 
         <div class="watchlist-sidebar-body-container msg-sidebar">
+            <div id="m-head" class="sticky-top">
+                <div class="m-header sticky-top" id="m-header">
+                    <button id="back-btn" class="btn btn-outline-primary"><i class="fas fa-caret-left"></i></button>
+                    <h2>${json.userFrom.first_name}</h2>
+                </div>
+            </div>
             <div id="messages">
-                <div class="message-header">
-                    <i class="fas fa-caret-left"></i>
-                    <h2>Banoulka</h2>
-                </div>
-                <div class="single-message self">
-                    <p>Message Body</p>
-                    <small>24m</small>
-                </div>
-                <div class="single-message">
-                    <p>Message Body</p>
-                    <small>24m</small>
-                </div>
-                <div class="single-message self">
-                    <p>Message Body</p>
-                    <small>24m</small>
+                <div class="d-flex h-100 align-items-center justify-content-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -42,13 +37,18 @@
         }
 
         async function getSlimfo() {
-            messagesList.slideUp();
+            document.getElementById("m-header").classList.remove("sm");
+            messagesList.slideUp(800);
+
             const res = await fetch("../requests/messages/slimfo");
             const json = await res.json();
+
             const info = json.info;
 
             messagesList[0].innerHTML = "";
+            $("#m-head")[0].innerHTML = "";
 
+            let index = 0;
             info.forEach(item => {
                 // Destruct
                 const { display_name, first_name, last_name, lmessage, latest, Unread, user_id} = item;
@@ -57,20 +57,21 @@
                 let displayName = !display_name ? first_name + " " + last_name : display_name;
 
                let htmlString = `
-                   <div class="message ${unread}" id="c-${user_id}">
+                   <div class="message ${unread}" id="c-${user_id}" style="--index: ${index}; --length: ${info.length};">
                         <h2>${displayName}</h2>
                         <p>${lmessage}</p>
                         <small>${latest}</small>
                     </div>
                `;
-
+               index++;
                messagesList.append(htmlString);
 
             });
-
             let messages = document.getElementsByClassName("message");
             messagesList.slideDown();
+
             for(let message of messages) {
+                message.classList.add("sm");
                 message.addEventListener("click", displaySingleConversation);
             }
         }
@@ -78,26 +79,29 @@
         let loadingMessages = true;
 
         async function displaySingleConversation(e) {
-            messagesList.slideUp();
-            let id = this.id.substr(2);
+            setTimeout(() => messagesList.slideUp(200), 700);
+            let oldMessages = document.getElementsByClassName("message");
+            for (let message of oldMessages) {
+                message.classList.remove("sm");
+            }
 
+            let id = this.id.substr(2);
             // Get the single conversation
             const res = await fetch(`../requests/messages/conversation/${id}`);
             const json = await res.json();
 
-            messagesList[0].innerHTML = "";
-
             // Display the header
             let htmlString = `
-                <div class="message-header">
-                    <i class="fas fa-caret-left" id="back-btn"></i>
+                <div class="m-header sticky-top" id="m-header">
+                    <button id="back-btn" class="btn btn-outline-primary"><i class="fas fa-caret-left"></i></button>
                     <h2>${json.userFrom.first_name}</h2>
                 </div>
             `;
 
-            messagesList.append(htmlString);
+            $("#m-head").append(htmlString);
 
             let messages = json.messages;
+            messagesList[0].innerHTML = "";
 
             messages.forEach(item => {
                 const { body, timestamp, read, own } = item;
@@ -115,6 +119,12 @@
             document.getElementById("back-btn").addEventListener("click", getSlimfo);
 
             messagesList.slideDown();
+            document.getElementById("m-header").classList.add("sm");
+            // scrollToContent();
+        }
+
+        function scrollToContent(){
+            messagesList.scrollTop(messagesList.prop("scrollHeight"));
         }
 
     });
