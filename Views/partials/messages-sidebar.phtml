@@ -1,5 +1,5 @@
 <div class="watch-wrapper sticky-top">
-    <div class="watchlist-sidebar">
+    <div class="watchlist-sidebar" id="body">
         <div class="watchlist-sidebar-head-container">
             <h3 class="m-0">Your Messages</h3>
         </div>
@@ -20,6 +20,7 @@
             </div>
         </div>
     </div>
+    <button id="scroll-to-bottom" class="scroll-button"><i class="fas fa-angle-double-down"></i></button>
     <a href="users/profile.php?tab=settings" class="sidebar-edit-link">Edit Your Sidebar</a>
 </div>
 
@@ -31,15 +32,22 @@
         const user = data.user;
 
         const messagesList = $("#messages");
+        const scrollButton = document.getElementById("scroll-to-bottom");
+        scrollButton.addEventListener("click", scrollToContent);
 
         if (user) {
-            await getSlimfo();
+            startSlimfo();
+        }
+
+        function startSlimfo() {
+            let watchlist = document.getElementById("body");
+            watchlist.removeEventListener("scroll", handleWatchlistScroll);
+            scrollButton.classList.remove("show");
+            document.getElementById("m-header").classList.remove("sm");
+            messagesList.slideUp(800, getSlimfo);
         }
 
         async function getSlimfo() {
-            document.getElementById("m-header").classList.remove("sm");
-            messagesList.slideUp(800);
-
             const res = await fetch("../requests/messages/slimfo");
             const json = await res.json();
 
@@ -72,20 +80,28 @@
 
             for(let message of messages) {
                 message.classList.add("sm");
-                message.addEventListener("click", displaySingleConversation);
+                message.addEventListener("click", startDisplay);
             }
         }
 
-        let loadingMessages = true;
+        let loadingMessages = false;
 
-        async function displaySingleConversation(e) {
-            setTimeout(() => messagesList.slideUp(200), 700);
+        function startDisplay() {
+            let id = this.id.substr(2);
             let oldMessages = document.getElementsByClassName("message");
             for (let message of oldMessages) {
                 message.classList.remove("sm");
             }
+            setTimeout(() => messagesList.slideUp(500, () => displaySingleConversation(id)), 600);
 
-            let id = this.id.substr(2);
+        }
+
+        async function displaySingleConversation(id) {
+            if (loadingMessages) {
+                return;
+            }
+            loadingMessages = true;
+
             // Get the single conversation
             const res = await fetch(`../requests/messages/conversation/${id}`);
             const json = await res.json();
@@ -116,15 +132,30 @@
                 messagesList.append(htmlString);
             });
 
-            document.getElementById("back-btn").addEventListener("click", getSlimfo);
+            document.getElementById("back-btn").addEventListener("click", startSlimfo);
 
-            messagesList.slideDown();
+            messagesList.slideDown(600);
             document.getElementById("m-header").classList.add("sm");
+            scrollButton.classList.add("show");
+            loadingMessages = false;
+
+            let watchlist = document.getElementById("body");
+            watchlist.addEventListener("scroll", handleWatchlistScroll);
             // scrollToContent();
         }
 
         function scrollToContent(){
-            messagesList.scrollTop(messagesList.prop("scrollHeight"));
+            const content = $("#body");
+            content.scrollTop(content.prop("scrollHeight"));
+        }
+
+
+        function handleWatchlistScroll() {
+            if (this.scrollTop >= this.scrollHeight - this.clientHeight - 200) {
+                scrollButton.classList.remove("show");
+            } else {
+                scrollButton.classList.add("show");
+            }
         }
 
     });
