@@ -378,7 +378,7 @@
                         <div class="d-flex flex-row">
                             <h6 class="m-0">${displayName}</h6>`;
 
-                if (info.Unread > 0) {
+                if (info.Unread > 0 && toUserId !== info.user_id) {
                     htmlString += `<span class="badge badge-warning ml-auto">${info.Unread}</span>`
                 }
                 htmlString += `
@@ -387,6 +387,7 @@
                     </a>`;
                 messagesTab.append(htmlString);
                 if (toUserId === info.user_id) {
+                    // TODO: Send the read message to the server
                     $(`#${info.user_id}`)[0].classList.add("active");
                 }
             }

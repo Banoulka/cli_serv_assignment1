@@ -40,10 +40,15 @@
         }
 
         function startSlimfo() {
+            // Start off the animations by removing classes,
+            // waits for transition slide up to finish before
+            // sending server requetsts
             let watchlist = document.getElementById("body");
             watchlist.removeEventListener("scroll", handleWatchlistScroll);
+
             scrollButton.classList.remove("show");
             document.getElementById("m-header").classList.remove("sm");
+            
             messagesList.slideUp(800, getSlimfo);
         }
 
@@ -88,6 +93,8 @@
 
         function startDisplay() {
             let id = this.id.substr(2);
+            // Remove the sm class from all the messages,
+            // starting the transition fade out animation
             let oldMessages = document.getElementsByClassName("message");
             for (let message of oldMessages) {
                 message.classList.remove("sm");
@@ -136,7 +143,7 @@
 
             messagesList.slideDown(600);
             document.getElementById("m-header").classList.add("sm");
-            scrollButton.classList.add("show");
+            // scrollButton.classList.add("show");
             loadingMessages = false;
 
             let watchlist = document.getElementById("body");
