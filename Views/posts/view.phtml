@@ -71,7 +71,64 @@
             </div>
         </div>
         <div class="commentannounce" id="comments">
-            <?php require_once $_SERVER["DOCUMENT_ROOT"] . "/Views/partials/commentAnnouncements.phtml" ?>
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Comments</h3>
+                    <div id="commentbox">
+
+                    </div>
+                    <div id="commentList">
+
+                    </div>
+                </div>
+                <div class="col-md-6 text-right">
+                    <h3>Announcements</h3>
+                    <div id="announce-list">
+                        <?php if(Authentication::isLoggedOn() && $view->owner) : ?>
+                            <form action="<?= $_SERVER["PHP_SELF"] ?>?post_id=<?= $post->id; ?>" method="POST">
+                                <div class="announcement-box row p-2 m-0 ml-auto">
+                                    <div class="col-9 d-flex align-items-center pl-0">
+                                        <div class="comment-area pl-4">
+                                            <textarea class="form-control text-area d-flex" name="announcement" id="announce" rows="1" placeholder="Write Announcement..."></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-3 d-flex align-items-center justify-content-center pr-0">
+                                        <img src="<?= Helpers::printIfExternal(Authentication::User()->display_pic); ?>" alt="" class="form-profile">
+                                    </div>
+                                </div>
+                                <input type="submit" name="announcementAdd" value="Announce" class="dprim-btn dprim-btn-filled mr-0 mt-2">
+                            </form>
+                        <?php endif; ?>
+
+                        <?php foreach ($post->announcements() as $announcement) : ?>
+                            <?php if ($announcement instanceof Announcement) : ?>
+                                <div class="comment">
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <div class="image">
+                                                <img src="<?= Helpers::printIfExternal($post->user()->display_pic) ?>" alt="" class="comment-pic">
+                                            </div>
+                                        </div>
+                                        <div class="col-9">
+                                            <div class="commentinfo">
+                                                <p class="comment-body"><?= $announcement->body; ?></p>
+                                                <div class="extra">
+                                                    <span class="time-info ml-auto"><?= Helpers::getTimeSinceMin($announcement->timestamp); ?></span>
+                                                    <?php if (Authentication::isLoggedOn() && $view->owner) : ?>
+                                                        <form class="ml-3" method="post" action="<?= $_SERVER["PHP_SELF"]; ?>?post_id=<?= $post->id ?>&announcement_id=<?= $announcement->id; ?>">
+                                                            <button type="submit" name="announcementDelete" class="btn btn-outline-danger btn-sm">delete</button>
+                                                        </form>
+                                                    <?php endif; ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endif; endforeach; ?>
+                    </div>
+                </div>
+            </div>
+<!--            --><?php //require_once $_SERVER["DOCUMENT_ROOT"] . "/Views/partials/commentAnnouncements.phtml" ?>
         </div>
     </div>
     <?php else : ?>
@@ -80,5 +137,133 @@
         <h4 class="text-danger text-center">:(</h4>
     <?php endif; ?>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", async () => {
+        let postID = <?= $post->id ?>;
+        //let phpSelf = <?//= $_SERVER["PHP_SELF"] ?>//;
+
+
+        const userRes = await fetch("../requests/auth/me");
+        const userJson = await userRes.json();
+
+        const loggedInUser = userJson.user;
+
+        const commentsList = $("#commentList");
+
+
+        if (loggedInUser) {
+            let htmlString =
+            `<div class="comment-box row p-2 m-0 mr-auto">
+                <div class="col-2 d-flex align-items-center justify-content-center pr-0">
+                    <img src="${loggedInUser.display_pic}" alt="" class="form-profile">
+                </div>
+                <div class="col-10 d-flex align-items-center pl-0">
+                    <form action="/posts/view.php?post_id=${ postID }" class="comment-area pl-4" id="commentForm" method="post">
+                        <textarea class="form-control text-area d-flex" name="commentBody" id="comment" rows="1" placeholder="Leave a comment:"></textarea>
+                        <input type="submit" name="commentAdd" class="hidden" id="commentAdd">
+                    </form>
+                </div>
+            </div>`;
+            $("#commentbox").append(htmlString);
+
+            // Add comment eventlistener
+            let commentBox = document.getElementById("comment");
+
+            commentBox.addEventListener("keydown", async e => {
+
+               if (e.key === "Enter") {
+                   e.preventDefault();
+                   if (commentBox.value.trim() !== "") {
+
+                        // Add a new comment
+                       let data = {
+                           postID,
+                           "body": commentBox.value.trim(),
+                           "userID": loggedInUser.id
+                       };
+
+                       // Remove the old comment box value
+                       commentBox.value = "";
+
+                       // Get the new comment data from the server and display it
+                       let htmlString = `
+                        <div class="comment">
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="image">
+                                        <img src="${loggedInUser.display_pic}" alt="Profile Picture" class="comment-pic">
+                                    </div>
+                                </div>
+
+                                <div class="col-9">
+                                    <div class="commentinfo">
+                                        <a href="../../users/view.php?id=${loggedInUser.id}" class="comment-user">${loggedInUser.name}</a>
+                                        <p class="comment-body">${data.body}</p>
+                                        <div class="extra">
+                                            <span class="time-info ml-auto">now</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+                       commentsList.prepend(htmlString);
+
+                       // Send the requests
+                       const res = await fetch("../requests/comments/new", {
+                           headers: {
+                               "Content-Type": "application/json"
+                           },
+                           method: "POST",
+                           body: JSON.stringify(data)
+                       });
+                       const json = await res.json();
+                   }
+               }
+            });
+        }
+
+
+
+        await getComments();
+
+
+        async function getComments() {
+
+            const res = await fetch(`../requests/comments/show/${postID}`);
+            const json = await res.json();
+
+            const commentArr = json.comments;
+
+            commentArr.forEach(comment => {
+                const { user, body, timestamp } = comment;
+
+                let htmlString = `
+                <div class="comment">
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="image">
+                                <img src="${user.display_pic}" alt="Profile Picture" class="comment-pic">
+                            </div>
+                        </div>
+
+                        <div class="col-9">
+                            <div class="commentinfo">
+                                <a href="../../users/view.php?id=${user.id}" class="comment-user">${user.name}</a>
+                                <p class="comment-body">${body}</p>
+                                <div class="extra">
+                                    <span class="time-info ml-auto">${timestamp}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+
+                commentsList.append(htmlString);
+            });
+        }
+    });
+</script>
+
 
 <?php require(__DIR__ . "/../partials/footer.phtml") ?>

@@ -8,7 +8,7 @@ require_once "Comparable.php";
 
 /**
  * @property-read int id
- * @property-read int timestamp
+ * @property int timestamp
  * @property int user_id
  * @property int post_id
  * @property string body
