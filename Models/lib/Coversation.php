@@ -17,20 +17,44 @@ class Coversation
         $userFromID = $this->userFrom->id;
         $userToID = $this->userMe->id;
 
-        $sql = "SELECT user_messages.body, user_messages.timestamp, user_messages.`read` ,IF(user_id_from = $userToID, true, false) as own
+        // Get the text messages
+
+        $sql = "SELECT user_messages.body, user_messages.timestamp, user_messages.`read`, IF(user_id_from = $userToID, true, false) as own
                 FROM user_messages
                 WHERE (user_id_from = $userFromID AND user_id_to = $userToID)
                 OR (user_id_to = $userFromID AND user_id_from = $userToID)
                 ORDER BY timestamp;";
-
         $messages = Database::getInstance()->getdbConnection()->query($sql)->fetchAll(PDO::FETCH_OBJ);
+
+        // Get the picture messages
+        $sql2 = "SELECT picture_messages.picture_location, picture_messages.timestamp, IF(user_id_from = $userToID, true, false) as own
+                FROM picture_messages
+                WHERE (user_id_from = $userFromID AND user_id_to = $userToID)
+                OR (user_id_to = $userFromID AND user_id_from = $userToID)
+                ORDER BY timestamp";
+        $pictures = Database::getInstance()->getdbConnection()->query($sql2)->fetchAll(PDO::FETCH_OBJ);
+
+        array_map(function($picture) {
+            $picture->picture = true;
+            $picture->own = $picture->own == "1" ? true : false;
+        }, $pictures);
+
         array_map(function($msg){
             $msg->own = $msg->own == "1" ? true : false;
-            $msg->timestamp = Helpers::getTimeSinceMin($msg->timestamp);
             $msg->read = $msg->read == "1" ? true : false;
+            $msg->picture = false;
         }, $messages);
 
-        return $messages;
+        $totals = array_merge($messages, $pictures);
+        usort($totals, function($a, $b) {
+           return $a->timestamp <=> $b->timestamp;
+        });
+
+        array_map(function($item) {
+            $item->timestamp = Helpers::getTimeSinceMin($item->timestamp);
+        }, $totals);
+
+        return $totals;
     }
 
     public static function markReadMessages($userIDTo)

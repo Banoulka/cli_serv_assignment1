@@ -83,4 +83,36 @@ class Messages extends Controller
             $this->send(400, $data);
         }
     }
+
+    public function newPicture()
+    {
+        $data = new stdClass();
+
+        $pictureFile = $_FILES["pictureFile"];
+        $toUserID = $_POST["userToID"];
+
+
+        if ($toUserID) {
+            // No error, upload picture
+            $user = User::find(["id" => $toUserID]);
+
+            $error = Authentication::User()->pictureMessageUser($user, $pictureFile);
+
+            if (empty($error)) {
+                $data->message = "Success??";
+                $this->send(200, $data);
+            } else {
+                $data->error = $error;
+                $this->send(500, $data);
+            }
+
+        } else {
+            // Picture upload error
+            $data->error = "Picture upload error";
+            $this->send(400, $data);
+        }
+
+
+
+    }
 }

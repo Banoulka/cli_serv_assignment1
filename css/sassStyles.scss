@@ -1247,9 +1247,15 @@ $light-grey-border: 1px solid #CBCBCB;
     align-items: center;
     justify-content: space-around;
 
+    .picture-message {
+      max-width: 200px;
+      max-height: 300px;
+    }
+
     &.self {
       justify-content: flex-end;
       align-items: flex-end;
+
 
       .user-thumbnail {
         margin-bottom: .8em;

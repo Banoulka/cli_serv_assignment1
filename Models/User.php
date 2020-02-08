@@ -229,6 +229,30 @@ class User extends Model {
         Pusher::getInstance()->trigger("msg-to-$user->id", "new-msg", $data);
     }
 
+    public function pictureMessageUser(User $user, $imageFile)
+    {
+        $id = md5(microtime());
+        $imageFileType =  strtolower(pathinfo($imageFile["name"], PATHINFO_EXTENSION ));
+        $targetDir = "../uploads/picture_messages/";
+        $userFileName = "msg-$id.$imageFileType";
+        $targetFile = $targetDir . $userFileName;
+
+        $now = new DateTime();
+        $timestamp = $now->getTimestamp();
+
+        $sql = "INSERT INTO picture_messages (user_id_from, user_id_to, picture_location, timestamp) 
+                VALUES ($this->id, $user->id, \"$targetFile\", $timestamp)";
+
+        $stmt = self::db()->prepare($sql);
+        try {
+            $stmt->execute();
+            move_uploaded_file($imageFile["tmp_name"], $targetFile);
+            return [];
+        } catch(Exception $e) {
+            return $e;
+        }
+    }
+
     public function destroy()
     {
         // Delete posts

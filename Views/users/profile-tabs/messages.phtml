@@ -38,7 +38,11 @@
                 <form method="post" class="d-block w-100" id="send-message">
                     <textarea class="message-input" rows="1" name="message" placeholder="Type a message..." id="msg-input" disabled></textarea>
                 </form>
-                <button id="sendMessage" class="ml-auto message-submit"><i class="far fa-paper-plane"></i></button>
+                    <button id="sendMessage" class="message-submit"><i class="far fa-paper-plane"></i></button>
+            </div>
+            <div class="bg-white p-3">
+                <label for="picture-upload">Send an image...</label>
+                <input type="file" id="picture-upload" class="upload" name="file" accept="image/jpeg, image/jpg, image/png">
             </div>
         </div>
     </div>
@@ -58,7 +62,11 @@
         let typing = false;
         let otherTyping = false;
 
+        // Get the slimfo
         await displaySlimfos();
+
+        // Setup picture upload
+        await setupFileUpload();
 
         let pusher = new Pusher("8f49b51adc7ccf8e85a4", {
             cluster: "eu",
@@ -250,6 +258,7 @@
             // Fetch the conversation array from the server
             const res = await fetch(`../requests/messages/conversation/${toUserId}`);
             const json = await res.json();
+            console.log(json);
 
             // Get the data as well as any other data that is needed
             messages = json.messages;
@@ -270,13 +279,26 @@
             for (let message of messages) {
                 if (message.own) {
                     // Message is own
-                    htmlString += `
+
+                    if (message.picture) {
+                        // Message is a picture
+                        htmlString += `
+                        <div class="msg-container self">
+                            <div class="msg self">
+                                <img src="${message.picture_location}" alt="Picture Message" class="picture-message">
+                                <span class="text-muted m-date small">${message.timestamp}</span>
+                            </div>
+                        `;
+                    } else {
+                        // Message is own and is a text
+                        htmlString += `
                         <div class="msg-container self">
                             <div class="msg self">
                                 <p class="m-body m-0">${message.body}</p>
                                 <span class="text-muted m-date small">${message.timestamp}</span>
                             </div>
-                    `;
+                        `;
+                    }
 
                     // If the message is the last message AND
                     // it has been read, add the avatar, otherwise add a sent icon
@@ -290,15 +312,29 @@
 
                 } else {
                     // Message is from other user, avatar and timestamp
-                    htmlString += `
+
+                    if (message.picture) {
+                        htmlString += `
                         <div class="msg-container">
-                            <img src="${userFrom.display_pic}" alt="profile picture" class="user-thumbnail ml-2">
-                            <div class="msg">
-                                <p class="m-body m-0">${message.body}</p>
-                                <span class="text-muted m-date small">${message.timestamp}</span>
+                                <img src="${userFrom.display_pic}" alt="profile picture" class="user-thumbnail ml-2">
+                                <div class="msg">
+                                    <img src="${message.picture_location}" alt="Picture Message" class="picture-message">
+                                    <span class="text-muted m-date small">${message.timestamp}</span>
+                                </div>
                             </div>
-                        </div>
-                    `;
+                        `;
+                    } else {
+                        htmlString += `
+                            <div class="msg-container">
+                                <img src="${userFrom.display_pic}" alt="profile picture" class="user-thumbnail ml-2">
+                                <div class="msg">
+                                    <p class="m-body m-0">${message.body}</p>
+                                    <span class="text-muted m-date small">${message.timestamp}</span>
+                                </div>
+                            </div>
+                        `;
+                    }
+
                 }
             }
 
@@ -392,6 +428,54 @@
                 }
             }
             setupListeners();
+        }
+
+
+        async function setupFileUpload()
+        {
+            let fileUpload = document.getElementById("picture-upload");
+
+            fileUpload.addEventListener("change", async e => {
+                e.preventDefault();
+
+                if (toUserId) {
+                    // Remove the sent icon from the old messages and
+                    // append the new message classes with the body and now
+                    // BEFORE THE REQUEST
+                    $("#sent-icon").remove();
+                    let htmlString = `
+                        <div class="msg-container self">
+                            <div class="msg self">
+                                <img src="${ URL.createObjectURL(e.target.files[0]) }" alt="Picture message" class="picture-message">
+                                <span class="text-muted m-date small">now</span>
+                            </div>
+                            <i class="fas fa-check-circle sent-icon" id="sent-icon"></i>
+                        </div>
+                    `;
+                    $("#msg-content").append(htmlString);
+
+                    const fileToUpload = fileUpload.files[0];
+                    const formData = new FormData();
+
+                    fileToUpload.files = null;
+                    fileToUpload.value = "";
+
+                    formData.append("pictureFile", fileToUpload);
+                    formData.append("userToID", toUserId);
+                    scrollToContent();
+
+                    const res = await fetch("../requests/messages/newPicture", {
+                        method: "POST",
+                        body: formData
+                    });
+                    const json = await res.json();
+
+                    console.log(json);
+
+                } else {
+                    console.error("User not selected");
+                }
+            })
         }
 
     }, false)
