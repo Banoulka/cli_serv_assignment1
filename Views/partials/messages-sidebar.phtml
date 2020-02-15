@@ -29,7 +29,7 @@
 
         const res = await fetch("../requests/auth/me");
         const data = await res.json();
-        const user = data.user;
+        const user = Authentication.getUser();
 
         const messagesList = $("#messages");
         const scrollButton = document.getElementById("scroll-to-bottom");

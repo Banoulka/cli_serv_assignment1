@@ -4,7 +4,11 @@
 class Posts extends Controller
 {
     public function trending($offset) {
+        // Get all the posts using the old posts model method
         $posts = Post::trending($offset);
+
+        // Looping through the posts, change all the methods
+        // into properties as methods dont send
         foreach ($posts as $post) {
             $post->user = $post->user();
             $post->watchCount = $post->watchCount();
@@ -16,6 +20,8 @@ class Posts extends Controller
         }
         $data = new stdClass();
         $data->posts = $posts;
+
+        // Sending the posts into an empty data object.
         $this->send(200, $data);
     }
 }

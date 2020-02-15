@@ -392,6 +392,8 @@ class Post extends Model
                 ORDER BY Popularity DESC
                 LIMIT 10
                 OFFSET $offsetCount";
+
+//        $sql = "SELECT * FROM posts LIMIT 10";
         return self::db()->query($sql)->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, "Post");
     }
 

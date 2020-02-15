@@ -52,10 +52,7 @@
 <script>
     document.addEventListener("DOMContentLoaded", async () => {
         const state = {};
-        // Send request to get user on loading
-        const res = await fetch("../requests/auth/me");
-        const json = await res.json();
-        state.user = json.user;
+        state.user = Authentication.getUser();
 
         let channelName = null;
         let toUserId = null;
