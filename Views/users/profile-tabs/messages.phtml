@@ -1,6 +1,3 @@
-<?php
-    $messageInfo = Authentication::User()->messageSlimfo();
-?>
 <div class="col-12">
     <h3 class="profile-name mb-3">Messages</h3>
     <!--List Users-->
@@ -48,7 +45,6 @@
     </div>
 </div>
 
-
 <script>
     document.addEventListener("DOMContentLoaded", async () => {
         const state = {};
@@ -65,25 +61,10 @@
         // Setup picture upload
         await setupFileUpload();
 
-        let pusher = new Pusher("8f49b51adc7ccf8e85a4", {
-            cluster: "eu",
-            forceTLS: true,
-        });
+        let pusher = PusherInst.pusher();
 
         let notifChannel = pusher.subscribe(`msg-to-${state.user.id}`);
-        notifChannel.bind("new-msg", data => {
-            const { userFrom } = data;
-
-            console.log("new message from " + userFrom);
-            // Update the slimfos if the user is currently looking at
-            // somebody elses messages, there to put recent messages at the top
-            // like a real app
-            if (toUserId !== userFrom) {
-                displaySlimfos();
-            }
-            let audio = new Audio("../sounds/message.wav");
-            audio.play();
-        });
+        notifChannel.bind("new-msg", newMessageHandler);
 
         function setupListeners() {
             $(".list-group-item").click(function() {

@@ -1,14 +1,16 @@
 class Authentication {
 
-    static #user = null;
 
     static async getUser() {
-        if (!this.#user) {
+        let user = sessionStorage.getItem("user");
+
+        if (!user) {
             const ures = await fetch("../requests/auth/me");
             const ujson = await ures.json();
-            this.#user = ujson.user;
-        }
 
-        return this.#user;
+            sessionStorage.setItem("user", JSON.stringify(ujson.user));
+            user = ujson.user;
+        }
+        return user;
     }
 }

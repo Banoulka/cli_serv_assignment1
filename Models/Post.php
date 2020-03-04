@@ -18,7 +18,7 @@ require_once "Comment.php";
  * @property string cover_image
  *
  */
-class Post extends Model
+class Post extends Model implements JsonSerializable
 {
 
     const TYPE_ALPHA = "alpha", TYPE_BETA = "beta", TYPE_RELEASED = "released", TYPE_CONCEPT = "concept";
@@ -466,5 +466,20 @@ class Post extends Model
         $announcements = parent::findAllByKey(["post_id" => $this->id]);
         usort($announcements, array("Announcement", "compareTo"));
         return $announcements;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize()
+    {
+        $this->user = $this->user();
+        $this->watchCount = $this->watchCount();
+        $this->likeCount = $this->likesCount();
+        $this->commentCount = $this->commentCount();
+        $this->time = Helpers::getTimeSince($this->time);
+        $this->tags = $this->tags();
+        $this->title = substr($this->title, 0, 33);
+        return $this;
     }
 }
