@@ -1,7 +1,7 @@
 <?php require("partials/header.phtml"); ?>
 
 <div class="container section px-0">
-    <form action="<?= $_SERVER["PHP_SELF"]; ?>" method="GET" class="search-form row">
+    <form action="<?= $_SERVER["PHP_SELF"]; ?>" method="GET" class="search-form row" id="search">
         <aside class="collapse-sidebar">
             <div id="dismiss-sidebar"><i class="far fa-times-circle"></i></div>
             <div class="collapse-sidebar-header">
@@ -24,13 +24,38 @@
                     <!-- end hidden form -->
                     <div class="row my-3 align-items-center">
                         <div class="col-4 px-3">
-                            <select class="form-control search-select" name="search-type">
+                            <select class="form-control search-select" name="search-type" id="search-type">
                                 <option value="title">Title</option>
                                 <option value="author">Author</option>
                             </select>
                         </div>
                         <div class="col-8 px-4">
-                            <input type="text" class="form-control" name="search" placeholder="Search text" value="<?php if (isset($view->searches)) echo $view->searches["search"]; ?>">
+                            <input type="text" class="form-control" id="search-box" name="search" placeholder="Search text" autocomplete="off" value="<?php if (isset($view->searches)) echo $view->searches["search"]; ?>">
+                            <div class="suggest-box" id="suggest-box">
+                                <div class="arrow"></div>
+                                <div class="header">
+                                    <h3 class="title">Suggestions:</h3>
+                                    <i class="fas fa-times" id="close"></i>
+                                </div>
+                                <div id="suggestions">
+                                    <div id="suggestion-loader">
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                    </div>
+                                    <a class="suggestion">
+                                        <img src="/uploads/profile_pictures/nodp.png" alt="" class="picture">
+                                        <div class="name">
+                                            <span>Nathan Bamford</span>
+                                            <span>Banoulka</span>
+                                        </div>
+                                        <span class="likes">
+                                            30
+                                            <i class="fas fa-user-friends"></i>
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
@@ -156,5 +181,92 @@
 <form id="minified-form" class="hidden" action="formtest.php" method="post">
     <input type="checkbox" class="hidden" id="hidden-checkbox" name="minified">
 </form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+
+        let searchType = document.getElementById("search-type");
+        let searchBox = document.getElementById("search-box");
+        let suggestBox = document.getElementById("suggest-box");
+
+        let suggestionContainer = document.getElementById("suggestions");
+        
+        let timeout = null;
+
+        searchType.addEventListener("change", function() {
+            let value = this.value;
+            if (value === "author") {
+                searchBox.addEventListener("keyup", suggestSearchesEventHandler);
+            } else {
+                searchBox.removeEventListener("keyup", suggestSearchesEventHandler);
+            }
+        });
+
+        document.getElementById("close").addEventListener("click", () => suggestBox.classList.remove("show"));
+
+        function showLoader(bool) {
+            console.log("showing loader");
+            if (bool) {
+                suggestionContainer.innerHTML = `<div id="suggestion-loader">
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                        </div>`;
+            } else {
+                suggestionContainer.innerHTML = ``;
+            }
+        }
+
+        async function suggestSearchesEventHandler(e) {
+
+            let suggestionString = this.value;
+
+            // If the box is empty, don't suggest
+            if (suggestionString === "") {
+                suggestBox.classList.remove("show");
+                clearTimeout(timeout);
+                return;
+            }
+            // Clear the old timeout
+            if (timeout) {
+                clearTimeout(timeout);
+            }
+
+            // Set a new timeout
+            timeout = setTimeout(() => fetchSuggestions(suggestionString), 2000);
+        }
+
+        async function fetchSuggestions(suggestionString) {
+            suggestBox.classList.add("show");
+
+            showLoader(true);
+            const res = await fetch(`../requests/users/suggest/${suggestionString}`);
+            const data = await res.json();
+            const { suggestedUsers } = data;
+
+            let html = ``;
+
+            suggestedUsers.forEach(user => {
+                const { id, display_pic, name, display_name, followerCount} = user;
+
+                const displayName = display_name ? display_name : "No display name";
+                html += `<a class="suggestion" href="../users/view.php?id=${id}">
+                            <img src="${display_pic}" alt="" class="picture">
+                            <div class="name">
+                                <span>${name}</span>
+                                <span>${displayName}</span>
+                            </div>
+                            <span class="likes">
+                                ${followerCount}
+                                <i class="fas fa-user-friends"></i>
+                            </span>
+                        </a>`;
+            });
+
+            showLoader(false);
+            suggestionContainer.innerHTML = html;
+        }
+    });
+</script>
 
 <?php require("partials/footer.phtml"); ?>

@@ -35,17 +35,7 @@ class Comments extends Controller
         $data = new stdClass();
 
         if ($post) {
-            $comments = $post->comments();
-
-            foreach ($comments as $comment) {
-                $comment->likesCount = $comment->likesCount();
-                $comment->user = $comment->user();
-                $comment->user->display_pic = Helpers::printIfExternal($comment->user->display_pic);
-                $comment->user->name = $comment->user()->name();
-                $comment->timestamp = Helpers::getTimeSinceMin($comment->timestamp);
-            }
-            $data->comments = $comments;
-
+            $data->comments = $post->comments();
             $this->send(200, $data);
         } else {
             $data->error = "Post not found";

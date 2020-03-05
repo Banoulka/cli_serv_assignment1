@@ -13,7 +13,7 @@ require_once "Comparable.php";
  * @property int post_id
  * @property string body
  */
-class Comment extends Model implements Comparable
+class Comment extends Model implements Comparable, JsonSerializable
 {
 
     public function __construct()
@@ -127,5 +127,16 @@ class Comment extends Model implements Comparable
     {
         parent::setCustomClassAndTable("User", "users");
         return parent::findOneByKey(["id" => $this->user_id]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize()
+    {
+        $this->likesCount = $this->likesCount();
+        $this->user = $this->user();
+        $this->timestamp = Helpers::getTimeSinceMin($this->timestamp);
+        return $this;
     }
 }

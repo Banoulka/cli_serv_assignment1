@@ -16,7 +16,7 @@ require_once "Notification.php";
  * @property int balance
  *
  * */
-class User extends Model {
+class User extends Model implements JsonSerializable {
 
     // Set the class and table of the model
     protected static function setClassAndTable()
@@ -78,6 +78,19 @@ class User extends Model {
     {
         self::setClassAndTable();
         return parent::random($rows);
+    }
+
+    public static function suggestUsers($suggestStr)
+    {
+        $sql = "SELECT *, MATCH(first_name) AGAINST ('+$suggestStr*' IN BOOLEAN MODE ) as relevance
+                FROM users
+                HAVING relevance > 0
+                ORDER BY MATCH(first_name) AGAINST (':$suggestStr' IN NATURAL LANGUAGE MODE ) DESC
+                LIMIT 15
+                OFFSET 0;";
+        $stmt = Database::getInstance()->getdbConnection()->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, "User");
     }
 
     public function name() {
@@ -454,4 +467,14 @@ class User extends Model {
         return $results;
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize()
+    {
+        $this->display_pic = Helpers::printIfExternal($this->display_pic);
+        $this->name = $this->name();
+        $this->followerCount = count($this->followers());
+        return $this;
+    }
 }

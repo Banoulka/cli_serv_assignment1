@@ -6,7 +6,7 @@ $concept-colour: #FF5E00;
 $dark-blue-text: #1A407A;
 $light-blue-text: #6A80A2;
 $light-grey-text: #818181;
-$dark-grey-text: #2A2A2A;
+$dark-grey-text: #256abf;
 
 $dark-blue-button-hover: #12224d;
 $light-blue-button-hover: #278fe3;
@@ -1670,6 +1670,174 @@ $light-grey-border: 1px solid #CBCBCB;
 
     &:hover {
       cursor: pointer;
+    }
+  }
+}
+
+.suggest-box {
+  margin-top: 15px;
+  z-index: 100;
+  position: absolute;
+  background-color: white;
+  width: 110%;
+  border-radius: 10px;
+  height: 600px;
+  max-height: 500px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  transform: translateX(250px);
+  opacity: 0;
+  transition:
+          transform cubic-bezier(0.75, -0.015, 0.565, 1.055) 0.4s,
+          opacity cubic-bezier(0.75, -0.015, 0.565, 1.055) 0.3s;
+
+  &.show {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  #suggestion-loader {
+    height: 100%;
+    width: 100%;
+    //background-color: rgba(234, 0, 0, 0.24);
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    span {
+      background-color: #9E9EA1;
+      height: 16px;
+      width: 16px;
+      margin: 0 2px;
+      border-radius: 50%;
+      display: block;
+      opacity: 0.4;
+
+      @for $i from 1 through 3 {
+        &:nth-of-type(#{$i}) {
+          animation: 1s blink infinite ($i * .33333s);
+        }
+      }
+
+    }
+  }
+
+  #suggestions {
+    width: 100%;
+    height: calc(100% - 50px);
+    max-height: calc(100% - 50px);
+    overflow-y: scroll;
+    &::-webkit-scrollbar { width: 7px; }
+    &::-webkit-scrollbar-track { background: #cccccc; border-bottom-right-radius: 10px }
+    &::-webkit-scrollbar-thumb { background: $dark-blue-text; border-radius: 2px; }
+    &::-webkit-scrollbar-thumb:hover { background: rgba(85, 85, 85, 0.6); }
+
+    .suggestion {
+      text-decoration: none;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 0.7em 1.3em;
+      transition: all 0.2s ease-in-out;
+      cursor: pointer;
+      border-bottom: 1px solid #dbdbdb;
+
+      &:hover {
+        background-color: #f2f2f2;
+      }
+
+      .name {
+        margin-left: 1.3em;
+        display: flex;
+        flex-direction: column;
+
+        span:nth-of-type(1) {
+          font-weight: 400;
+          font-size: 1.15rem;
+        }
+
+        span:nth-of-type(2) {
+          color: grey;
+          font-weight: 300;
+          font-size: 0.85rem;
+        }
+      }
+
+      .likes {
+        color: $dark-blue-text;
+        margin-left: auto;
+      }
+
+      .picture {
+        height: 80px;
+        width: 80px;
+        border-radius: 50%;
+      }
+    }
+  }
+
+  .header {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.7em 1.3em;
+    background-color: #eeeeee;
+    border-radius: 10px 10px 0 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.10);
+    height: 50px;
+
+    .title {
+      margin: 0;
+      font-size: 1.4rem;
+      font-weight: 500;
+    }
+
+    i {
+      color: $dark-blue-text;
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: color 0.2s ease-in-out;
+
+      &:hover {
+        color: $dark-grey-text;
+      }
+    }
+  }
+
+  .arrow {
+    position: absolute;
+    display: block;
+    width: 1rem;
+    height: .5rem;
+    margin: 0 .3rem;
+    left: 30px;
+    top: calc((.5rem + 1px) * -1);
+    z-index: 9999;
+
+    &::before {
+      top: 0;
+      border-width: 0 .5rem .5rem .5rem;
+      border-color: transparent;
+      border-bottom-color: rgba(0,0,0,.25);
+      position: absolute;
+      display: block;
+      content: "";
+      border-style: solid;
+    }
+
+    &::after {
+      border-color: transparent;
+      border-bottom-color: #eeeeee;
+      top: 1px;
+      border-width: 0 .5rem .5rem .5rem;
+      position: absolute;
+      display: block;
+      content: "";
+      border-style: solid;
     }
   }
 }

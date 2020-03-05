@@ -7,7 +7,6 @@ class Auth extends Controller
         $data = new stdClass();
         if (Authentication::isLoggedOn()) {
             $data->user = Authentication::User();
-            $data->user->name = $data->user->name();
             $this->send(200, $data);
         } else {
             $data->error = "User not logged in";
