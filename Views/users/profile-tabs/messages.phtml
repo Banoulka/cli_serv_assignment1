@@ -48,7 +48,7 @@
 <script>
     document.addEventListener("DOMContentLoaded", async () => {
         const state = {};
-        state.user = Authentication.getUser();
+        state.user = await Authentication.getUser();
 
         let channelName = null;
         let toUserId = null;
@@ -61,8 +61,8 @@
         // Setup picture upload
         await setupFileUpload();
 
+        // Subscribe to the pusher channel for new messages
         let pusher = PusherInst.pusher();
-
         let notifChannel = pusher.subscribe(`msg-to-${state.user.id}`);
         notifChannel.bind("new-msg", newMessageHandler);
 
@@ -357,7 +357,7 @@
             // Set the form-encoded body
             messageBox.value = "";
             let body = `to=${toUserId}&from=${state.user.id}&message=${message}&read=${otherTyping}`;
-
+            console.log(body);
             // Send a new request to add the message to the database
             const res = await fetch("../requests/messages/new", {
                 method: "POST",
@@ -367,6 +367,7 @@
                 body: body,
             });
             const json = await res.json();
+            console.log(json);
 
             // If the message has already been read, replace the sent icon with the display picture
             if (json.message.read) {
@@ -432,16 +433,20 @@
                     `;
                     $("#msg-content").append(htmlString);
 
+                    // Grab the file from the javascript uploaded files
                     const fileToUpload = fileUpload.files[0];
                     const formData = new FormData();
 
+                    // Default values for the file upload
                     fileToUpload.files = null;
                     fileToUpload.value = "";
 
+                    // Append the data and userID to the form data
                     formData.append("pictureFile", fileToUpload);
                     formData.append("userToID", toUserId);
                     scrollToContent();
 
+                    // Send the request to the server with the file and user to
                     const res = await fetch("../requests/messages/newPicture", {
                         method: "POST",
                         body: formData

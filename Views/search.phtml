@@ -193,6 +193,8 @@
         
         let timeout = null;
 
+        // If the search type is author, listen for keypresses
+        // and do suggestion box things
         searchType.addEventListener("change", function() {
             let value = this.value;
             if (value === "author") {
@@ -202,24 +204,32 @@
             }
         });
 
+        // Close the suggestion box if the cross is pressed
         document.getElementById("close").addEventListener("click", () => suggestBox.classList.remove("show"));
 
         function showLoader(bool) {
-            console.log("showing loader");
-            if (bool) {
-                suggestionContainer.innerHTML = `<div id="suggestion-loader">
-                                            <span></span>
-                                            <span></span>
-                                            <span></span>
-                                        </div>`;
-            } else {
-                suggestionContainer.innerHTML = ``;
-            }
+            // console.log("showing loader");
+
+            suggestionContainer.innerHTML = bool
+                ? `<div id="suggestion-loader">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>`
+                : ``;
         }
+
+        let suggestionString = ``;
 
         async function suggestSearchesEventHandler(e) {
 
-            let suggestionString = this.value;
+            // If there wasn't any changes, key was not a character so
+            // do nothing.
+            if (suggestionString === this.value)
+                return;
+
+            // If there was changes, make the suggestion string this value
+            suggestionString = this.value;
 
             // If the box is empty, don't suggest
             if (suggestionString === "") {
@@ -227,30 +237,38 @@
                 clearTimeout(timeout);
                 return;
             }
-            // Clear the old timeout
+            // Clear the old timeout if there was one
             if (timeout) {
                 clearTimeout(timeout);
             }
 
             // Set a new timeout
-            timeout = setTimeout(() => fetchSuggestions(suggestionString), 2000);
+            timeout = setTimeout(() => fetchSuggestions(suggestionString), 1000);
         }
 
         async function fetchSuggestions(suggestionString) {
+            // Show the suggestions box
             suggestBox.classList.add("show");
 
+            // Show the loader
             showLoader(true);
+
+            // Fetch the suggestion data
             const res = await fetch(`../requests/users/suggest/${suggestionString}`);
             const data = await res.json();
             const { suggestedUsers } = data;
 
             let html = ``;
 
-            suggestedUsers.forEach(user => {
-                const { id, display_pic, name, display_name, followerCount} = user;
+            // If there are no results, display a message
+            if (suggestedUsers.length <= 0) {
+                html = `<h6 class="mt-3 p-3">No results found...</h6>`;
+            } else {
+                suggestedUsers.forEach(user => {
+                    const { id, display_pic, name, display_name, followerCount} = user;
 
-                const displayName = display_name ? display_name : "No display name";
-                html += `<a class="suggestion" href="../users/view.php?id=${id}">
+                    const displayName = display_name ? display_name : "No display name";
+                    html += `<a class="suggestion" href="../users/view.php?id=${id}">
                             <img src="${display_pic}" alt="" class="picture">
                             <div class="name">
                                 <span>${name}</span>
@@ -261,8 +279,10 @@
                                 <i class="fas fa-user-friends"></i>
                             </span>
                         </a>`;
-            });
+                });
+            }
 
+            // Add on the html and remove the loader
             showLoader(false);
             suggestionContainer.innerHTML = html;
         }

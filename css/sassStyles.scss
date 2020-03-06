@@ -1841,3 +1841,14 @@ $light-grey-border: 1px solid #CBCBCB;
     }
   }
 }
+
+.btn-text {
+  color: $dark-blue-text;
+  transition: color 0.2s ease-in-out;
+  background-color: transparent;
+  border: none;
+
+  &:hover {
+    color: #1c70a0;
+  }
+}

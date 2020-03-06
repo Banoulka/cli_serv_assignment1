@@ -2,7 +2,7 @@ class Authentication {
 
 
     static async getUser() {
-        let user = sessionStorage.getItem("user");
+        let user = JSON.parse(sessionStorage.getItem("user"));
 
         if (!user) {
             const ures = await fetch("../requests/auth/me");
