@@ -4,7 +4,7 @@
 class Users extends Controller
 {
     public function suggest($string, $offset = 0) {
-        $suggestedUsers = User::suggestUsers($string);
+        $suggestedUsers = User::suggestUsers($string, $offset);
 
         $data = new stdClass();
         $data->suggestedUsers = $suggestedUsers;

@@ -192,6 +192,8 @@
         let suggestionContainer = document.getElementById("suggestions");
         
         let timeout = null;
+        let offset = 0;
+        let loading = false;
 
         // If the search type is author, listen for keypresses
         // and do suggestion box things
@@ -222,6 +224,11 @@
         let suggestionString = ``;
 
         async function suggestSearchesEventHandler(e) {
+
+            if (loading)
+                return;
+
+            loading = true;
 
             // If there wasn't any changes, key was not a character so
             // do nothing.
@@ -254,7 +261,7 @@
             showLoader(true);
 
             // Fetch the suggestion data
-            const res = await fetch(`../requests/users/suggest/${suggestionString}`);
+            const res = await fetch(`../requests/users/suggest/${suggestionString}/${offset}`);
             const data = await res.json();
             const { suggestedUsers } = data;
 

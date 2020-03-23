@@ -80,14 +80,15 @@ class User extends Model implements JsonSerializable {
         return parent::random($rows);
     }
 
-    public static function suggestUsers($suggestStr)
+    public static function suggestUsers($suggestStr, $offset = 0)
     {
+        $offset = $offset * 10;
         $sql = "SELECT *, MATCH(first_name) AGAINST ('+$suggestStr*' IN BOOLEAN MODE ) as relevance
                 FROM users
                 HAVING relevance > 0
                 ORDER BY MATCH(first_name) AGAINST (':$suggestStr' IN NATURAL LANGUAGE MODE ) DESC
                 LIMIT 15
-                OFFSET 0;";
+                OFFSET $offset;";
         $stmt = Database::getInstance()->getdbConnection()->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, "User");
