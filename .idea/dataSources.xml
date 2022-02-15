@@ -7,5 +7,12 @@
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306/sgb779_cli_serv_ugame</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="Poseidon" uuid="5fe0138c-dd41-4839-bc41-f7ae94828729">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://sgb779.poseidon.salford.ac.uk:3306/sgb779_cli_serv_ugame</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

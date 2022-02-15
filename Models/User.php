@@ -438,18 +438,19 @@ class User extends Model implements JsonSerializable {
     {
         // Get all messages with user id and user info,
         // Ordering by time
-        $sql = "SELECT id as user_id, first_name , last_name,  display_name, Messages.Messages as Messages, Messages.Unread as Unread, MAX(Messages.latest) as latest
-                FROM (SELECT user_id_to, user_id_from, first_name, last_name, display_name, u.id, COUNT(u.id) as Messages, COUNT(case when `read` = 0 then 1 end) as Unread, MAX(timestamp) as latest
-                      FROM user_messages
-                               LEFT JOIN users u on user_messages.user_id_from = u.id
-                      WHERE user_id_to = $this->id
-                      GROUP BY u.id, user_id_from UNION SELECT user_id_to, user_id_from, first_name, last_name, display_name, u.id, 0 as Messages, 0 as Unread, MAX(timestamp) as latest
-                      FROM user_messages
-                               LEFT JOIN users u on user_messages.user_id_to = u.id
-                      WHERE user_id_from = $this->id
-                      GROUP BY user_id_to) as Messages
-                GROUP BY id
-                ORDER BY latest DESC;";
+        $sql = "SELECT Messages.id as user_id, Messages.first_name as first_name, Messages.last_name as last_name,  Messages.display_name as display_name, Messages.Messages as Messages, Messages.Unread as Unread, MAX(Messages.latest) as latest
+FROM (SELECT user_id_to, user_id_from, first_name, last_name, display_name, u.id, COUNT(u.id) as Messages, COUNT(case when `read` = 0 then 1 end) as Unread, MAX(timestamp) as latest
+      FROM user_messages
+               LEFT JOIN users u on user_messages.user_id_from = u.id
+      WHERE user_id_to = $this->id
+      GROUP BY u.id, user_id_from UNION SELECT user_id_to, user_id_from, first_name, last_name, display_name, u.id, 0 as Messages, 0 as Unread, MAX(timestamp) as latest
+      FROM user_messages
+               LEFT JOIN users u on user_messages.user_id_to = u.id
+      WHERE user_id_from = $this->id
+      GROUP BY user_id_to, user_id_from, first_name, last_name, display_name, u.id) as Messages
+WHERE Messages != 0
+GROUP BY user_id, id, first_name, last_name, display_name, Messages.Messages, Messages.Unread
+ORDER BY latest DESC;";
         $results = self::db()->query($sql, PDO::FETCH_OBJ)->fetchAll();
         foreach ($results as $result) {
             $result->latest = Helpers::getTimeSince($result->latest);

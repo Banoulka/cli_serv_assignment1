@@ -1,6 +1,7 @@
 {
     "require": {
         "pusher/pusher-php-server": "^4.1",
-      "ext-json": "*"
+      "ext-json": "*",
+      "ext-pdo": "*"
     }
 }
