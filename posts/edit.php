@@ -54,7 +54,7 @@ if (isset($_GET["post_id"])) {
         }
     }
 
-    require_once "../views/posts/edit.phtml";
+    require_once "../Views/posts/edit.phtml";
 } else {
     Route::redirect("../games.php");
 }
