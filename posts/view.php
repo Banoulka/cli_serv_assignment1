@@ -70,7 +70,7 @@ if (isset($_GET["post_id"])) {
         Authentication::refresh();
     }
 
-    require_once "../views/posts/view.phtml";
+    require_once "../Views/posts/view.phtml";
 } else {
     Route::redirect("../games.php");
 }
